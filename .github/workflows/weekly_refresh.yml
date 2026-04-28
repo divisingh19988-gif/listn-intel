@@ -1,0 +1,74 @@
+name: Weekly Intelligence Refresh
+
+on:
+  schedule:
+    - cron: '0 12 * * 1'   # Mondays 12:00 UTC
+  workflow_dispatch:
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install Playwright Chromium
+        run: |
+          python -m playwright install chromium --with-deps
+
+      - name: Fetch Meta ads (Playwright scraper)
+        env:
+          META_TOKEN: ${{ secrets.META_TOKEN }}
+        run: python scrapers/scrape_ads.py
+
+      - name: Fetch SEO data (DataForSEO)
+        env:
+          DATAFORSEO_LOGIN: ${{ secrets.DATAFORSEO_LOGIN }}
+          DATAFORSEO_PASSWORD: ${{ secrets.DATAFORSEO_PASSWORD }}
+        run: python scrapers/seo_monitor.py
+
+      - name: Run AI Readiness audit
+        run: python scrapers/ai_readiness_check.py
+
+      - name: Generate Excel reports and send email
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_FROM_EMAIL: ${{ secrets.RESEND_FROM_EMAIL }}
+          REPORT_EMAIL: ${{ secrets.REPORT_EMAIL }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scrapers/weekly_export.py
+
+      - name: Move scraped data to data/ (scrape_ads.py writes to repo root)
+        run: |
+          mkdir -p data
+          # Latest scraped Meta file -> canonical name
+          LATEST_ADS=$(ls -t ads_scraped_*.json 2>/dev/null | head -1 || true)
+          if [ -n "$LATEST_ADS" ]; then cp "$LATEST_ADS" data/ads_scraped_latest.json; fi
+          # Latest SEO file (seo_monitor writes into SEO_Intel/ historically; copy if found)
+          LATEST_SEO=$(ls -t SEO_Intel/seo_raw_*.json seo_raw_*.json 2>/dev/null | head -1 || true)
+          if [ -n "$LATEST_SEO" ]; then cp "$LATEST_SEO" data/seo_raw_latest.json; fi
+
+      - name: Commit updated data and reports
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "Listn Intel Bot"
+          git add data/ reports/
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "weekly refresh: $(date -u +%Y-W%V)"
+            git push
+          fi

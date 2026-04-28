@@ -9,6 +9,12 @@
 # But keep sample data in repo so deployed dashboard renders on day one
 !sample_data/*.json
 
+# Keep canonical data files (refreshed weekly by GitHub Actions)
+!data/*.json
+
+# Keep weekly Excel reports
+!reports/*.xlsx
+
 # Python cache
 __pycache__/
 *.py[cod]
@@ -22,3 +28,10 @@ __pycache__/
 venv/
 .venv/
 env/
+
+# Spartan AI config (contains API keys)
+.spartan/ai.env
+
+# Unrelated nested projects sitting in this working directory
+caveman/
+claude-seo/
