@@ -13,6 +13,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from pathlib import Path
+from datetime import date
 
 try:
     from dotenv import load_dotenv
@@ -20,7 +21,6 @@ try:
 except ImportError:
     pass
 
-<<<<<<< HEAD
 from lib.theme import inject_global_css, COLORS, stat_card
 from lib.data_freshness import show_freshness_banner
 from lib.synthesis import (
@@ -180,7 +180,9 @@ st.markdown(
     f'<p style="text-align:center;color:{COLORS["muted"]};font-size:0.75rem;">'
     "Listn Intel · live from Meta Ad Library + DataForSEO · "
     f"week of {week_label}</p>",
-=======
+     unsafe_allow_html=True,
+)
+
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Listn Intelligence",
@@ -1052,6 +1054,5 @@ st.markdown("---")
 st.markdown(
     "<p style='text-align:center;color:rgba(167,139,250,0.3);font-size:0.75rem;'>"
     "Listn Competitor Intelligence · Meta Ad Library · Generated from scraped data</p>",
->>>>>>> b64a844 (Rename main file to streamlit_app.py)
     unsafe_allow_html=True,
 )
