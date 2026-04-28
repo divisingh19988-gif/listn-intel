@@ -4,7 +4,7 @@ Supabase client wrapper.
 Reads SUPABASE_URL + SUPABASE_KEY from Streamlit secrets first,
 then falls back to os.environ (for CLI / scrapers / GitHub Actions).
 
-Expected schema for the `actions` table:
+Expected schema for the `action_tracker` table:
     id            uuid PRIMARY KEY default uuid_generate_v4()
     source        text             -- 'meta' | 'seo' | 'ai_readiness' | 'manual'
     recommendation text NOT NULL
@@ -136,3 +136,5 @@ def has_actions_for_week(client: "Client", week: Optional[str] = None) -> bool:
     except Exception as e:
         print("DEBUG ERROR:", e)
         return False
+    # Action CRUD helpers → updated
+    
