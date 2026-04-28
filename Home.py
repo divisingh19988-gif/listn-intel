@@ -51,14 +51,6 @@ with st.sidebar:
         '🎙 Listn Intel</div>',
         unsafe_allow_html=True,
     )
-    st.markdown(
-        '<p class="muted" style="font-size:0.8rem;line-height:1.6;">'
-        "Use the <strong>Pages</strong> menu above to navigate between "
-        "Meta Intel, SEO Intel, AI Readiness, the Action Tracker, and "
-        "Reports Archive."
-        "</p>",
-        unsafe_allow_html=True,
-    )
 
 # ── Header ────────────────────────────────────────────────────────────────────
 today = date.today()
