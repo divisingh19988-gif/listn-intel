@@ -4,7 +4,7 @@ AI Readiness — how well each competitor's site is set up for AI search engines
 Reads data/ai_readiness_latest.json (produced by scrapers/ai_readiness_check.py).
 Falls back to a hardcoded baseline (from the manual audits we ran in late April).
 
-Listn opportunity is to close the gap on Heritage Whisper (95) — they lead the
+Listn opportunity is to close the gap on Heritage Whisper (45) — they lead the
 industry on AI-citation readiness while running barely any Meta ads.
 """
 
@@ -91,7 +91,7 @@ leader_idx = df["_num_score"].idxmax()
 leader = df.loc[leader_idx]
 numeric_scores = df["_num_score"].dropna()
 industry_avg = round(numeric_scores.mean(), 1) if not numeric_scores.empty else 0
-gap = listn_score - leader["_num_score"] if isinstance(listn_score, (int, float)) else 0
+gap = float(listn_score) - float(leader["_num_score"]) if listn_score is not None else 0
 
 
 def _stat(value, label, color):

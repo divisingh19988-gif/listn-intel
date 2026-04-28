@@ -254,7 +254,7 @@ st.markdown(
     '<div class="insight-title">⚠️ Tracking Gap — Heritage Whisper</div>'
     '<div class="insight-body">'
     "Heritage Whisper runs <strong>minimal Meta ads</strong> but leads the industry on "
-    "<strong>AI search readiness (95/100)</strong>. Their growth strategy is organic + "
+    "<strong>AI search readiness (45/100)</strong>. Their growth strategy is organic + "
     "AI citation. Listn must match their AI readiness before competing on content volume."
     "</div>"
     '<a href="AI_Readiness" class="insight-link">→ View AI Readiness page</a>'
