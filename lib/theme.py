@@ -124,7 +124,27 @@ _GLOBAL_CSS = f"""
     -webkit-font-smoothing: antialiased;
   }}
   .stApp {{ background-color: {COLORS["bg"]} !important; }}
-  .block-container {{ padding-top: 1.25rem; padding-bottom: 3rem; max-width: 1400px; }}
+
+  /* Streamlit's header bar (~60–70px tall) sits sticky over the top of the
+     main content area. Push content down so nothing is clipped under it. */
+  [data-testid="stHeader"] {{
+    background: {COLORS["bg"]} !important;
+    border-bottom: 1px solid {COLORS["border"]};
+    height: 56px;
+  }}
+  [data-testid="stToolbar"] {{ right: 1rem; }}
+  .block-container {{
+    padding-top: 5rem !important;
+    padding-bottom: 3rem;
+    max-width: 1400px;
+  }}
+
+  /* First child of the main column is usually the freshness banner — give it
+     extra top breathing room so it never gets clipped. */
+  .main .block-container > div:first-child .freshness-banner:first-child,
+  .main .block-container .freshness-banner {{
+    margin-top: 0.25rem;
+  }}
 
   /* Headings + body text */
   h1, h2, h3, h4, h5, h6 {{
