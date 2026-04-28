@@ -125,6 +125,18 @@ _GLOBAL_CSS = f"""
   }}
   .stApp {{ background-color: {COLORS["bg"]} !important; }}
 
+  /* Hide "streamlit app" from sidebar navigation */
+  [data-testid="stSidebarNav"] li:first-child {
+    display: none !important;
+  }
+  
+  /* Hide keyboard shortcuts indicator */
+  [data-testid="stCaptionContainer"],
+  [title*="Keyboard"],
+  [aria-label*="Keyboard"] {
+    display: none !important;
+  }
+
   /* Streamlit's header bar (~60–70px tall) sits sticky over the top of the
      main content area. Push content down so nothing is clipped under it. */
   [data-testid="stHeader"] {{
