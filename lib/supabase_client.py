@@ -76,7 +76,7 @@ def current_iso_week(today: Optional[date] = None) -> str:
 
 
 # ── Action CRUD helpers ───────────────────────────────────────────────────────
-TABLE = "actions"
+TABLE = "action_tracker"
 
 
 def list_actions(client: "Client") -> list[dict]:
@@ -124,13 +124,15 @@ def delete_action(client: "Client", action_id: str) -> None:
 
 
 def has_actions_for_week(client: "Client", week: Optional[str] = None) -> bool:
-    """True if at least one action row exists for the given ISO week."""
     week = week or current_iso_week()
-    resp = (
-        client.table(TABLE)
-        .select("id", count="exact")
-        .eq("week_added", week)
-        .limit(1)
-        .execute()
-    )
-    return (resp.count or 0) > 0
+    try:
+        resp = (
+            client.table(TABLE)
+            .select("*")
+            .eq("week_added", week)
+            .execute()
+        )
+        return len(resp.data or []) > 0
+    except Exception as e:
+        print("DEBUG ERROR:", e)
+        return False
