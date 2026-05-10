@@ -123,7 +123,7 @@ def delete_action(client: "Client", action_id: str) -> None:
     client.table(TABLE).delete().eq("id", action_id).execute()
 
 
-def has_actions_for_week(client: "Client", week: Optional[str] = None) -> bool:
+def has_action_tracker_for_week(client: "Client", week: Optional[str] = None) -> bool:
     week = week or current_iso_week()
     try:
         resp = (
@@ -136,5 +136,4 @@ def has_actions_for_week(client: "Client", week: Optional[str] = None) -> bool:
     except Exception as e:
         print("DEBUG ERROR:", e)
         return False
-    # Action CRUD helpers → updated
-    
+

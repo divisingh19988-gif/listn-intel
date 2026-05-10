@@ -1,5 +1,5 @@
 """
-Action Tracker — Supabase-backed CRUD over the `actions` table.
+Action Tracker — Supabase-backed CRUD over the `action_tracker` table.
 
 Layout:
   • 5 stat cards:  Total / Not Started / In Progress / Testing / Done
@@ -25,7 +25,7 @@ from lib.supabase_client import (
     add_action,
     update_action,
     delete_action,
-    has_actions_for_week,
+    has_action_tracker_for_week,
     current_iso_week,
 )
 from lib.synthesis import SEO_CLUSTERS
@@ -100,7 +100,7 @@ def _seed_actions() -> list[dict]:
     return seeds
 
 
-if not has_actions_for_week(client, this_week):
+if not has_action_tracker_for_week(client, this_week):
     st.info(
         f"No actions for week **{this_week}** yet. "
         "Click below to auto-populate the top 7 actions from Meta, SEO, and AI Readiness."
