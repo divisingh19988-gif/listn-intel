@@ -33,7 +33,7 @@ from lib.synthesis import (
 
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="Listn Intel · This Week's Moves",
+    page_title="Overview",
     page_icon="🎙",
     layout="wide",
     initial_sidebar_state="expanded",

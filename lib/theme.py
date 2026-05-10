@@ -306,6 +306,16 @@ _GLOBAL_CSS = f"""
     to   {{ opacity: 1; transform: translateY(0); }}
   }}
 
+  /* Sidebar collapse button — hide stray internal text label, show ✕ */
+  [data-testid="collapsedControl"] {{
+    font-size: 0 !important;
+  }}
+  [data-testid="collapsedControl"]::after {{
+    content: "✕";
+    font-size: 0.85rem;
+    color: inherit;
+  }}
+
   /* Mobile */
   @media (max-width: 640px) {{
     .stat-grid {{ grid-template-columns: 1fr; }}

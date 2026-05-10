@@ -224,12 +224,19 @@ st.markdown(
 )
 
 
-def _playbook_card(item: dict) -> str:
+def _playbook_card(item: dict, rank: int) -> str:
     border_class = "blue" if item["priority"] == "HIGH" else "amber"
     pill_color = COLORS["accent"] if item["priority"] == "HIGH" else COLORS["soon"]
     icon = "⚡" if item["priority"] == "HIGH" else "◆"
     return (
-        f'<div class="insight-card {border_class}">'
+        f'<div class="insight-card {border_class}" style="display:grid;'
+        'grid-template-columns: 64px 1fr;gap:1.1rem;align-items:start;">'
+        # Rank number badge
+        f'<div style="font-size:2.4rem;font-weight:800;line-height:1;'
+        f'color:{pill_color};letter-spacing:-0.02em;text-align:center;'
+        f'padding-top:0.15rem;">{rank}</div>'
+        # Body
+        '<div>'
         f'<div style="display:inline-block;background:{pill_color};color:white;'
         'border-radius:999px;padding:2px 10px;font-size:0.62rem;font-weight:800;'
         'text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;">'
@@ -238,13 +245,18 @@ def _playbook_card(item: dict) -> str:
         f'<div class="insight-body" style="margin-bottom:0.4rem;">{item["action"]}</div>'
         f'<div class="insight-body" style="font-size:0.82rem;">'
         f'<strong>Why: </strong>{item["why"]}'
-        '</div></div>'
+        '</div></div></div>'
     )
 
 
-col_l, col_r = st.columns(2)
-for i, item in enumerate(PLAYBOOK):
-    (col_l if i % 2 == 0 else col_r).markdown(_playbook_card(item), unsafe_allow_html=True)
+# Rank: HIGH first, then MEDIUM. Stable order within each priority group.
+_priority_rank = {"HIGH": 0, "MEDIUM": 1, "LOW": 2}
+_ranked_playbook = sorted(
+    enumerate(PLAYBOOK),
+    key=lambda pair: (_priority_rank.get(pair[1]["priority"], 99), pair[0]),
+)
+for rank, (_, item) in enumerate(_ranked_playbook, start=1):
+    st.markdown(_playbook_card(item, rank), unsafe_allow_html=True)
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # Tracking Gap insight (Heritage Whisper)
@@ -299,7 +311,7 @@ for i, row in top10.iterrows():
 st.markdown("<hr>", unsafe_allow_html=True)
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# New This Week (14d)
+# New This Week (7d)
 # ═══════════════════════════════════════════════════════════════════════════════
 st.markdown("## ✨ New this week  *(ads started within 7 days)*")
 if new7_df.empty:
