@@ -13,8 +13,8 @@ load_dotenv()
 
 client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
-INPUT_FILE = "ads_scraped_2026-04-23.json"
-OUTPUT_FILE = "competitor_analysis.md"
+INPUT_FILE = "data/ads_scraped_latest.json"
+OUTPUT_FILE = "data/strategic_brief_latest.md"
 MODEL = "claude-sonnet-4-6"
 
 SYSTEM_PROMPT = """\

@@ -149,7 +149,7 @@ def _stat(value, label, *, color=None):
 cards_html = '<div class="stat-grid">'
 cards_html += _stat(total_ads, "Total ads scraped")
 cards_html += _stat(len(active_df), "Active ads", color=COLORS["evergreen"])
-cards_html += _stat(len(new14_df), "New this week (14d)", color=COLORS["soon"])
+cards_html += _stat(len(new7_df), "New this week (7d)", color=COLORS["soon"])
 cards_html += _stat(n_competitors, "Competitors tracked")
 cards_html += "</div>"
 st.markdown(cards_html, unsafe_allow_html=True)
@@ -301,11 +301,11 @@ st.markdown("<hr>", unsafe_allow_html=True)
 # ═══════════════════════════════════════════════════════════════════════════════
 # New This Week (14d)
 # ═══════════════════════════════════════════════════════════════════════════════
-st.markdown("## ✨ New this week  *(ads started within 14 days)*")
-if new14_df.empty:
-    st.info("No ads started in the last 14 days.")
+st.markdown("## ✨ New this week  *(ads started within 7 days)*")
+if new7_df.empty:
+    st.info("No ads started in the last 7 days.")
 else:
-    for competitor, group in new14_df.sort_values("days_since_start").groupby("competitor", sort=False):
+    for competitor, group in new7_df.sort_values("days_since_start").groupby("competitor", sort=False):
         st.markdown(f"### {competitor}")
         for _, row in group.iterrows():
             age = f"{int(row['days_since_start'])}d old"
