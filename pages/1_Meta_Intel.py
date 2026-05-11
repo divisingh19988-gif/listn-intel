@@ -308,7 +308,7 @@ for i, row in top10.iterrows():
             dot_color=dot_color, status=status_txt, snippet=row["snippet"],
             days=days,
             ad_link=(
-                f'<a href="https://www.facebook.com/ads/library/?id={row["ad_id"]}" '
+                f'<a href="https://www.facebook.com/ads/library/?country=ALL&id={row["ad_id"]}" '
                 'target="_blank" class="insight-link">View ad →</a>'
                 if row.get("ad_id") else ""
             ),
@@ -342,7 +342,7 @@ else:
                 '</div>'
                 f'<div style="color:{COLORS["muted"]};font-size:0.85rem;margin-top:0.4rem;line-height:1.5;">{row["snippet"]}</div>'
                 + (
-                    f'<a href="https://www.facebook.com/ads/library/?id={row["ad_id"]}" '
+                    f'<a href="https://www.facebook.com/ads/library/?country=ALL&id={row["ad_id"]}" '
                     'target="_blank" class="insight-link">View ad →</a>'
                     if row.get("ad_id") else ""
                 ) +
@@ -359,7 +359,7 @@ swipe = df[["competitor", "ad_copy", "tone", "cta_label", "days_running", "is_ac
 swipe["Ad Copy"] = df["ad_copy"].fillna("").str[:140] + "..."
 swipe["Status"] = swipe["is_active"].map({True: "🟢 Active", False: "🔴 Stopped"})
 swipe["Ad Link"] = swipe["ad_id"].fillna("").apply(
-    lambda i: f"https://www.facebook.com/ads/library/?id={i}" if i else ""
+    lambda i: f"https://www.facebook.com/ads/library/?country=ALL&id={i}" if i else ""
 )
 swipe = swipe.rename(columns={
     "competitor": "Competitor",
