@@ -47,7 +47,7 @@ jobs:
 
       - name: Validate SEO scrape output
         run: |
-          python3 -c "import json, sys; data = json.load(open('data/seo_raw_latest.json')); count = sum(len(v.get('keywords', [])) for v in data.values() if isinstance(v, dict)); count >= 5 or sys.exit(f'Health check failed - only {count} keywords found (need >= 5)'); print(f'Health check passed: {count} keywords found')"
+          python3 -c "import glob, json, os, sys; files = glob.glob('SEO_Intel/seo_raw_*.json') + glob.glob('seo_raw_*.json'); files or sys.exit('No seo_raw_*.json file found'); latest = max(files, key=os.path.getmtime); data = json.load(open(latest)); count = sum(len(v.get('keywords', [])) for v in data.values() if isinstance(v, dict)); count >= 5 or sys.exit(f'Health check failed - only {count} keywords found (need >= 5)'); print(f'Health check passed: {count} keywords found')"
 
       - name: Run AI Readiness audit
         run: python scrapers/ai_readiness_check.py
