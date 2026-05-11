@@ -78,7 +78,11 @@ def extract_cta(row):
 
 
 def ad_library_url(row) -> str:
-    """Stable Ad Library URL using page_name (always valid, survives ad rotation)."""
+    """Ad Library URL — deep-links to the specific ad by its Library ID when we
+    have one; falls back to a page search (survives ad rotation) if we don't."""
+    ad_id = row.get("ad_id")
+    if ad_id is not None and not (isinstance(ad_id, float) and pd.isna(ad_id)) and str(ad_id).strip():
+        return f"https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=ALL&id={str(ad_id).strip()}"
     page = str(row.get("page_name") or row.get("competitor") or "").strip()
     if not page:
         return ""
@@ -319,7 +323,7 @@ for i, row in top10.iterrows():
             days=days,
             ad_link=(
                 f'<a href="{ad_library_url(row)}" '
-                'target="_blank" class="insight-link">View in Ad Library →</a>'
+                'target="_blank" class="insight-link">View ad →</a>'
                 if ad_library_url(row) else ""
             ),
         ),
@@ -353,7 +357,7 @@ else:
                 f'<div style="color:{COLORS["muted"]};font-size:0.85rem;margin-top:0.4rem;line-height:1.5;">{row["snippet"]}</div>'
                 + (
                     f'<a href="{ad_library_url(row)}" '
-                    'target="_blank" class="insight-link">View in Ad Library →</a>'
+                    'target="_blank" class="insight-link">View ad →</a>'
                     if ad_library_url(row) else ""
                 ) +
                 '</div>',
@@ -369,7 +373,7 @@ swipe = df[["competitor", "ad_copy", "tone", "cta_label", "days_running", "is_ac
 swipe["Ad Copy"] = df["ad_copy"].fillna("").str[:140] + "..."
 swipe["Status"] = swipe["is_active"].map({True: "🟢 Active", False: "🔴 Stopped"})
 swipe["Ad Link"] = swipe.apply(
-    lambda r: ad_library_url({"page_name": r["competitor"]}), axis=1
+    lambda r: ad_library_url({"ad_id": r["ad_id"], "page_name": r["competitor"]}), axis=1
 )
 swipe = swipe.rename(columns={
     "competitor": "Competitor",
