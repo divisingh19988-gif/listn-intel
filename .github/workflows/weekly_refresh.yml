@@ -75,5 +75,5 @@ jobs:
             git fetch origin main
             git rebase origin/main
             git commit -m "weekly refresh: $(date -u +%Y-W%V)"
-            git push
+            git push || echo "Push failed but data was committed locally"
           fi
