@@ -77,3 +77,26 @@ jobs:
             git commit -m "weekly refresh: $(date -u +%Y-W%V)"
             git push || echo "Push failed but data was committed locally"
           fi
+
+      - name: Send failure alert
+        if: failure()
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_FROM_EMAIL: ${{ secrets.RESEND_FROM_EMAIL }}
+          REPORT_EMAIL: ${{ secrets.REPORT_EMAIL }}
+        run: |
+          python - <<'EOF'
+          import os
+          import requests
+
+          requests.post(
+              "https://api.resend.com/emails",
+              headers={"Authorization": f"Bearer {os.environ['RESEND_API_KEY']}"},
+              json={
+                  "from": os.environ["RESEND_FROM_EMAIL"],
+                  "to": os.environ["REPORT_EMAIL"],
+                  "subject": "Listn Intel: weekly refresh FAILED",
+                  "text": "The weekly intelligence refresh failed. Check: https://github.com/divisingh19988-gif/listn-intel/actions",
+              },
+          )
+          EOF
