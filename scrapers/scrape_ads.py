@@ -12,6 +12,7 @@ from playwright.sync_api import sync_playwright, TimeoutError as PWTimeout
 
 COMPETITORS = [
     "Remento",
+    "Enna",
     "Meminto",
     "StoryWorth",
     "Storykeeper",
@@ -38,6 +39,7 @@ COMPETITOR_PAGE_FILTER = {
 # The first one to return matching ads wins.
 COMPETITOR_SEARCH_PLAN = {
     "Remento":       [("Remento",        "page")],
+    "Enna":          [("Enna.care",      "page")],
     "Meminto":       [("Meminto",        "page")],
     "StoryWorth":    [("StoryWorth",     "page"),
                       ("StoryWorth",     "keyword_unordered")],

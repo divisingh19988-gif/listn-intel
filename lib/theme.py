@@ -10,11 +10,11 @@ import streamlit as st
 # ── Color tokens (used by Plotly, st.markdown, and conditional logic) ─────────
 COLORS = {
     "bg":         "#0F1117",
-    "surface":    "#1C1E26",
-    "border":     "#2A2D3A",
+    "surface":    "#281832",
+    "border":     "#3D2B4A",
     "text":       "#F0F0F0",
     "muted":      "#8B8FA8",
-    "accent":     "#4F8EF7",
+    "accent":     "#9F9BFF",
     "urgent":     "#E5534B",
     "soon":       "#F5A623",
     "evergreen":  "#34C984",

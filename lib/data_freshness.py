@@ -65,15 +65,15 @@ def is_stale(last_refreshed: Optional[datetime], now: Optional[datetime] = None)
 
 def _format_dt(dt: datetime) -> str:
     """Format like 'Apr 27, 2026 12:00 UTC' (no leading zero on day)."""
-    return dt.strftime("%b %-d, %Y %H:%M UTC") if os.name != "nt" else dt.strftime(
-        "%b %#d, %Y %H:%M UTC"
+    return dt.strftime("%b %-d, %Y %H:%M CET") if os.name != "nt" else dt.strftime(
+        "%b %#d, %Y %H:%M CET"
     )
 
 
 def _format_short(dt: datetime) -> str:
     """Format like 'Mon May 4, 12:00 UTC'."""
-    return dt.strftime("%a %b %-d, %H:%M UTC") if os.name != "nt" else dt.strftime(
-        "%a %b %#d, %H:%M UTC"
+    return dt.strftime("%a %b %-d, %H:%M CET") if os.name != "nt" else dt.strftime(
+        "%a %b %#d, %H:%M CET"
     )
 
 

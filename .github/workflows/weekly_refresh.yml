@@ -70,5 +70,6 @@ jobs:
             echo "No changes to commit."
           else
             git commit -m "weekly refresh: $(date -u +%Y-W%V)"
+            git pull --rebase origin main
             git push
           fi
