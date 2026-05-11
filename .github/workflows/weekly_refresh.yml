@@ -69,7 +69,7 @@ jobs:
           if git diff --quiet && git diff --staged --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "weekly refresh: $(date -u +%Y-W%V)"
             git pull --rebase origin main
+            git commit -m "weekly refresh: $(date -u +%Y-W%V)"
             git push
           fi
