@@ -48,6 +48,7 @@ PLOTLY_LAYOUT = dict(
         bordercolor=COLORS["border"],
         font=dict(color=COLORS["text"]),
     ),
+    modebar=dict(remove=["all"]),
 )
 
 # Per-competitor color map. Listn = accent. Heritage Whisper = evergreen

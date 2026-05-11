@@ -381,7 +381,7 @@ with chart_col:
         colorbar_tickfont_color=COLORS["muted"],
         colorbar_title_font_color=COLORS["text"],
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
 
 st.markdown("<hr>", unsafe_allow_html=True)
 st.markdown(

@@ -279,7 +279,7 @@ fig_bar = go.Figure(go.Bar(
 fig_bar.update_layout(**PLOTLY_LAYOUT, height=320, showlegend=False, transition_duration=400)
 fig_bar.update_xaxes(showgrid=True)
 fig_bar.update_yaxes(showgrid=False, tickfont=dict(size=13))
-st.plotly_chart(fig_bar, use_container_width=True)
+st.plotly_chart(fig_bar, use_container_width=True, config={"displayModeBar": False})
 st.markdown("<hr>", unsafe_allow_html=True)
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -544,7 +544,7 @@ fig_tone = px.bar(
 )
 fig_tone.update_traces(textposition="outside", textfont=dict(size=10, color=COLORS["text"]))
 fig_tone.update_layout(**PLOTLY_LAYOUT, height=420, transition_duration=400)
-st.plotly_chart(fig_tone, use_container_width=True)
+st.plotly_chart(fig_tone, use_container_width=True, config={"displayModeBar": False})
 
 # Where nobody is playing — tone gap table
 avg_per_tone = (
