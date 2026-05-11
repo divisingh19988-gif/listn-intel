@@ -19,13 +19,14 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-from lib.theme import inject_global_css, COLORS, comp_color, window_badge
+from lib.theme import inject_global_css, inject_sidebar, COLORS, comp_color, window_badge
 from lib.data_freshness import show_freshness_banner
 from lib.synthesis import SEO_CLUSTERS
 
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(page_title="SEO Intel · Listn", page_icon="🔍", layout="wide")
 inject_global_css()
+inject_sidebar()
 show_freshness_banner()
 
 ROOT = Path(__file__).parent.parent

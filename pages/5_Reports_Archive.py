@@ -11,7 +11,7 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-from lib.theme import inject_global_css, COLORS
+from lib.theme import inject_global_css, inject_sidebar, COLORS
 from lib.data_freshness import show_freshness_banner
 from lib.excel_export import (
     REPORTS_DIR,
@@ -24,6 +24,7 @@ from lib.supabase_client import current_iso_week
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(page_title="Reports Archive · Listn", page_icon="📄", layout="wide")
 inject_global_css()
+inject_sidebar()
 show_freshness_banner()
 
 # ── Header ────────────────────────────────────────────────────────────────────

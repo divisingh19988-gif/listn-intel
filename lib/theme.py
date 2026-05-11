@@ -5,7 +5,12 @@ One source of truth for colors, typography, spacing, and global CSS injection.
 Every page must call inject_global_css() once near the top of the file.
 """
 
+import base64
+from pathlib import Path
+
 import streamlit as st
+
+_ASSETS = Path(__file__).parent.parent / "assets"
 
 # ── Color tokens (used by Plotly, st.markdown, and conditional logic) ─────────
 COLORS = {
@@ -328,3 +333,23 @@ _GLOBAL_CSS = f"""
 def inject_global_css() -> None:
     """Inject the global stylesheet. Call once per page near the top."""
     st.markdown(_GLOBAL_CSS, unsafe_allow_html=True)
+
+
+def inject_sidebar() -> None:
+    """Render logo + Intelligence Hub branding in the sidebar. Call once per page."""
+    logo_path = _ASSETS / "listn_logo.png"
+    with st.sidebar:
+        if logo_path.exists():
+            data = base64.b64encode(logo_path.read_bytes()).decode()
+            st.markdown(
+                f'<img src="data:image/png;base64,{data}" '
+                'style="width:72px;margin-bottom:0.4rem;display:block;">',
+                unsafe_allow_html=True,
+            )
+        st.markdown(
+            f'<div style="font-size:1.0rem;font-weight:800;color:{COLORS["accent"]};'
+            'letter-spacing:0.04em;text-transform:uppercase;padding:0.1rem 0 0.75rem 0;'
+            f'border-bottom:1px solid {COLORS["border"]};margin-bottom:0.75rem;">'
+            'Intelligence Hub</div>',
+            unsafe_allow_html=True,
+        )

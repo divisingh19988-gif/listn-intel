@@ -21,7 +21,7 @@ try:
 except ImportError:
     pass
 
-from lib.theme import inject_global_css, COLORS, stat_card
+from lib.theme import inject_global_css, inject_sidebar, COLORS, stat_card
 from lib.data_freshness import show_freshness_banner
 from lib.synthesis import (
     get_creative_move,
@@ -40,17 +40,8 @@ st.set_page_config(
 )
 
 inject_global_css()
+inject_sidebar()
 show_freshness_banner()
-
-# ── Sidebar ───────────────────────────────────────────────────────────────────
-with st.sidebar:
-    st.markdown(
-        f'<div style="font-size:1.1rem;font-weight:800;color:{COLORS["accent"]};'
-        'letter-spacing:0.02em;padding:0.25rem 0 0.75rem 0;'
-        f'border-bottom:1px solid {COLORS["border"]};margin-bottom:0.75rem;">'
-        '🎙 Listn Intel</div>',
-        unsafe_allow_html=True,
-    )
 
 # ── Header ────────────────────────────────────────────────────────────────────
 today = date.today()

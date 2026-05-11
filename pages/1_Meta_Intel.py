@@ -24,13 +24,14 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-from lib.theme import inject_global_css, COLORS, comp_color, PLOTLY_LAYOUT
+from lib.theme import inject_global_css, inject_sidebar, COLORS, comp_color, PLOTLY_LAYOUT
 from lib.data_freshness import show_freshness_banner
 from lib.synthesis import TONE_KEYWORDS
 
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(page_title="Meta Intel · Listn", page_icon="🎯", layout="wide")
 inject_global_css()
+inject_sidebar()
 show_freshness_banner()
 
 # ── Constants ─────────────────────────────────────────────────────────────────

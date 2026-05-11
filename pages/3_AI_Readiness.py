@@ -15,7 +15,7 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-from lib.theme import inject_global_css, COLORS
+from lib.theme import inject_global_css, inject_sidebar, COLORS
 from lib.data_freshness import show_freshness_banner
 from lib.supabase_client import (
     get_client,
@@ -27,6 +27,7 @@ from lib.supabase_client import (
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(page_title="AI Readiness · Listn", page_icon="🤖", layout="wide")
 inject_global_css()
+inject_sidebar()
 show_freshness_banner()
 
 ROOT = Path(__file__).parent.parent
