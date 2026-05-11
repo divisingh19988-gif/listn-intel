@@ -99,6 +99,7 @@ def add_action(
     status: str = "Not Started",
     notes: str = "",
     week_added: Optional[str] = None,
+    deadline: Optional[str] = None,
 ) -> dict:
     """Insert a new action row. Returns the inserted row."""
     payload = {
@@ -108,6 +109,7 @@ def add_action(
         "status": status,
         "notes": notes,
         "week_added": week_added or current_iso_week(),
+        "deadline": deadline,
     }
     resp = client.table(TABLE).insert(payload).execute()
     return resp.data[0] if resp.data else payload

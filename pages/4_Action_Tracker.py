@@ -201,6 +201,7 @@ with st.expander("➕ Add a new action"):
         new_rec = st.text_input("Recommendation", key="new_rec",
                                 placeholder="e.g. Test wistful-urgency creative on Father's Day audience")
         new_notes = st.text_input("Notes (optional)", key="new_notes", placeholder="Anything to remember…")
+    new_deadline = st.date_input("Deadline (optional)", value=None, key="new_deadline")
     if st.button("Add action", type="primary", disabled=not new_rec.strip()):
         try:
             add_action(
@@ -211,6 +212,7 @@ with st.expander("➕ Add a new action"):
                 status="Not Started",
                 notes=new_notes.strip(),
                 week_added=this_week,
+                deadline=new_deadline.isoformat() if new_deadline else None,
             )
             st.success("Added.")
             st.rerun()
@@ -224,9 +226,11 @@ if filtered.empty:
     st.info("No actions match the current filters.")
 else:
     # Build a simplified editable view
+    if "deadline" not in filtered.columns:
+        filtered["deadline"] = None
     display = filtered[[
         "id", "source", "week_added", "recommendation",
-        "priority", "status", "notes",
+        "priority", "status", "deadline", "notes",
     ]].copy().reset_index(drop=True)
     display = display.sort_values(
         by=["priority", "week_added"],
@@ -253,6 +257,9 @@ else:
                 options=["Not Started", "In Progress", "Testing", "Done"],
                 width="medium",
             ),
+            "deadline":       st.column_config.DateColumn(
+                "Deadline", width="small", format="YYYY-MM-DD",
+            ),
             "notes":          st.column_config.TextColumn("Notes", width="large"),
         },
         key="actions_editor",
@@ -267,7 +274,7 @@ else:
             o = original.loc[action_id]
             n = modified.loc[action_id]
             patch = {}
-            for col in ("priority", "status", "notes"):
+            for col in ("priority", "status", "deadline", "notes"):
                 if o[col] != n[col]:
                     patch[col] = n[col]
             if patch:
