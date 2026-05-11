@@ -297,6 +297,7 @@ for i, row in top10.iterrows():
         '<span class="muted" style="font-size:0.75rem;">{status}</span>'
         '</div>'
         '<div style="color:{muted};font-size:0.85rem;margin-top:0.4rem;line-height:1.5;">{snippet}</div>'
+        '{ad_link}'
         '</div>'
         '<div style="text-align:right;">'
         '<div style="font-size:1.6rem;font-weight:800;color:{accent};line-height:1;">{days}</div>'
@@ -306,6 +307,11 @@ for i, row in top10.iterrows():
             accent=COLORS["accent"], badge=comp_badge(row["competitor"]),
             dot_color=dot_color, status=status_txt, snippet=row["snippet"],
             days=days,
+            ad_link=(
+                f'<a href="https://www.facebook.com/ads/library/?id={row["ad_id"]}" '
+                'target="_blank" class="insight-link">View ad →</a>'
+                if row.get("ad_id") else ""
+            ),
         ),
         unsafe_allow_html=True,
     )
@@ -335,6 +341,11 @@ else:
                 f'<span class="muted" style="font-size:0.75rem;">{stat}</span>'
                 '</div>'
                 f'<div style="color:{COLORS["muted"]};font-size:0.85rem;margin-top:0.4rem;line-height:1.5;">{row["snippet"]}</div>'
+                + (
+                    f'<a href="https://www.facebook.com/ads/library/?id={row["ad_id"]}" '
+                    'target="_blank" class="insight-link">View ad →</a>'
+                    if row.get("ad_id") else ""
+                ) +
                 '</div>',
                 unsafe_allow_html=True,
             )
@@ -344,9 +355,12 @@ st.markdown("<hr>", unsafe_allow_html=True)
 # Ad Copy Swipe File
 # ═══════════════════════════════════════════════════════════════════════════════
 st.markdown("## 🗂 Ad copy swipe file")
-swipe = df[["competitor", "ad_copy", "tone", "cta_label", "days_running", "is_active"]].copy()
+swipe = df[["competitor", "ad_copy", "tone", "cta_label", "days_running", "is_active", "ad_id"]].copy()
 swipe["Ad Copy"] = df["ad_copy"].fillna("").str[:140] + "..."
 swipe["Status"] = swipe["is_active"].map({True: "🟢 Active", False: "🔴 Stopped"})
+swipe["Ad Link"] = swipe["ad_id"].fillna("").apply(
+    lambda i: f"https://www.facebook.com/ads/library/?id={i}" if i else ""
+)
 swipe = swipe.rename(columns={
     "competitor": "Competitor",
     "tone": "Tone",
@@ -370,18 +384,24 @@ if comp_filter != "All":
 if tone_filter != "All":
     mask &= swipe["Tone"] == tone_filter
 
+_has_links = swipe["Ad Link"].str.strip().astype(bool).any()
+_swipe_cols = ["Competitor", "Ad Copy", "Tone", "CTA", "Days", "Status"]
+_col_config = {
+    "Competitor": st.column_config.TextColumn(width="small"),
+    "Ad Copy":    st.column_config.TextColumn(width="large"),
+    "Tone":       st.column_config.TextColumn(width="small"),
+    "CTA":        st.column_config.TextColumn(width="small"),
+    "Days":       st.column_config.NumberColumn(width="small", format="%d"),
+    "Status":     st.column_config.TextColumn(width="small"),
+}
+if _has_links:
+    _swipe_cols.append("Ad Link")
+    _col_config["Ad Link"] = st.column_config.LinkColumn("Ad Link", width="small", display_text="View ad →")
 st.dataframe(
-    swipe.loc[mask, ["Competitor", "Ad Copy", "Tone", "CTA", "Days", "Status"]].reset_index(drop=True),
+    swipe.loc[mask, _swipe_cols].reset_index(drop=True),
     use_container_width=True,
     height=380,
-    column_config={
-        "Competitor": st.column_config.TextColumn(width="small"),
-        "Ad Copy":    st.column_config.TextColumn(width="large"),
-        "Tone":       st.column_config.TextColumn(width="small"),
-        "CTA":        st.column_config.TextColumn(width="small"),
-        "Days":       st.column_config.NumberColumn(width="small", format="%d"),
-        "Status":     st.column_config.TextColumn(width="small"),
-    },
+    column_config=_col_config,
 )
 st.caption(f"Showing {int(mask.sum())} of {len(swipe)} ads")
 st.markdown("<hr>", unsafe_allow_html=True)
