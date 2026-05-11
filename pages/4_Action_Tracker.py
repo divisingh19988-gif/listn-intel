@@ -216,6 +216,10 @@ with st.expander("➕ Add a new action"):
                 deadline=new_deadline.isoformat() if new_deadline else None,
             )
             st.success("Added.")
+            # Widgets are keyed, so st.rerun() alone keeps the old values —
+            # drop the keys so the form re-renders empty.
+            for _k in ("new_source", "new_priority", "new_rec", "new_notes", "new_deadline"):
+                st.session_state.pop(_k, None)
             st.rerun()
         except Exception as e:
             st.error(f"Add failed: {e}")
