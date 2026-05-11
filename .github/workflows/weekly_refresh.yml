@@ -35,11 +35,19 @@ jobs:
           META_TOKEN: ${{ secrets.META_TOKEN }}
         run: python scrapers/scrape_ads.py
 
+      - name: Validate Meta scrape output
+        run: |
+          python3 -c "import glob, json, sys; files = sorted(glob.glob('ads_scraped_*.json')); files or sys.exit('No ads_scraped_*.json file found'); data = json.load(open(files[-1])); count = sum(len(v.get('ads', [])) for v in data.values() if isinstance(v, dict)); count >= 5 or sys.exit(f'Health check failed - only {count} ads found (need >= 5)'); print(f'Health check passed: {count} ads found')"
+
       - name: Fetch SEO data (DataForSEO)
         env:
           DATAFORSEO_LOGIN: ${{ secrets.DATAFORSEO_LOGIN }}
           DATAFORSEO_PASSWORD: ${{ secrets.DATAFORSEO_PASSWORD }}
         run: python scrapers/seo_monitor.py
+
+      - name: Validate SEO scrape output
+        run: |
+          python3 -c "import json, sys; data = json.load(open('data/seo_raw_latest.json')); count = sum(len(v.get('keywords', [])) for v in data.values() if isinstance(v, dict)); count >= 5 or sys.exit(f'Health check failed - only {count} keywords found (need >= 5)'); print(f'Health check passed: {count} keywords found')"
 
       - name: Run AI Readiness audit
         run: python scrapers/ai_readiness_check.py
