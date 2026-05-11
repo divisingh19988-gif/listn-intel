@@ -78,8 +78,15 @@ def extract_cta(row):
 
 
 def ad_library_url(row) -> str:
-    """Ad Library URL — deep-links to the specific ad by its Library ID when we
-    have one; falls back to a page search (survives ad rotation) if we don't."""
+    """Deep-link to the *specific* ad by its Library ID. Used for ACTIVE ads only.
+
+    Meta's Ad Library only keeps an *individual* ad reachable while it is running
+    (and briefly after); commercial ads are purged soon after they stop — at which
+    point neither this URL nor Meta's own "Copy ad link" works. So we only build
+    this for active ads; stopped ads show their copy inline instead (see
+    ``render_stopped_ad_copy``). Falls back to a page search only if there's no
+    Library ID at all.
+    """
     ad_id = row.get("ad_id")
     if ad_id is not None and not (isinstance(ad_id, float) and pd.isna(ad_id)) and str(ad_id).strip():
         return f"https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=ALL&id={str(ad_id).strip()}"
@@ -89,6 +96,59 @@ def ad_library_url(row) -> str:
     import urllib.parse
     q = urllib.parse.quote_plus(page)
     return f"https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=ALL&q={q}&search_type=page"
+
+
+def ad_status(row):
+    """(label, color) for the ad's run status. Stopped ads include the stop date
+    so it's unmistakable the ad is no longer running."""
+    if row.get("is_active"):
+        return "Active", COLORS["evergreen"]
+    stop = row.get("stop_date")
+    if stop is not None and not (isinstance(stop, float) and pd.isna(stop)) and not pd.isna(stop):
+        return f"Stopped · {pd.Timestamp(stop):%d %b %Y}", COLORS["urgent"]
+    return "Stopped", COLORS["urgent"]
+
+
+def ad_link_html(row) -> str:
+    """``<a>`` to the exact ad — ACTIVE ads only. Stopped ads return '' (Meta has
+    likely purged the individual ad page); use ``render_stopped_ad_copy`` for those."""
+    if not row.get("is_active"):
+        return ""
+    url = ad_library_url(row)
+    return f'<a href="{url}" target="_blank" class="insight-link">View ad →</a>' if url else ""
+
+
+def _clean(v) -> str:
+    if v is None or (isinstance(v, float) and pd.isna(v)):
+        return ""
+    s = str(v).strip()
+    return "" if s.lower() in ("none", "nan", "") else s
+
+
+def render_stopped_ad_copy(row) -> None:
+    """Stopped ads can't be linked on Meta anymore, so the dashboard is the
+    archive: show the full scraped ad copy + headline + CTA + run dates inline."""
+    sd, ed = row.get("start_date"), row.get("stop_date")
+    when = ""
+    if sd is not None and not pd.isna(sd):
+        when = f"{pd.Timestamp(sd):%d %b %Y}"
+        if ed is not None and not pd.isna(ed):
+            when += f" → {pd.Timestamp(ed):%d %b %Y}"
+    with st.expander("📋 Full ad copy  ·  stopped — no longer viewable in Meta's Ad Library"):
+        copy = _clean(row.get("ad_copy"))
+        st.markdown(copy if copy else "_(no ad copy captured)_")
+        bits = []
+        if _clean(row.get("headline")):
+            bits.append(f"**Headline:** {_clean(row.get('headline'))}")
+        if _clean(row.get("cta")):
+            bits.append(f"**CTA:** {_clean(row.get('cta'))}")
+        days = int(row.get("days_running") or 0)
+        if when:
+            bits.append(f"**Ran:** {when}  ({days} days)")
+        elif days:
+            bits.append(f"**Ran:** {days} days")
+        if bits:
+            st.caption("  ·  ".join(bits))
 
 
 def comp_badge(name: str) -> str:
@@ -296,19 +356,19 @@ st.markdown("<hr>", unsafe_allow_html=True)
 st.markdown("## 🏆 Top 10 longest-running ads")
 top10 = df.nlargest(10, "days_running").reset_index(drop=True)
 for i, row in top10.iterrows():
-    dot_color = COLORS["evergreen"] if row["is_active"] else COLORS["urgent"]
-    status_txt = "Active" if row["is_active"] else "Stopped"
+    status_txt, status_color = ad_status(row)
     days = int(row["days_running"])
+    bottom_margin = "0.15rem" if not row["is_active"] else "0.55rem"
     st.markdown(
         '<div style="background:{surface};border:1px solid {border};border-radius:10px;'
-        'padding:0.85rem 1.1rem;margin-bottom:0.55rem;display:grid;'
+        'padding:0.85rem 1.1rem;margin-bottom:{mb};display:grid;'
         'grid-template-columns: 1fr auto;align-items:center;gap:1rem;">'
         '<div>'
         '<div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">'
         '{badge}'
         '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;'
         'background:{dot_color};box-shadow:0 0 6px {dot_color};"></span>'
-        '<span class="muted" style="font-size:0.75rem;">{status}</span>'
+        '<span style="font-size:0.75rem;color:{dot_color};font-weight:600;">{status}</span>'
         '</div>'
         '<div style="color:{muted};font-size:0.85rem;margin-top:0.4rem;line-height:1.5;">{snippet}</div>'
         '{ad_link}'
@@ -319,16 +379,14 @@ for i, row in top10.iterrows():
         '</div></div>'.format(
             surface=COLORS["surface"], border=COLORS["border"], muted=COLORS["muted"],
             accent=COLORS["accent"], badge=comp_badge(row["competitor"]),
-            dot_color=dot_color, status=status_txt, snippet=row["snippet"],
-            days=days,
-            ad_link=(
-                f'<a href="{ad_library_url(row)}" '
-                'target="_blank" class="insight-link">View ad →</a>'
-                if ad_library_url(row) else ""
-            ),
+            dot_color=status_color, status=status_txt, snippet=row["snippet"],
+            days=days, mb=bottom_margin,
+            ad_link=ad_link_html(row),
         ),
         unsafe_allow_html=True,
     )
+    if not row["is_active"]:
+        render_stopped_ad_copy(row)
 st.markdown("<hr>", unsafe_allow_html=True)
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -342,38 +400,41 @@ else:
         st.markdown(f"### {competitor}")
         for _, row in group.iterrows():
             age = f"{int(row['days_since_start'])}d old"
-            stat = "🟢 Active" if row["is_active"] else "🔴 Stopped"
+            status_txt, status_color = ad_status(row)
+            bar_color = COLORS["evergreen"] if row["is_active"] else COLORS["urgent"]
+            mb = "0.15rem" if not row["is_active"] else "0.55rem"
             st.markdown(
                 f'<div style="background:{COLORS["surface"]};border:1px solid {COLORS["border"]};'
-                f'border-left:3px solid {COLORS["evergreen"]};border-radius:10px;padding:0.85rem 1.1rem;'
-                'margin-bottom:0.55rem;">'
+                f'border-left:3px solid {bar_color};border-radius:10px;padding:0.85rem 1.1rem;'
+                f'margin-bottom:{mb};">'
                 '<div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">'
                 f'{comp_badge(competitor)}'
                 f'<span style="background:{COLORS["accent"]}22;color:{COLORS["accent"]};'
                 'border-radius:999px;padding:1px 8px;font-size:0.68rem;font-weight:700;'
                 f'letter-spacing:0.06em;">NEW · {age}</span>'
-                f'<span class="muted" style="font-size:0.75rem;">{stat}</span>'
+                '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;'
+                f'background:{status_color};box-shadow:0 0 6px {status_color};"></span>'
+                f'<span style="font-size:0.75rem;color:{status_color};font-weight:600;">{status_txt}</span>'
                 '</div>'
                 f'<div style="color:{COLORS["muted"]};font-size:0.85rem;margin-top:0.4rem;line-height:1.5;">{row["snippet"]}</div>'
-                + (
-                    f'<a href="{ad_library_url(row)}" '
-                    'target="_blank" class="insight-link">View ad →</a>'
-                    if ad_library_url(row) else ""
-                ) +
+                + ad_link_html(row) +
                 '</div>',
                 unsafe_allow_html=True,
             )
+            if not row["is_active"]:
+                render_stopped_ad_copy(row)
 st.markdown("<hr>", unsafe_allow_html=True)
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # Ad Copy Swipe File
 # ═══════════════════════════════════════════════════════════════════════════════
 st.markdown("## 🗂 Ad copy swipe file")
-swipe = df[["competitor", "ad_copy", "tone", "cta_label", "days_running", "is_active", "ad_id"]].copy()
+swipe = df[["competitor", "ad_copy", "tone", "cta_label", "days_running", "is_active", "ad_id", "stop_date"]].copy()
 swipe["Ad Copy"] = df["ad_copy"].fillna("").str[:140] + "..."
-swipe["Status"] = swipe["is_active"].map({True: "🟢 Active", False: "🔴 Stopped"})
+swipe["Status"] = swipe.apply(lambda r: ad_status(r)[0].replace("Active", "🟢 Active").replace("Stopped", "🔴 Stopped"), axis=1)
+# Only active ads get a Meta link — Meta purges the individual page of stopped ads.
 swipe["Ad Link"] = swipe.apply(
-    lambda r: ad_library_url({"ad_id": r["ad_id"], "page_name": r["competitor"]}), axis=1
+    lambda r: ad_library_url({"ad_id": r["ad_id"]}) if r["is_active"] else "", axis=1
 )
 swipe = swipe.rename(columns={
     "competitor": "Competitor",
