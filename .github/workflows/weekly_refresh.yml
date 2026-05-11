@@ -70,5 +70,5 @@ jobs:
             echo "No changes to commit."
           else
             git commit -m "weekly refresh: $(date -u +%Y-W%V)"
-            git push origin main --force-with-lease
+            git push origin HEAD:main --force
           fi
