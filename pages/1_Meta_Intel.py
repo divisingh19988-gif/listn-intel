@@ -187,26 +187,50 @@ def load_ads():
     return df, raw.get("fetched_date", ""), raw.get("total_ads", len(rows)), len(raw.get("competitors", {}))
 
 
-df, fetched_date, total_ads, n_competitors = load_ads()
+df_all, fetched_date, total_scraped, n_tracked = load_ads()
 
-if df.empty:
+if df_all.empty:
     st.error(
         "No Meta ad data found in `data/ads_scraped_latest.json`. "
         "Run `python scrapers/scrape_ads.py` first."
     )
     st.stop()
 
-active_df = df[df["is_active"]]
-new14_df  = df[df["is_new14"]]
-new7_df   = df[df["is_new7"]]
+# Meta Intel = the ads competitors are running RIGHT NOW. Stopped ads rotate out
+# of Meta's Ad Library (can't be linked, often purged), so they're hidden by
+# default. Toggle on to see them — their copy renders inline.
+n_stopped = int((~df_all["is_active"]).sum())
+show_stopped = (
+    st.toggle(
+        f"Show stopped ads too  ·  {n_stopped} hidden",
+        value=False,
+        help="Stopped ads aren't viewable individually in Meta's Ad Library "
+             "anymore — their copy is shown inline here when this is on.",
+    )
+    if n_stopped else False
+)
+df = df_all.copy() if show_stopped else df_all[df_all["is_active"]].copy()
+
+if df.empty:
+    st.warning(
+        f"No active competitor ads in the latest scrape (fetched {fetched_date}). "
+        f"All {total_scraped} scraped ads have stopped — toggle above to view them."
+    )
+    st.stop()
+
+new7_df = df[df["is_new7"]]
+n_running_comps = df["competitor"].nunique()
 
 # ── Header ────────────────────────────────────────────────────────────────────
+_scope_word = "ads (incl. stopped)" if show_stopped else "active ads"
 st.markdown(
     '<h1 style="margin-bottom:0.2rem;">🎯 Meta Intel</h1>'
     f'<p class="muted" style="margin-top:0;">'
-    f"Meta Ad Library · fetched {fetched_date} · {total_ads} total ads · "
-    f"{n_competitors} competitors tracked"
-    "</p>",
+    f"Meta Ad Library · fetched {fetched_date} · "
+    f"<strong>{len(df)}</strong> {_scope_word} · "
+    f"{n_running_comps}/{n_tracked} competitors running"
+    + ("" if show_stopped else f" · {n_stopped} stopped ads hidden")
+    + "</p>",
     unsafe_allow_html=True,
 )
 
@@ -221,25 +245,27 @@ def _stat(value, label, *, color=None):
     )
 
 
+_longest = int(df["days_running"].max()) if len(df) else 0
 cards_html = '<div class="stat-grid">'
-cards_html += _stat(total_ads, "Total ads scraped")
-cards_html += _stat(len(active_df), "Active ads", color=COLORS["evergreen"])
-cards_html += _stat(len(new7_df), "New this week (7d)", color=COLORS["soon"])
-cards_html += _stat(n_competitors, "Competitors tracked")
+cards_html += _stat(len(df), "Ads shown" if show_stopped else "Active ads", color=COLORS["evergreen"])
+cards_html += _stat(f"{n_running_comps}/{n_tracked}", "Competitors running ads")
+cards_html += _stat(len(new7_df), "Started in last 7d", color=COLORS["soon"])
+cards_html += _stat(_longest, "Longest run (days)")
 cards_html += "</div>"
 st.markdown(cards_html, unsafe_allow_html=True)
 st.markdown("<hr>", unsafe_allow_html=True)
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# Total ads per competitor
+# Ads per competitor
 # ═══════════════════════════════════════════════════════════════════════════════
-st.markdown("## 📊 Total ads per competitor")
+st.markdown("## 📊 " + ("Ads per competitor (incl. stopped)" if show_stopped else "Active ads per competitor"))
 total_counts = (
     df.groupby("competitor").size()
     .reset_index(name="total")
     .sort_values("total", ascending=True)
 )
 bar_colors = [comp_color(c) for c in total_counts["competitor"]]
+_bar_hover_label = "Ads" if show_stopped else "Active ads"
 fig_bar = go.Figure(go.Bar(
     x=total_counts["total"],
     y=total_counts["competitor"],
@@ -248,7 +274,7 @@ fig_bar = go.Figure(go.Bar(
     text=total_counts["total"],
     textposition="outside",
     textfont=dict(color=COLORS["text"], size=13, family="Inter"),
-    hovertemplate="<b>%{y}</b><br>Total Ads: %{x}<extra></extra>",
+    hovertemplate="<b>%{y}</b><br>" + _bar_hover_label + ": %{x}<extra></extra>",
 ))
 fig_bar.update_layout(**PLOTLY_LAYOUT, height=320, showlegend=False, transition_duration=400)
 fig_bar.update_xaxes(showgrid=True)
@@ -286,12 +312,22 @@ PLAYBOOK = [
 ]
 
 remento_total = int(df[df["competitor"] == "Remento"].shape[0])
+if remento_total:
+    _remento_line = (
+        f'<strong>Remento:</strong> {remento_total} ad{"s" if remento_total != 1 else ""}'
+        + ("" if show_stopped else " currently running")
+        + " — 100% targeting the adult-child gifter, zero speaking to elders directly.<br>"
+    )
+else:
+    _remento_line = (
+        '<strong>Remento:</strong> no ads currently running — they rotate creatives '
+        'aggressively; toggle stopped ads above to see the archive.<br>'
+    )
 st.markdown(
     f'<div class="insight-card blue">'
     f'<div class="insight-title">📊 Competitive whitespace summary</div>'
     f'<div class="insight-body">'
-    f'<strong>Remento:</strong> {remento_total} total ads — 100% targeting the adult-child gifter, '
-    "zero speaking to elders directly.<br>"
+    + _remento_line +
     "<strong>Listn opportunity:</strong> elder-as-hero reframe + voice-as-product + "
     'caregiver segment = <strong>3 uncontested lanes</strong>.'
     "</div></div>",
