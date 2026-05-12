@@ -14,7 +14,10 @@ from dotenv import load_dotenv
 
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "..", ".env"))
 
-OUTPUT_DIR = os.path.dirname(__file__)
+# Write the dated file to the repo root (parent of scrapers/) so CI's
+# "Move scraped data to data/" step and the SEO health-check find it —
+# same convention as scrape_ads.py.
+OUTPUT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 LOCATION_CODE = 2840  # United States
 LANGUAGE_CODE = "en"
 KEYWORD_LIMIT = 30
