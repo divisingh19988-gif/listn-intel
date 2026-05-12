@@ -74,16 +74,17 @@ jobs:
 
       - name: Commit updated data and reports
         run: |
+          set -e
           git config user.email "actions@github.com"
           git config user.name "Listn Intel Bot"
           git add data/ reports/
           if git diff --quiet && git diff --staged --quiet; then
             echo "No changes to commit."
           else
+            git commit -m "weekly refresh: $(date -u +%Y-W%V)"
             git fetch origin main
             git rebase origin/main
-            git commit -m "weekly refresh: $(date -u +%Y-W%V)"
-            git push || echo "Push failed but data was committed locally"
+            git push   # fail the job if the push doesn't land
           fi
 
       - name: Send failure alert
