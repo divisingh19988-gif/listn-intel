@@ -12,7 +12,14 @@ Expected schema for the `action_tracker` table:
     status        text             -- 'Not Started' | 'In Progress' | 'Testing' | 'Done'
     notes         text
     week_added    text             -- ISO week, e.g. '2026-W17'
+    deadline      date             -- optional target date
+    assigned_by   text             -- 'Digvijay' | 'Eli' | 'Intel Dashboard'
+    assigned_to   text             -- 'Digvijay' | 'Eli'
     created_at    timestamptz default now()
+
+Run once in Supabase if the table predates assigned_by/assigned_to:
+    alter table action_tracker add column if not exists assigned_by text;
+    alter table action_tracker add column if not exists assigned_to text;
 """
 
 from __future__ import annotations
@@ -100,6 +107,8 @@ def add_action(
     notes: str = "",
     week_added: Optional[str] = None,
     deadline: Optional[str] = None,
+    assigned_by: Optional[str] = None,
+    assigned_to: Optional[str] = None,
 ) -> dict:
     """Insert a new action row. Returns the inserted row."""
     payload = {
@@ -110,6 +119,8 @@ def add_action(
         "notes": notes,
         "week_added": week_added or current_iso_week(),
         "deadline": deadline,
+        "assigned_by": assigned_by,
+        "assigned_to": assigned_to,
     }
     resp = client.table(TABLE).insert(payload).execute()
     return resp.data[0] if resp.data else payload

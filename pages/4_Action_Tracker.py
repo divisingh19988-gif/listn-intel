@@ -62,6 +62,16 @@ if client is None:
 # ── Auto-populate offer (only if no rows for this week) ───────────────────────
 this_week = current_iso_week()
 
+# Assignment options. Humans pick from PEOPLE; "Intel Dashboard" is only set
+# automatically when the auto-populate button seeds tasks.
+PEOPLE = ["Digvijay", "Eli"]
+ASSIGNED_BY_OPTIONS = PEOPLE + ["Intel Dashboard"]
+
+
+def _seed_assignee(source: str) -> str:
+    """Auto-seeded tasks: Meta → Digvijay, SEO + AI Readiness → Eli."""
+    return "Digvijay" if source == "meta" else "Eli"
+
 
 def _seed_actions() -> list[dict]:
     """3 Meta + 2 SEO + 2 AI = 7 actions."""
@@ -116,6 +126,8 @@ if not has_action_tracker_for_week(client, this_week):
                     priority=s["priority"],
                     status="Not Started",
                     week_added=this_week,
+                    assigned_by="Intel Dashboard",
+                    assigned_to=_seed_assignee(s["source"]),
                 )
                 seeded += 1
             except Exception as e:
@@ -201,7 +213,13 @@ with st.expander("➕ Add a new action"):
         new_rec = st.text_input("Recommendation", key="new_rec",
                                 placeholder="e.g. Test wistful-urgency creative on Father's Day audience")
         new_notes = st.text_input("Notes (optional)", key="new_notes", placeholder="Anything to remember…")
-    new_deadline = st.date_input("Deadline (optional)", value=None, key="new_deadline")
+    a1, a2, a3 = st.columns(3)
+    with a1:
+        new_assigned_by = st.selectbox("Assigned by", PEOPLE, index=0, key="new_assigned_by")
+    with a2:
+        new_assigned_to = st.selectbox("Assigned to", PEOPLE, index=1, key="new_assigned_to")
+    with a3:
+        new_deadline = st.date_input("Deadline (optional)", value=None, key="new_deadline")
     if st.button("Add action", type="primary", disabled=not new_rec.strip()):
         try:
             add_action(
@@ -213,11 +231,14 @@ with st.expander("➕ Add a new action"):
                 notes=new_notes.strip(),
                 week_added=this_week,
                 deadline=new_deadline.isoformat() if new_deadline else None,
+                assigned_by=new_assigned_by,
+                assigned_to=new_assigned_to,
             )
             st.success("Added.")
             # Widgets are keyed, so st.rerun() alone keeps the old values —
             # drop the keys so the form re-renders empty.
-            for _k in ("new_source", "new_priority", "new_rec", "new_notes", "new_deadline"):
+            for _k in ("new_source", "new_priority", "new_rec", "new_notes",
+                       "new_assigned_by", "new_assigned_to", "new_deadline"):
                 st.session_state.pop(_k, None)
             st.rerun()
         except Exception as e:
@@ -229,12 +250,14 @@ st.markdown("<br>", unsafe_allow_html=True)
 if filtered.empty:
     st.info("No actions match the current filters.")
 else:
-    # Build a simplified editable view
-    if "deadline" not in filtered.columns:
-        filtered["deadline"] = None
+    # Build a simplified editable view. Some columns may be missing if the
+    # Supabase table predates them (deadline / assigned_by / assigned_to).
+    for _col in ("deadline", "assigned_by", "assigned_to"):
+        if _col not in filtered.columns:
+            filtered[_col] = None
     display = filtered[[
         "id", "source", "week_added", "recommendation",
-        "priority", "status", "deadline", "notes",
+        "priority", "status", "assigned_to", "assigned_by", "deadline", "notes",
     ]].copy().reset_index(drop=True)
     display = display.sort_values(
         by=["priority", "week_added"],
@@ -261,6 +284,12 @@ else:
                 options=["Not Started", "In Progress", "Testing", "Done"],
                 width="medium",
             ),
+            "assigned_to":    st.column_config.SelectboxColumn(
+                "Assigned to", options=PEOPLE, width="small",
+            ),
+            "assigned_by":    st.column_config.SelectboxColumn(
+                "Assigned by", options=ASSIGNED_BY_OPTIONS, width="small",
+            ),
             "deadline":       st.column_config.DateColumn(
                 "Deadline", width="small", format="YYYY-MM-DD",
             ),
@@ -278,9 +307,12 @@ else:
             o = original.loc[action_id]
             n = modified.loc[action_id]
             patch = {}
-            for col in ("priority", "status", "deadline", "notes"):
-                if o[col] != n[col]:
-                    patch[col] = n[col]
+            for col in ("priority", "status", "assigned_to", "assigned_by", "deadline", "notes"):
+                ov, nv = o[col], n[col]
+                if pd.isna(ov) and pd.isna(nv):
+                    continue
+                if ov != nv:
+                    patch[col] = None if pd.isna(nv) else nv
             if patch:
                 diffs.append((action_id, patch))
         if diffs:
