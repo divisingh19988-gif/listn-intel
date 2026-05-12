@@ -353,3 +353,10 @@ def inject_sidebar() -> None:
             'Intelligence Hub</div>',
             unsafe_allow_html=True,
         )
+
+        # Global refresh — clears all @st.cache_data and reloads from disk.
+        # One click, no API calls. Shows in every page's sidebar (below the nav).
+        st.markdown("<br>", unsafe_allow_html=True)
+        if st.button("🔄 Refresh data", use_container_width=True):
+            st.cache_data.clear()
+            st.rerun()
