@@ -24,8 +24,7 @@ from lib.supabase_client import (
     current_iso_week,
 )
 
-# ── Page config ───────────────────────────────────────────────────────────────
-st.set_page_config(page_title="AI Readiness · Listn", page_icon="🤖", layout="wide")
+# ── Page chrome (page config is set once in streamlit_app.py) ─────────────────
 inject_global_css()
 inject_sidebar()
 show_freshness_banner()

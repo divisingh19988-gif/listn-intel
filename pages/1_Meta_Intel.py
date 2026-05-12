@@ -28,8 +28,7 @@ from lib.theme import inject_global_css, inject_sidebar, COLORS, comp_color, PLO
 from lib.data_freshness import show_freshness_banner
 from lib.synthesis import TONE_KEYWORDS
 
-# ── Page config ───────────────────────────────────────────────────────────────
-st.set_page_config(page_title="Meta Intel · Listn", page_icon="🎯", layout="wide")
+# ── Page chrome (page config is set once in streamlit_app.py) ─────────────────
 inject_global_css()
 inject_sidebar()
 show_freshness_banner()

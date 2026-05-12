@@ -312,14 +312,13 @@ _GLOBAL_CSS = f"""
     to   {{ opacity: 1; transform: translateY(0); }}
   }}
 
-  /* Sidebar collapse button — hide stray internal text label, show ✕ */
-  [data-testid="collapsedControl"] {{
-    font-size: 0 !important;
-  }}
-  [data-testid="collapsedControl"]::after {{
-    content: "✕";
-    font-size: 0.85rem;
-    color: inherit;
+  /* Sidebar collapse controls — hide entirely (incl. the «keyboard_double_arrow…»
+     icon ligature that leaks as raw text on hover at the top of the sidebar). */
+  [data-testid="collapsedControl"],
+  [data-testid="stSidebarCollapseButton"],
+  [data-testid="stSidebarCollapsedControl"],
+  [data-testid="stSidebar"] [data-testid="stSidebarHeader"] button {{
+    display: none !important;
   }}
 
   /* Mobile */

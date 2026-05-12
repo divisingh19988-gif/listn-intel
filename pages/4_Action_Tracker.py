@@ -30,8 +30,7 @@ from lib.supabase_client import (
 )
 from lib.synthesis import SEO_CLUSTERS
 
-# ── Page config ───────────────────────────────────────────────────────────────
-st.set_page_config(page_title="Action Tracker · Listn", page_icon="✅", layout="wide")
+# ── Page chrome (page config is set once in streamlit_app.py) ─────────────────
 inject_global_css()
 inject_sidebar()
 show_freshness_banner()

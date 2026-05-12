@@ -23,8 +23,7 @@ from lib.theme import inject_global_css, inject_sidebar, COLORS, comp_color, win
 from lib.data_freshness import show_freshness_banner
 from lib.synthesis import SEO_CLUSTERS
 
-# ── Page config ───────────────────────────────────────────────────────────────
-st.set_page_config(page_title="SEO Intel · Listn", page_icon="🔍", layout="wide")
+# ── Page chrome (page config is set once in streamlit_app.py) ─────────────────
 inject_global_css()
 inject_sidebar()
 show_freshness_banner()
