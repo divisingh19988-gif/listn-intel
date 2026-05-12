@@ -1,5 +1,5 @@
 {
-  "fetched_date": "2026-04-24",
+  "fetched_date": "2026-05-12",
   "competitors": {
     "Remento": {
       "domain": "remento.co",
@@ -9,13 +9,6 @@
           "search_volume": 450000,
           "position": 77,
           "keyword_difficulty": 67,
-          "url": "https://www.remento.co/"
-        },
-        {
-          "keyword": "recording voice recording",
-          "search_volume": 135000,
-          "position": 118,
-          "keyword_difficulty": 77,
           "url": "https://www.remento.co/"
         },
         {
@@ -47,32 +40,11 @@
           "url": "https://www.remento.co/journal/36-questions-to-fall-in-love-or-at-least-bring-you-closer-together"
         },
         {
-          "keyword": "question boyfriend",
-          "search_volume": 90500,
-          "position": 51,
-          "keyword_difficulty": 0,
-          "url": "https://www.remento.co/journal/questions-to-ask-your-boyfriend"
-        },
-        {
-          "keyword": "question to ask your boyfriend",
-          "search_volume": 90500,
-          "position": 30,
-          "keyword_difficulty": 0,
-          "url": "https://www.remento.co/journal/36-questions-to-fall-in-love-or-at-least-bring-you-closer-together"
-        },
-        {
           "keyword": "questions to ask your man",
           "search_volume": 90500,
           "position": 95,
           "keyword_difficulty": 2,
           "url": "https://www.remento.co/journal/questions-to-ask-your-fiance"
-        },
-        {
-          "keyword": "quiz to ask your boyfriend",
-          "search_volume": 90500,
-          "position": 34,
-          "keyword_difficulty": 2,
-          "url": "https://www.remento.co/journal/36-questions-to-fall-in-love-or-at-least-bring-you-closer-together"
         },
         {
           "keyword": "autobiographical",
@@ -103,24 +75,10 @@
           "url": "https://www.remento.co/journal/mother-day-gift-ideas"
         },
         {
-          "keyword": "question to ask a lady",
-          "search_volume": 60500,
-          "position": 65,
-          "keyword_difficulty": 29,
-          "url": "https://www.remento.co/journal/questions-to-ask-your-girlfriend"
-        },
-        {
-          "keyword": "questions to ask her",
-          "search_volume": 60500,
-          "position": 34,
-          "keyword_difficulty": 29,
-          "url": "https://www.remento.co/journal/questions-to-ask-your-girlfriend"
-        },
-        {
           "keyword": "questions to ask him",
           "search_volume": 60500,
-          "position": 67,
-          "keyword_difficulty": 2,
+          "position": 41,
+          "keyword_difficulty": 5,
           "url": "https://www.remento.co/journal/36-questions-to-fall-in-love-or-at-least-bring-you-closer-together"
         },
         {
@@ -180,6 +138,13 @@
           "url": "https://www.remento.co/journal/questions-to-ask-your-girlfriend"
         },
         {
+          "keyword": "question to ask a lady",
+          "search_volume": 49500,
+          "position": 65,
+          "keyword_difficulty": 29,
+          "url": "https://www.remento.co/journal/questions-to-ask-your-girlfriend"
+        },
+        {
           "keyword": "question to ask your girlfriend",
           "search_volume": 49500,
           "position": 25,
@@ -194,16 +159,16 @@
           "url": "https://www.remento.co/journal/36-questions-to-fall-in-love-or-at-least-bring-you-closer-together"
         },
         {
-          "keyword": "questions to ask a girlfriend",
-          "search_volume": 49500,
-          "position": 15,
-          "keyword_difficulty": 5,
-          "url": "https://www.remento.co/journal/questions-to-ask-your-girlfriend"
-        },
-        {
           "keyword": "questions to ask a lady",
           "search_volume": 49500,
           "position": 40,
+          "keyword_difficulty": 29,
+          "url": "https://www.remento.co/journal/questions-to-ask-your-girlfriend"
+        },
+        {
+          "keyword": "questions to ask her",
+          "search_volume": 49500,
+          "position": 34,
           "keyword_difficulty": 29,
           "url": "https://www.remento.co/journal/questions-to-ask-your-girlfriend"
         },
@@ -213,62 +178,95 @@
           "position": 47,
           "keyword_difficulty": 2,
           "url": "https://www.remento.co/journal/questions-to-ask-your-girlfriend"
+        },
+        {
+          "keyword": "questions to ask your gf about love",
+          "search_volume": 49500,
+          "position": 30,
+          "keyword_difficulty": 13,
+          "url": "https://www.remento.co/journal/questions-to-ask-your-girlfriend"
+        },
+        {
+          "keyword": "storyworth",
+          "search_volume": 49500,
+          "position": 8,
+          "keyword_difficulty": 46,
+          "url": "https://www.remento.co/journal/storyworth"
+        },
+        {
+          "keyword": "babybook",
+          "search_volume": 40500,
+          "position": 43,
+          "keyword_difficulty": 1,
+          "url": "https://www.remento.co/landing/babybook"
+        },
+        {
+          "keyword": "how to scan a document with an iphone",
+          "search_volume": 40500,
+          "position": 76,
+          "keyword_difficulty": 16,
+          "url": "https://www.remento.co/journal/the-hidden-your-photo-scanner-on-your-iphone-and-ipad-heres-how-to-use-it"
+        },
+        {
+          "keyword": "how to scan a document with iphone",
+          "search_volume": 40500,
+          "position": 40,
+          "keyword_difficulty": 16,
+          "url": "https://www.remento.co/journal/the-hidden-your-photo-scanner-on-your-iphone-and-ipad-heres-how-to-use-it"
         }
       ],
       "top_pages": [
         {
-          "url": "https://www.remento.co/journal/36-questions-to-fall-in-love-or-at-least-bring-you-closer-together",
-          "estimated_traffic": 5091,
-          "keyword_count": 5,
-          "sample_keywords": [
-            "love questions to ask your boyfriend",
-            "question to ask your boyfriend",
-            "quiz to ask your boyfriend",
-            "questions to ask him",
-            "question to ask your girlfriend about love"
-          ]
-        },
-        {
           "url": "https://www.remento.co/",
-          "estimated_traffic": 4805,
-          "keyword_count": 4,
+          "estimated_traffic": 4130,
+          "keyword_count": 3,
           "sample_keywords": [
             "story online line",
-            "recording voice recording",
             "presents for fathers",
             "book a life"
           ]
         },
         {
           "url": "https://www.remento.co/journal/questions-to-ask-your-girlfriend",
-          "estimated_traffic": 4402,
+          "estimated_traffic": 3853,
           "keyword_count": 9,
           "sample_keywords": [
-            "question to ask a lady",
-            "questions to ask her",
             "love questions to ask your gf",
             "love questions to ask your girlfriend",
-            "question ask your girlfriend"
+            "question ask your girlfriend",
+            "question to ask a lady",
+            "question to ask your girlfriend"
+          ]
+        },
+        {
+          "url": "https://www.remento.co/journal/36-questions-to-fall-in-love-or-at-least-bring-you-closer-together",
+          "estimated_traffic": 3738,
+          "keyword_count": 3,
+          "sample_keywords": [
+            "love questions to ask your boyfriend",
+            "questions to ask him",
+            "question to ask your girlfriend about love"
           ]
         },
         {
           "url": "https://www.remento.co/journal/the-hidden-your-photo-scanner-on-your-iphone-and-ipad-heres-how-to-use-it",
-          "estimated_traffic": 2184,
-          "keyword_count": 4,
+          "estimated_traffic": 2639,
+          "keyword_count": 6,
           "sample_keywords": [
             "how do you scan on iphone",
             "how to scan iphone",
             "how to scan on iphone",
-            "how to scanner iphone"
+            "how to scanner iphone",
+            "how to scan a document with an iphone"
           ]
         },
         {
-          "url": "https://www.remento.co/journal/questions-to-ask-your-boyfriend",
-          "estimated_traffic": 978,
+          "url": "https://www.remento.co/journal/storyworth",
+          "estimated_traffic": 1943,
           "keyword_count": 2,
           "sample_keywords": [
-            "boyfriend questions",
-            "question boyfriend"
+            "my storyworth",
+            "storyworth"
           ]
         },
         {
@@ -290,11 +288,11 @@
           ]
         },
         {
-          "url": "https://www.remento.co/journal/storyworth",
-          "estimated_traffic": 458,
+          "url": "https://www.remento.co/journal/questions-to-ask-your-boyfriend",
+          "estimated_traffic": 526,
           "keyword_count": 1,
           "sample_keywords": [
-            "my storyworth"
+            "boyfriend questions"
           ]
         },
         {
@@ -304,12 +302,34 @@
           "sample_keywords": [
             "questions to ask your man"
           ]
+        },
+        {
+          "url": "https://www.remento.co/landing/babybook",
+          "estimated_traffic": 235,
+          "keyword_count": 1,
+          "sample_keywords": [
+            "babybook"
+          ]
         }
       ]
     },
     "Meminto": {
       "domain": "meminto.com",
       "keywords": [
+        {
+          "keyword": "gift ia",
+          "search_volume": 60500,
+          "position": 90,
+          "keyword_difficulty": 49,
+          "url": "https://meminto.com/meminto-ai-tools/free-ai-gift-ideas-generator/"
+        },
+        {
+          "keyword": "questions ask girlfriend",
+          "search_volume": 49500,
+          "position": 81,
+          "keyword_difficulty": 3,
+          "url": "https://meminto.com/blog/150-questions-to-ask-your-girlfriend-about-your-relationship/"
+        },
         {
           "keyword": "questions to ask your gf",
           "search_volume": 49500,
@@ -330,13 +350,6 @@
           "position": 40,
           "keyword_difficulty": 9,
           "url": "https://meminto.com/remento-vs-meminto-best-remento-alternative/"
-        },
-        {
-          "keyword": "grandparent gift ideas",
-          "search_volume": 14800,
-          "position": 99,
-          "keyword_difficulty": 0,
-          "url": "https://meminto.com/blog/20-thoughtful-gifts-for-new-grandparents/"
         },
         {
           "keyword": "grandparents gift idea",
@@ -512,35 +525,37 @@
           "position": 62,
           "keyword_difficulty": 1,
           "url": "https://meminto.com/blog/gifts-ideas-for-girlfriend-or-wife/"
-        },
-        {
-          "keyword": "gifts to give grandparents for christmas",
-          "search_volume": 6600,
-          "position": 70,
-          "keyword_difficulty": 0,
-          "url": "https://meminto.com/blog/20-thoughtful-gifts-for-new-grandparents/"
         }
       ],
       "top_pages": [
         {
-          "url": "https://meminto.com/blog/20-thoughtful-gifts-for-new-grandparents/",
-          "estimated_traffic": 702,
-          "keyword_count": 17,
+          "url": "https://meminto.com/blog/150-questions-to-ask-your-girlfriend-about-your-relationship/",
+          "estimated_traffic": 741,
+          "keyword_count": 3,
           "sample_keywords": [
-            "grandparent gift ideas",
-            "grandparents gift idea",
-            "presents grandparents",
-            "best gift ideas for grandparents",
-            "best gift to grandparents"
+            "questions ask girlfriend",
+            "questions to ask your gf",
+            "questions to ask your girlfriend"
           ]
         },
         {
-          "url": "https://meminto.com/blog/150-questions-to-ask-your-girlfriend-about-your-relationship/",
-          "estimated_traffic": 494,
-          "keyword_count": 2,
+          "url": "https://meminto.com/blog/20-thoughtful-gifts-for-new-grandparents/",
+          "estimated_traffic": 595,
+          "keyword_count": 15,
           "sample_keywords": [
-            "questions to ask your gf",
-            "questions to ask your girlfriend"
+            "grandparents gift idea",
+            "presents grandparents",
+            "best gift ideas for grandparents",
+            "best gift to grandparents",
+            "best gifts grandparents"
+          ]
+        },
+        {
+          "url": "https://meminto.com/meminto-ai-tools/free-ai-gift-ideas-generator/",
+          "estimated_traffic": 302,
+          "keyword_count": 1,
+          "sample_keywords": [
+            "gift ia"
           ]
         },
         {
@@ -721,13 +736,6 @@
           "url": "https://welcome.storyworth.com/blog/when-is-mothers-day-complete-guide"
         },
         {
-          "keyword": "what day mother's day",
-          "search_volume": 60500,
-          "position": 7,
-          "keyword_difficulty": 41,
-          "url": "https://welcome.storyworth.com/blog/when-is-mothers-day-complete-guide"
-        },
-        {
           "keyword": "christmas gifts for mother",
           "search_volume": 49500,
           "position": 84,
@@ -779,8 +787,8 @@
         {
           "keyword": "dad xmas presents",
           "search_volume": 33100,
-          "position": 102,
-          "keyword_difficulty": 6,
+          "position": 110,
+          "keyword_difficulty": 5,
           "url": "https://welcome.storyworth.com/"
         },
         {
@@ -817,13 +825,20 @@
           "position": 80,
           "keyword_difficulty": 7,
           "url": "https://welcome.storyworth.com/"
+        },
+        {
+          "keyword": "xmas gift for father",
+          "search_volume": 33100,
+          "position": 34,
+          "keyword_difficulty": 11,
+          "url": "https://welcome.storyworth.com/"
         }
       ],
       "top_pages": [
         {
           "url": "https://welcome.storyworth.com/",
-          "estimated_traffic": 38155,
-          "keyword_count": 23,
+          "estimated_traffic": 38398,
+          "keyword_count": 24,
           "sample_keywords": [
             "fathers day",
             "mom day present",
@@ -834,13 +849,12 @@
         },
         {
           "url": "https://welcome.storyworth.com/blog/when-is-mothers-day-complete-guide",
-          "estimated_traffic": 35380,
-          "keyword_count": 4,
+          "estimated_traffic": 32960,
+          "keyword_count": 3,
           "sample_keywords": [
             "when is the mother's day",
             "when is mother's day 2026",
-            "what day is mom's day",
-            "what day mother's day"
+            "what day is mom's day"
           ]
         },
         {
@@ -901,6 +915,13 @@
           "url": "https://storykeeper.com/blog/memory-book/"
         },
         {
+          "keyword": "book of stories",
+          "search_volume": 5400,
+          "position": 32,
+          "keyword_difficulty": 1,
+          "url": "https://storykeeper.com/"
+        },
+        {
           "keyword": "book as gift",
           "search_volume": 4400,
           "position": 36,
@@ -927,6 +948,13 @@
           "position": 20,
           "keyword_difficulty": 6,
           "url": "https://storykeeper.com/storykeeper-vs-mylifeinabook/"
+        },
+        {
+          "keyword": "remento reviews",
+          "search_volume": 1900,
+          "position": 47,
+          "keyword_difficulty": 0,
+          "url": "https://storykeeper.com/storykeeper-vs-remento-a-comparison-of-two-life-story-book-services/"
         },
         {
           "keyword": "story keeper",
@@ -1067,33 +1095,19 @@
           "position": 67,
           "keyword_difficulty": 0,
           "url": "https://storykeeper.com/"
-        },
-        {
-          "keyword": "personalized book from grandparents",
-          "search_volume": 720,
-          "position": 42,
-          "keyword_difficulty": 0,
-          "url": "https://storykeeper.com/"
-        },
-        {
-          "keyword": "personalized books for grandma",
-          "search_volume": 720,
-          "position": 43,
-          "keyword_difficulty": 0,
-          "url": "https://storykeeper.com/"
         }
       ],
       "top_pages": [
         {
           "url": "https://storykeeper.com/",
-          "estimated_traffic": 2578,
-          "keyword_count": 22,
+          "estimated_traffic": 2612,
+          "keyword_count": 21,
           "sample_keywords": [
             "stories saved",
             "storybook",
+            "book of stories",
             "saving stories",
-            "story keeper",
-            "storykeepers"
+            "story keeper"
           ]
         },
         {
@@ -1136,6 +1150,14 @@
           "keyword_count": 1,
           "sample_keywords": [
             "remento book"
+          ]
+        },
+        {
+          "url": "https://storykeeper.com/storykeeper-vs-remento-a-comparison-of-two-life-story-book-services/",
+          "estimated_traffic": 10,
+          "keyword_count": 1,
+          "sample_keywords": [
+            "remento reviews"
           ]
         },
         {
