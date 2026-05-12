@@ -12,6 +12,7 @@ import os
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Optional
+from zoneinfo import ZoneInfo
 
 import streamlit as st
 
@@ -21,6 +22,10 @@ ADS_FILE = DATA_DIR / "ads_scraped_latest.json"
 SEO_FILE = DATA_DIR / "seo_raw_latest.json"
 
 STALE_AFTER_DAYS = 8
+
+# Display timezone. All internal datetimes are tz-aware UTC; we convert to this
+# for display only. strftime("%Z") then renders "CET"/"CEST" with DST handled.
+BERLIN = ZoneInfo("Europe/Berlin")
 
 
 def _file_mtime_utc(path: Path) -> Optional[datetime]:
@@ -64,17 +69,17 @@ def is_stale(last_refreshed: Optional[datetime], now: Optional[datetime] = None)
 
 
 def _format_dt(dt: datetime) -> str:
-    """Format like 'Apr 27, 2026 12:00 UTC' (no leading zero on day)."""
-    return dt.strftime("%b %-d, %Y %H:%M CET") if os.name != "nt" else dt.strftime(
-        "%b %#d, %Y %H:%M CET"
-    )
+    """Format like 'Apr 27, 2026 14:00 CEST' — converted to Europe/Berlin time."""
+    dt = dt.astimezone(BERLIN)
+    fmt = "%b %#d, %Y %H:%M %Z" if os.name == "nt" else "%b %-d, %Y %H:%M %Z"
+    return dt.strftime(fmt)
 
 
 def _format_short(dt: datetime) -> str:
-    """Format like 'Mon May 4, 12:00 UTC'."""
-    return dt.strftime("%a %b %-d, %H:%M CET") if os.name != "nt" else dt.strftime(
-        "%a %b %#d, %H:%M CET"
-    )
+    """Format like 'Mon May 4, 14:00 CEST' — converted to Europe/Berlin time."""
+    dt = dt.astimezone(BERLIN)
+    fmt = "%a %b %#d, %H:%M %Z" if os.name == "nt" else "%a %b %-d, %H:%M %Z"
+    return dt.strftime(fmt)
 
 
 def show_freshness_banner() -> None:
