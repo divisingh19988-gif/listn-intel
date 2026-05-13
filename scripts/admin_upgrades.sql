@@ -2,6 +2,11 @@
 -- Paste this whole block into the Supabase SQL Editor:
 --   Supabase Dashboard → SQL Editor → New query → paste → Run
 -- Safe to re-run: every statement uses IF NOT EXISTS.
+--
+-- NOTE: Supabase enables RLS on new tables by default. The two new tables
+-- below have RLS disabled at the bottom of this script (and there's a
+-- standalone fix in admin_rls_fix.sql if you ran an older version of this
+-- migration before RLS was disabled here).
 
 -- ── 1. Audit log table ───────────────────────────────────────────────────────
 create table if not exists admin_audit (
@@ -46,3 +51,7 @@ create index if not exists idx_competitors_deleted on competitors (deleted_at);
 
 alter table content_clusters add column if not exists deleted_at timestamptz;
 create index if not exists idx_content_clusters_deleted on content_clusters (deleted_at);
+
+-- ── 4. RLS — disable on the new admin-only tables ─────────────────────────────
+alter table admin_audit disable row level security;
+alter table competitor_candidates disable row level security;
