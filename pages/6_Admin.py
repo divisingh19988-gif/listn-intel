@@ -201,6 +201,9 @@ with tab_comp:
         display["active"]     = display["active"].fillna(True).astype(bool)
         display["notes"]      = display["notes"].fillna("").astype(str)
 
+        id_list = display["id"].tolist()
+        display = display.drop(columns=["id"])
+
         edited = st.data_editor(
             display,
             use_container_width=True,
@@ -208,7 +211,6 @@ with tab_comp:
             hide_index=True,
             num_rows="fixed",
             column_config={
-                "id":         None,
                 "name":       st.column_config.TextColumn("Name", width="medium", disabled=True),
                 "seo_domain": st.column_config.TextColumn("SEO domain", width="medium", disabled=True),
                 "active":     st.column_config.CheckboxColumn("Active", width="small"),
@@ -218,11 +220,10 @@ with tab_comp:
         )
 
         if not edited.equals(display):
-            original = display.set_index("id")
-            modified = edited.set_index("id")
             diffs = []
-            for cid in modified.index:
-                o, n = original.loc[cid], modified.loc[cid]
+            for idx in range(len(edited)):
+                cid = id_list[idx]
+                o, n = display.iloc[idx], edited.iloc[idx]
                 patch = {}
                 for col in ("active", "notes"):
                     if _diff_value_changed(o[col], n[col]):
@@ -331,8 +332,12 @@ with tab_cluster:
         ]].copy().reset_index(drop=True)
         display["name"]             = display["name"].fillna("").astype(str)
         display["window_label"]     = display["window_label"].fillna("").astype(str)
+        display["deadline"]         = pd.to_datetime(display["deadline"], errors="coerce").dt.date
         display["active"]           = display["active"].fillna(True).astype(bool)
         display["keywords_summary"] = display["keywords_summary"].fillna("").astype(str)
+
+        id_list = display["id"].tolist()
+        display = display.drop(columns=["id"])
 
         edited = st.data_editor(
             display,
@@ -341,7 +346,6 @@ with tab_cluster:
             hide_index=True,
             num_rows="fixed",
             column_config={
-                "id":               None,
                 "name":             st.column_config.TextColumn("Name", width="medium"),
                 "window_label":     st.column_config.SelectboxColumn(
                     "Window", options=WINDOW_OPTIONS, width="medium",
@@ -359,11 +363,10 @@ with tab_cluster:
         )
 
         if not edited.equals(display):
-            original = display.set_index("id")
-            modified = edited.set_index("id")
             diffs = []
-            for cid in modified.index:
-                o, n = original.loc[cid], modified.loc[cid]
+            for idx in range(len(edited)):
+                cid = id_list[idx]
+                o, n = display.iloc[idx], edited.iloc[idx]
                 patch = {}
                 for col in ("name", "window_label", "deadline", "active"):
                     if _diff_value_changed(o[col], n[col]):
@@ -466,6 +469,9 @@ with tab_tone:
         display["tone"]             = display["tone"].fillna("").astype(str)
         display["keyword_list_csv"] = display["keyword_list_csv"].fillna("").astype(str)
 
+        id_list = display["id"].tolist()
+        display = display.drop(columns=["id"])
+
         edited = st.data_editor(
             display,
             use_container_width=True,
@@ -473,7 +479,6 @@ with tab_tone:
             hide_index=True,
             num_rows="fixed",
             column_config={
-                "id":               None,
                 "tone":             st.column_config.TextColumn("Tone", width="small"),
                 "keyword_list_csv": st.column_config.TextColumn(
                     "Keywords (comma-separated)", width="large",
@@ -483,11 +488,10 @@ with tab_tone:
         )
 
         if not edited.equals(display):
-            original = display.set_index("id")
-            modified = edited.set_index("id")
             diffs = []
-            for tid in modified.index:
-                o, n = original.loc[tid], modified.loc[tid]
+            for idx in range(len(edited)):
+                tid = id_list[idx]
+                o, n = display.iloc[idx], edited.iloc[idx]
                 patch = {}
                 if _diff_value_changed(o["tone"], n["tone"]):
                     patch["tone"] = _cell_or_none(n["tone"])
