@@ -132,8 +132,18 @@ def coverage_gaps(
         if not cl.get("active"):
             continue
         label = cl.get("name") or "?"
-        kws = cl.get("keywords") or []
-        if not isinstance(kws, list) or not kws:
+        kws_raw = cl.get("keywords") or []
+        # Accept any of: ['phrase', ...], [['phrase','TAG'], ...], [{'phrase': ...}, ...]
+        kw_count = 0
+        if isinstance(kws_raw, list):
+            for item in kws_raw:
+                if isinstance(item, str) and item.strip():
+                    kw_count += 1
+                elif isinstance(item, (list, tuple)) and item and str(item[0]).strip():
+                    kw_count += 1
+                elif isinstance(item, dict) and (item.get("phrase") or item.get("keyword")):
+                    kw_count += 1
+        if kw_count == 0:
             gaps["clusters_empty_keywords"].append(label)
         dl = _parse_date(cl.get("deadline"))
         if dl and dl < today:

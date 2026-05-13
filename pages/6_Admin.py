@@ -160,6 +160,31 @@ def _df_to_csv_bytes(df: pd.DataFrame) -> bytes:
     return df.to_csv(index=False).encode("utf-8")
 
 
+def _normalize_keywords(raw) -> list[str]:
+    """
+    The keywords column has drifted across seed scripts — accept any of:
+      - ['phrase', 'phrase']
+      - [['phrase', 'TAG'], ...]
+      - [{'phrase': 'phrase', ...}, ...]
+    and return a clean list[str].
+    """
+    if not isinstance(raw, list):
+        return []
+    out: list[str] = []
+    for item in raw:
+        if isinstance(item, str):
+            s = item.strip()
+        elif isinstance(item, (list, tuple)) and item:
+            s = str(item[0]).strip()
+        elif isinstance(item, dict):
+            s = str(item.get("phrase") or item.get("keyword") or "").strip()
+        else:
+            s = ""
+        if s:
+            out.append(s)
+    return out
+
+
 def _ad_copy_corpus(limit: int = 40) -> list[str]:
     """Pull a sample of recent ad copy to ground the tone expander."""
     try:
@@ -527,7 +552,7 @@ with tab_cluster:
     active_rows = [r for r in rows if not r.get("deleted_at")]
     deleted_rows = [r for r in rows if r.get("deleted_at")]
     active_on = sum(1 for r in active_rows if r.get("active"))
-    total_kw = sum(len(r.get("keywords") or []) for r in active_rows if isinstance(r.get("keywords"), list))
+    total_kw = sum(len(_normalize_keywords(r.get("keywords"))) for r in active_rows)
 
     cards = '<div class="stat-grid">'
     cards += _stat(len(active_rows), "Tracked", COLORS["accent"])
@@ -635,7 +660,7 @@ with tab_cluster:
         for cl in active_rows:
             cid = cl.get("id")
             name = cl.get("name") or "?"
-            kw_list = cl.get("keywords") if isinstance(cl.get("keywords"), list) else []
+            kw_list = _normalize_keywords(cl.get("keywords"))
             window_lbl = cl.get("window_label") or "EVERGREEN"
             deadline_val = cl.get("deadline")
             active_val = bool(cl.get("active", True))
@@ -763,7 +788,7 @@ with tab_cluster:
                 "window_label": r.get("window_label"),
                 "deadline": r.get("deadline"),
                 "active": r.get("active"),
-                "keywords": ", ".join(r.get("keywords") or []) if isinstance(r.get("keywords"), list) else "",
+                "keywords": ", ".join(_normalize_keywords(r.get("keywords"))),
             })
         st.download_button(
             "⬇ Export clusters CSV",
