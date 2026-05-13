@@ -3,17 +3,13 @@ import sys
 import time
 import requests
 
-SEARCH_TERMS = [
-    "remento", "storyworth", "meminto", "storykeeper",
-    "memory app", "life stories", "voice memories",
-    "family stories", "grandparent gift", "hereafter",
-    "keepsake", "legacy app", "record stories",
-    "preserve memories", "senior companion app",
+ENDPOINTS = [
+    "https://graph.facebook.com/v25.0/me",
+    "https://graph.facebook.com/v25.0/me/adaccounts",
 ]
 
 TARGET_CALLS = 500
 SLEEP_SECONDS = 2
-ENDPOINT = "https://graph.facebook.com/v19.0/ads_archive"
 
 
 def main() -> int:
@@ -25,24 +21,18 @@ def main() -> int:
     successful = 0
     failed = 0
     total = 0
-    i = 0
 
     while total < TARGET_CALLS:
-        term = SEARCH_TERMS[i % len(SEARCH_TERMS)]
-        i += 1
+        endpoint = ENDPOINTS[total % len(ENDPOINTS)]
         total += 1
 
         params = {
-            "search_terms": term,
-            "ad_reached_countries": '["US"]',
-            "ad_type": "ALL",
-            "limit": 10,
-            "fields": "id,page_name",
+            "fields": "id,name",
             "access_token": token,
         }
 
         try:
-            resp = requests.get(ENDPOINT, params=params, timeout=30)
+            resp = requests.get(endpoint, params=params, timeout=30)
             status = resp.status_code
             if status == 200:
                 successful += 1
@@ -51,7 +41,7 @@ def main() -> int:
                 try:
                     err = resp.json().get("error", {})
                     if err.get("code") == 190:
-                        print(f"Call {total}/{TARGET_CALLS} — {term} — {status} (invalid token, stopping)")
+                        print(f"Call {total}/{TARGET_CALLS} — {endpoint} — {status} (invalid token, stopping)")
                         print(f"\nFinal summary: total={total} successful={successful} failed={failed}")
                         return 1
                 except ValueError:
@@ -61,7 +51,7 @@ def main() -> int:
             failed += 1
 
         if total % 25 == 0:
-            print(f"Call {total}/{TARGET_CALLS} — {term} — {status}")
+            print(f"Call {total}/{TARGET_CALLS} — {endpoint} — {status}")
 
         if total < TARGET_CALLS:
             time.sleep(SLEEP_SECONDS)
