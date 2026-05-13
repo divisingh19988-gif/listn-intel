@@ -24,14 +24,14 @@ COMPETITORS = [
 ]
 
 # Words that MUST appear in the page_name for an ad to be counted as that competitor's.
-# Keeps broad searches (e.g. "Tell me", "Keepsake") from pulling in unrelated pages.
+# Keeps broad searches (e.g. "Tellmel", "Keepsake") from pulling in unrelated pages.
 COMPETITOR_PAGE_FILTER = {
     "Remento":       ["remento"],
     "Enna":          ["enna.care"],
     "Meminto":       ["meminto"],
     "StoryWorth":    ["storyworth", "story worth"],
     "Storykeeper":   ["storykeeper", "story keeper"],
-    "Tell me":       ["tell me", "tellme"],
+    "Tellmel":      ["tell me", "tellme", "tellmel"],
     "Keepsake":      ["keepsake"],
     "HereAfter AI":  ["hereafter"],
     "No Story Lost": ["no story lost", "nostorylost"],
@@ -47,7 +47,8 @@ COMPETITOR_SEARCH_PLAN = {
     "StoryWorth":    [("StoryWorth",     "page"),
                       ("StoryWorth",     "keyword_unordered")],
     "Storykeeper":   [("Storykeeper",    "page")],
-    "Tell me":       [("Tell me",        "page"),
+    "Tellmel":       [("Tellmel",        "page"),
+                      ("Tell me",        "page"),
                       ("TellMe Stories", "page"),
                       ("Tell Me",        "keyword_unordered")],
     "Keepsake":      [("Keepsake",       "page")],
@@ -161,6 +162,36 @@ def days_between(start_iso, stop_iso):
         return None
 
 
+_STATUS_LABELS = {"Active": "Active", "Aktiv": "Active", "Inactive": "Inactive", "Inaktiv": "Inactive"}
+
+
+def build_status_map(body_text):
+    """Pair each Library ID in the page text with the nearest preceding
+    "Active"/"Inactive" (or German "Aktiv"/"Inaktiv") line. Meta renders the
+    status badge on its own line above each ad card, so the closest preceding
+    badge is the authoritative status for that ad.
+    """
+    status_positions = [
+        (m.start(), _STATUS_LABELS[m.group(1)])
+        for m in re.finditer(r"(?m)^(Active|Inactive|Aktiv|Inaktiv)\s*$", body_text)
+    ]
+    id_matches = re.finditer(r"(?:Library ID|Bibliotheks-ID):\s*(\d+)", body_text)
+    result = {}
+    for m in id_matches:
+        ad_id = m.group(1)
+        id_pos = m.start()
+        # Nearest status line BEFORE this Library ID
+        nearest = None
+        for pos, label in status_positions:
+            if pos < id_pos:
+                nearest = label
+            else:
+                break
+        if nearest:
+            result[ad_id] = nearest
+    return result
+
+
 def parse_ad_block(block_text, competitor):
     """
     Parse one ad card's text block into structured fields.
@@ -196,11 +227,11 @@ def parse_ad_block(block_text, competitor):
         "days_running": None,
     }
 
-    # Status (English + German). The "Active"/"Inactive" badge sits on its own
-    # line above the Library ID in Meta's DOM; scan the whole block for it.
-    status_match = re.search(r"(?m)^(Active|Inactive|Aktiv|Inaktiv)\s*$", block_text)
-    if status_match:
-        ad["status"] = "Active" if status_match.group(1) in ("Active", "Aktiv") else "Inactive"
+    # Note: status is NOT parsed here. Meta renders the "Active"/"Inactive"
+    # badge above the Library ID, so after splitting at "Library ID:" the badge
+    # for ad N lives at the END of block N-1. The authoritative status is
+    # computed in scrape_competitor() via build_status_map() against the full
+    # body_text and injected after parsing.
 
     # Library ID (English: "Library ID:" / German: "Bibliotheks-ID:")
     id_match = re.search(r"(?:Library ID|Bibliotheks-ID):\s*(\d+)", block_text)
@@ -242,12 +273,6 @@ def parse_ad_block(block_text, competitor):
                         ).date().isoformat()
                     except ValueError:
                         pass
-
-    # Status is the source of truth. If Meta says Active, the ad is running —
-    # clear any stop_date the date-range regex may have picked up from a
-    # multi-variant "N ads use this creative" aggregate window.
-    if ad["status"] == "Active":
-        ad["stop_date"] = None
 
     if ad["start_date"]:
         ad["days_running"] = days_between(ad["start_date"], ad["stop_date"])
@@ -326,28 +351,23 @@ def scrape_competitor(page, competitor):
         scroll_and_load(page, rounds=5)
         body_text = page.inner_text("body")
 
-        # Slice each block to include the "Active"/"Inactive" badge that Meta
-        # renders ABOVE the Library ID line. A simple split-before-Library-ID
-        # would leave that badge at the end of the previous block.
-        id_matches = list(re.finditer(r"(?:Library ID|Bibliotheks-ID):", body_text))
-        raw_blocks = []
-        LOOKBACK = 200  # chars before Library ID — enough to catch the status badge
-        # Each block's start = its Library ID minus LOOKBACK (captures the badge).
-        # Each block's end   = the NEXT block's start (so content isn't dropped).
-        # Each block's start = halfway between previous Library ID and this one
-        # (capped at LOOKBACK chars before this Library ID). This guarantees the
-        # block's start never overlaps the previous block's Library ID, so we
-        # still get the "Active"/"Inactive" badge that sits just above each ID.
-        raw_blocks = []
-        for i, m in enumerate(id_matches):
-            prev_end = id_matches[i - 1].end() if i > 0 else 0
-            block_start = max(prev_end, m.start() - LOOKBACK)
-            block_end = id_matches[i + 1].start() if i + 1 < len(id_matches) else len(body_text)
-            # Pull block_end back toward this block so the next block can grab its badge.
-            block_end = max(m.end(), block_end - LOOKBACK)
-            raw_blocks.append(body_text[block_start:block_end])
+        raw_blocks = re.split(r"(?=(?:Library ID|Bibliotheks-ID):)", body_text)
+        raw_blocks = [b for b in raw_blocks if re.search(r"(?:Library ID|Bibliotheks-ID):", b)]
+
+        # The "Active"/"Inactive" badge Meta renders above each card ends up in
+        # the PREVIOUS block after the split. Build a side map of {ad_id: status}
+        # by pairing each Library ID in body_text with the nearest preceding
+        # status line, then inject it into each parsed ad below.
+        status_by_id = build_status_map(body_text)
 
         ads = [parse_ad_block(block, competitor) for block in raw_blocks]
+        for a in ads:
+            if a.get("ad_id") and a["ad_id"] in status_by_id:
+                a["status"] = status_by_id[a["ad_id"]]
+                if a["status"] == "Active":
+                    a["stop_date"] = None
+                    if a.get("start_date"):
+                        a["days_running"] = days_between(a["start_date"], None)
         ads = [a for a in ads if is_competitor_ad(a, competitor)]
 
         if ads:

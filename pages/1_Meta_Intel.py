@@ -12,7 +12,7 @@ table after the tone chart.
 Competitor scrape list (for scrapers/scrape_ads.py — managed there, not here):
   Remento, Meminto, StoryWorth, Storykeeper, Keepsake,
   Heritage Whisper, StoriedLife AI, LifeEcho, Storii
-  (Tell me, HereAfter AI, No Story Lost, Tell Mel — DO NOT add Tell Mel,
+  (Tellmel, HereAfter AI, No Story Lost, Tell Mel — DO NOT add Tell Mel,
    it is phone-based and runs no Meta ads.)
 """
 
@@ -174,7 +174,13 @@ def load_ads():
     df = pd.DataFrame(rows)
     df["start_date"] = pd.to_datetime(df["start_date"], errors="coerce")
     df["stop_date"]  = pd.to_datetime(df["stop_date"],  errors="coerce")
-    df["is_active"]  = df["stop_date"].isna()
+    # Prefer the scraped status badge when present; fall back to stop_date for
+    # older scrapes that didn't capture status.
+    status = df.get("status") if "status" in df.columns else None
+    if status is not None:
+        df["is_active"] = status.eq("Active") | (status.isna() & df["stop_date"].isna())
+    else:
+        df["is_active"] = df["stop_date"].isna()
     df["days_running"] = pd.to_numeric(df["days_running"], errors="coerce").fillna(0).astype(int)
     df["snippet"]    = df["ad_copy"].fillna("").str[:130].str.strip() + "..."
     fetched = pd.Timestamp(raw.get("fetched_date") or pd.Timestamp.utcnow().date())
