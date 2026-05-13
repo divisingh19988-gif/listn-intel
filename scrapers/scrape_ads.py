@@ -40,8 +40,30 @@ COMPETITOR_PAGE_FILTER = {
     "Heritage Whisper": ["heritage whisper", "heritagewhisper"],
 }
 
+# Meta page IDs — bypass search ranking entirely by hitting view_all_page_id=<id>.
+# Search results are inconsistent (geo-filtered, A/B tested, bot-detected, etc.)
+# so we use the deterministic page-profile URL when an ID is known and only
+# fall back to keyword search when it isn't. Refresh via:
+#   python3 scripts/discover_page_ids.py
+COMPETITOR_PAGE_IDS = {
+    "Remento":          "105472718827818",
+    "Enna":             "109074514802310",
+    "Meminto":          "233623109834430",
+    "StoryWorth":       "679258085265552",
+    "Storykeeper":      "136291949559393",
+    "Tellmel":          "676999072159591",
+    "Keepsake":         "650888101449457",
+    "HereAfter AI":     "108361132071329",
+    "No Story Lost":    "627300267900557",
+    # Heritage Whisper page_id discovery returned 122298767852952 but that's a
+    # jewelry brand — the real HW page has few ads so noise outranks it in
+    # Meta search results. Leave it on search-fallback until we get the real
+    # page_id by visiting the HW profile in a logged-in browser.
+    "Heritage Whisper": None,
+}
+
 # Each entry is a list of (search_term, search_type) pairs tried in order.
-# The first one to return matching ads wins.
+# Used as fallback when COMPETITOR_PAGE_IDS doesn't have an ID for the competitor.
 COMPETITOR_SEARCH_PLAN = {
     "Remento":       [("Remento",        "page")],
     "Enna":          [("Enna.care",      "page")],
@@ -123,6 +145,18 @@ def build_url(search_term, search_type="page"):
         f"?active_status=active&ad_type=all&country=ALL"
         f"&is_targeted_country=false"
         f"&q={q}&search_type={search_type}&media_type=all"
+    )
+
+
+def build_page_url(page_id):
+    """Deterministic per-page URL — same view as clicking the brand's profile
+    in the Ad Library. Avoids the search-ranking inconsistency that drops ads
+    from anonymous/headless sessions."""
+    return (
+        f"{AD_LIBRARY_BASE}"
+        f"?active_status=active&ad_type=all&country=ALL"
+        f"&is_targeted_country=false&media_type=all"
+        f"&view_all_page_id={page_id}&search_type=page"
     )
 
 
@@ -351,11 +385,17 @@ def scrape_competitor(page, competitor, debug_dir=None):
     breakdown of parsed-vs-filtered counts for every search attempt — so we can
     see *why* a competitor returned 0 (no results vs filtered out vs status mis-detected).
     """
-    search_plan = COMPETITOR_SEARCH_PLAN.get(competitor, [(competitor, "page")])
     safe_name = re.sub(r"[^a-z0-9]+", "_", competitor.lower()).strip("_")
 
-    for attempt_idx, (search_term, search_type) in enumerate(search_plan, start=1):
-        url = build_url(search_term, search_type)
+    # Page-ID URL first (deterministic), then keyword-search fallbacks.
+    attempts = []
+    page_id = COMPETITOR_PAGE_IDS.get(competitor)
+    if page_id:
+        attempts.append((build_page_url(page_id), f"page_id={page_id}", "page_id"))
+    for search_term, search_type in COMPETITOR_SEARCH_PLAN.get(competitor, [(competitor, "page")]):
+        attempts.append((build_url(search_term, search_type), search_term, search_type))
+
+    for attempt_idx, (url, search_term, search_type) in enumerate(attempts, start=1):
         print(f"  [{search_type}] q={search_term!r}")
 
         try:
@@ -410,7 +450,30 @@ def scrape_competitor(page, competitor, debug_dir=None):
 
         parsed_count = len(ads)
         parsed_page_names = sorted({(a.get("page_name") or "").strip() for a in ads if a.get("page_name")})
-        kept = [a for a in ads if is_competitor_ad(a, competitor)]
+        if search_type == "page_id":
+            # Sanity check: the page_id URL is supposed to be the brand's own
+            # profile, so SOME parsed ads should still show the brand name in
+            # the page_name slot. If none match the filter, the page_id is
+            # almost certainly wrong (picked up unrelated noise during
+            # discovery) — drop the batch and fall through to search.
+            matched = [a for a in ads if is_competitor_ad(a, competitor)]
+            if not matched and ads:
+                print(f"  page_id returned {len(ads)} ads but 0 matched "
+                      f"page_name filter — likely wrong page_id, trying next")
+                if debug_dir:
+                    _debug_write(debug_dir, f"{safe_name}_{attempt_idx}_BAD_PAGE_ID.txt",
+                                 f"page_id={search_term} produced ads with page_names "
+                                 f"that don't include any of "
+                                 f"{COMPETITOR_PAGE_FILTER.get(competitor)}.\n"
+                                 f"Sample page_names: {parsed_page_names[:10]}\n")
+                continue
+            # Trust the profile view — accept all ads, backfill page_name where missing.
+            kept = ads
+            for a in kept:
+                if not a.get("page_name"):
+                    a["page_name"] = competitor
+        else:
+            kept = [a for a in ads if is_competitor_ad(a, competitor)]
         active_kept = sum(1 for a in kept if a.get("status") == "Active")
 
         if debug_dir:
