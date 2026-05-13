@@ -196,6 +196,10 @@ with tab_comp:
             if col not in df.columns:
                 df[col] = None
         display = df[["id", "name", "seo_domain", "active", "notes"]].copy().reset_index(drop=True)
+        display["name"]       = display["name"].fillna("").astype(str)
+        display["seo_domain"] = display["seo_domain"].fillna("").astype(str)
+        display["active"]     = display["active"].fillna(True).astype(bool)
+        display["notes"]      = display["notes"].fillna("").astype(str)
 
         edited = st.data_editor(
             display,
@@ -325,6 +329,10 @@ with tab_cluster:
         display = df[[
             "id", "name", "window_label", "deadline", "active", "keywords_summary",
         ]].copy().reset_index(drop=True)
+        display["name"]             = display["name"].fillna("").astype(str)
+        display["window_label"]     = display["window_label"].fillna("").astype(str)
+        display["active"]           = display["active"].fillna(True).astype(bool)
+        display["keywords_summary"] = display["keywords_summary"].fillna("").astype(str)
 
         edited = st.data_editor(
             display,
@@ -455,6 +463,8 @@ with tab_tone:
         # Render the array as comma-separated text so it's edit-friendly.
         df["keyword_list_csv"] = df["keyword_list"].apply(_list_to_csv)
         display = df[["id", "tone", "keyword_list_csv"]].copy().reset_index(drop=True)
+        display["tone"]             = display["tone"].fillna("").astype(str)
+        display["keyword_list_csv"] = display["keyword_list_csv"].fillna("").astype(str)
 
         edited = st.data_editor(
             display,
