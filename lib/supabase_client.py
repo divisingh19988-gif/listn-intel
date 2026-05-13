@@ -150,3 +150,95 @@ def has_action_tracker_for_week(client: "Client", week: Optional[str] = None) ->
         print("DEBUG ERROR:", e)
         return False
 
+
+# ── Reference-data tables (competitors / content_clusters / tone_keywords) ────
+# Same CRUD shape as action_tracker above; list_* returns only rows where
+# active=true for the two tables that have an `active` column (tone_keywords
+# does not, so it returns everything).
+COMPETITORS_TABLE = "competitors"
+CONTENT_CLUSTERS_TABLE = "content_clusters"
+TONE_KEYWORDS_TABLE = "tone_keywords"
+
+
+def list_competitors(client: "Client") -> list[dict]:
+    """Return all active competitor rows, newest first."""
+    resp = (
+        client.table(COMPETITORS_TABLE)
+        .select("*")
+        .eq("active", True)
+        .order("created_at", desc=True)
+        .execute()
+    )
+    return resp.data or []
+
+
+def add_competitors(client: "Client", **fields) -> dict:
+    """Insert a new competitor row. Returns the inserted row."""
+    resp = client.table(COMPETITORS_TABLE).insert(fields).execute()
+    return resp.data[0] if resp.data else fields
+
+
+def update_competitors(client: "Client", competitor_id: str, fields: dict) -> None:
+    """Update specific fields on a competitor row."""
+    client.table(COMPETITORS_TABLE).update(fields).eq("id", competitor_id).execute()
+
+
+def delete_competitors(client: "Client", competitor_id: str) -> None:
+    """Hard-delete a competitor row."""
+    client.table(COMPETITORS_TABLE).delete().eq("id", competitor_id).execute()
+
+
+def list_content_clusters(client: "Client") -> list[dict]:
+    """Return all active content-cluster rows, newest first."""
+    resp = (
+        client.table(CONTENT_CLUSTERS_TABLE)
+        .select("*")
+        .eq("active", True)
+        .order("created_at", desc=True)
+        .execute()
+    )
+    return resp.data or []
+
+
+def add_content_clusters(client: "Client", **fields) -> dict:
+    """Insert a new content-cluster row. Returns the inserted row."""
+    resp = client.table(CONTENT_CLUSTERS_TABLE).insert(fields).execute()
+    return resp.data[0] if resp.data else fields
+
+
+def update_content_clusters(client: "Client", cluster_id: str, fields: dict) -> None:
+    """Update specific fields on a content-cluster row."""
+    client.table(CONTENT_CLUSTERS_TABLE).update(fields).eq("id", cluster_id).execute()
+
+
+def delete_content_clusters(client: "Client", cluster_id: str) -> None:
+    """Hard-delete a content-cluster row."""
+    client.table(CONTENT_CLUSTERS_TABLE).delete().eq("id", cluster_id).execute()
+
+
+def list_tone_keywords(client: "Client") -> list[dict]:
+    """Return all tone-keyword rows, newest first. (No `active` column on this table.)"""
+    resp = (
+        client.table(TONE_KEYWORDS_TABLE)
+        .select("*")
+        .order("created_at", desc=True)
+        .execute()
+    )
+    return resp.data or []
+
+
+def add_tone_keywords(client: "Client", **fields) -> dict:
+    """Insert a new tone-keyword row. Returns the inserted row."""
+    resp = client.table(TONE_KEYWORDS_TABLE).insert(fields).execute()
+    return resp.data[0] if resp.data else fields
+
+
+def update_tone_keywords(client: "Client", tone_id: str, fields: dict) -> None:
+    """Update specific fields on a tone-keyword row."""
+    client.table(TONE_KEYWORDS_TABLE).update(fields).eq("id", tone_id).execute()
+
+
+def delete_tone_keywords(client: "Client", tone_id: str) -> None:
+    """Hard-delete a tone-keyword row."""
+    client.table(TONE_KEYWORDS_TABLE).delete().eq("id", tone_id).execute()
+
