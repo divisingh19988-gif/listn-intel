@@ -121,6 +121,7 @@ def build_url(search_term, search_type="page"):
     return (
         f"{AD_LIBRARY_BASE}"
         f"?active_status=active&ad_type=all&country=ALL"
+        f"&is_targeted_country=false"
         f"&q={q}&search_type={search_type}&media_type=all"
     )
 
@@ -139,10 +140,31 @@ def dismiss_overlays(page):
             pass
 
 
-def scroll_and_load(page, rounds=5):
+def scroll_and_load(page, rounds=12):
+    """Scroll to bottom repeatedly to trigger Meta's lazy-load.
+
+    We stop early once the page stops growing (Library ID count plateaus),
+    so the upper bound only matters for pages with hundreds of ads.
+    """
+    last_count = 0
+    stable_rounds = 0
     for _ in range(rounds):
         page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
         page.wait_for_timeout(2500)
+        # Count Library ID occurrences as a proxy for ads loaded so far.
+        try:
+            count = page.evaluate(
+                "(document.body.innerText.match(/Library ID|Bibliotheks-ID/g) || []).length"
+            )
+        except Exception:
+            count = last_count
+        if count == last_count:
+            stable_rounds += 1
+            if stable_rounds >= 2:
+                break
+        else:
+            stable_rounds = 0
+        last_count = count
 
 
 def parse_date(s):
