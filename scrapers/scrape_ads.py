@@ -4,7 +4,9 @@ Uses Playwright (headless Chromium) + text parsing of the rendered page.
 Searches by advertiser/page name so results are the competitor's own ads.
 """
 
+import argparse
 import json
+import os
 import re
 import time
 from datetime import date, datetime
@@ -320,11 +322,17 @@ def parse_ad_block(block_text, competitor):
     return ad
 
 
-def scrape_competitor(page, competitor):
-    """Work through the search plan for this competitor; return the first batch that yields matches."""
-    search_plan = COMPETITOR_SEARCH_PLAN.get(competitor, [(competitor, "page")])
+def scrape_competitor(page, competitor, debug_dir=None):
+    """Work through the search plan for this competitor; return the first batch that yields matches.
 
-    for search_term, search_type in search_plan:
+    If ``debug_dir`` is set, dump the raw body_text, the status_by_id map, and a
+    breakdown of parsed-vs-filtered counts for every search attempt — so we can
+    see *why* a competitor returned 0 (no results vs filtered out vs status mis-detected).
+    """
+    search_plan = COMPETITOR_SEARCH_PLAN.get(competitor, [(competitor, "page")])
+    safe_name = re.sub(r"[^a-z0-9]+", "_", competitor.lower()).strip("_")
+
+    for attempt_idx, (search_term, search_type) in enumerate(search_plan, start=1):
         url = build_url(search_term, search_type)
         print(f"  [{search_type}] q={search_term!r}")
 
@@ -332,6 +340,9 @@ def scrape_competitor(page, competitor):
             page.goto(url, wait_until="domcontentloaded", timeout=30000)
         except PWTimeout:
             print(f"  TIMEOUT — skipping")
+            if debug_dir:
+                _debug_write(debug_dir, f"{safe_name}_{attempt_idx}_TIMEOUT.txt",
+                             f"url={url}\nresult=timeout\n")
             continue
 
         page.wait_for_timeout(3000)
@@ -342,10 +353,16 @@ def scrape_competitor(page, competitor):
 
         if "No results found" in body_text or "Keine Ergebnisse" in body_text:
             print(f"  No results — trying next")
+            if debug_dir:
+                _debug_write(debug_dir, f"{safe_name}_{attempt_idx}_NO_RESULTS.txt",
+                             f"url={url}\nresult=no_results_banner\n\n{body_text}")
             continue
 
         if not re.search(r"(?:Library ID|Bibliotheks-ID):", body_text):
             print(f"  No ad cards — trying next")
+            if debug_dir:
+                _debug_write(debug_dir, f"{safe_name}_{attempt_idx}_NO_CARDS.txt",
+                             f"url={url}\nresult=no_library_ids_in_body\n\n{body_text}")
             continue
 
         scroll_and_load(page, rounds=5)
@@ -368,19 +385,61 @@ def scrape_competitor(page, competitor):
                     a["stop_date"] = None
                     if a.get("start_date"):
                         a["days_running"] = days_between(a["start_date"], None)
-        ads = [a for a in ads if is_competitor_ad(a, competitor)]
 
-        if ads:
-            return ads
+        parsed_count = len(ads)
+        parsed_page_names = sorted({(a.get("page_name") or "").strip() for a in ads if a.get("page_name")})
+        kept = [a for a in ads if is_competitor_ad(a, competitor)]
+        active_kept = sum(1 for a in kept if a.get("status") == "Active")
+
+        if debug_dir:
+            _debug_write(debug_dir, f"{safe_name}_{attempt_idx}_BODY.txt",
+                         f"url={url}\nsearch_term={search_term!r} search_type={search_type}\n"
+                         f"raw_blocks={len(raw_blocks)} parsed={parsed_count} "
+                         f"status_map_size={len(status_by_id)} "
+                         f"filtered_in={len(kept)} active_kept={active_kept}\n"
+                         f"page_names_seen={parsed_page_names}\n"
+                         f"filter_keywords={COMPETITOR_PAGE_FILTER.get(competitor)}\n"
+                         f"\n===== BODY TEXT =====\n{body_text}")
+            _debug_write(debug_dir, f"{safe_name}_{attempt_idx}_STATUS_MAP.json",
+                         json.dumps(status_by_id, indent=2))
+            _debug_write(debug_dir, f"{safe_name}_{attempt_idx}_PARSED.json",
+                         json.dumps(ads, indent=2, default=str))
+
+        print(f"  raw_blocks={len(raw_blocks)} parsed={parsed_count} "
+              f"status_badges={len(status_by_id)} kept={len(kept)} active={active_kept}")
+
+        if kept:
+            return kept
         print(f"  0 matching ads after filter — trying next")
 
     print(f"  No matching ads found for {competitor} across all search strategies")
     return []
 
 
+def _debug_write(debug_dir, filename, content):
+    os.makedirs(debug_dir, exist_ok=True)
+    with open(os.path.join(debug_dir, filename), "w", encoding="utf-8") as f:
+        f.write(content)
+
+
 def main():
+    parser = argparse.ArgumentParser(description="Meta Ad Library scraper")
+    parser.add_argument("--debug", action="store_true",
+                        help="Dump body_text, status maps, and parsed ads per competitor "
+                             "to debug/<date>/ for inspection.")
+    parser.add_argument("--only", nargs="+", metavar="COMPETITOR",
+                        help="Only scrape these competitors (case-insensitive, "
+                             "matched against the tracked list).")
+    parser.add_argument("--headed", action="store_true",
+                        help="Run Chromium with a visible window (helps when Meta "
+                             "renders differently in headed vs headless).")
+    args = parser.parse_args()
+
     today = date.today().isoformat()
     output_file = f"ads_scraped_{today}.json"
+    debug_dir = os.path.join("debug", today) if args.debug else None
+    if debug_dir:
+        print(f"[debug] Writing per-competitor dumps to {debug_dir}/")
 
     # Load competitors from Supabase; fall back to hardcoded list if unavailable.
     sb_names, _sb_terms = load_competitors_from_supabase()
@@ -391,11 +450,19 @@ def main():
         active_competitors = COMPETITORS
         print("[fallback] Using hardcoded competitor list.")
 
+    if args.only:
+        wanted = {n.lower() for n in args.only}
+        active_competitors = [c for c in active_competitors if c.lower() in wanted]
+        if not active_competitors:
+            print(f"[error] --only {args.only} matched none of the tracked competitors")
+            return
+        print(f"[only] Scraping just: {active_competitors}")
+
     all_results = {}
     total_ads = 0
 
     with sync_playwright() as pw:
-        browser = pw.chromium.launch(headless=True)
+        browser = pw.chromium.launch(headless=not args.headed)
         ctx = browser.new_context(
             viewport={"width": 1280, "height": 900},
             user_agent=(
@@ -417,7 +484,7 @@ def main():
 
         for competitor in active_competitors:
             print(f"\nFetching ads for: {competitor}")
-            ads = scrape_competitor(page, competitor)
+            ads = scrape_competitor(page, competitor, debug_dir=debug_dir)
             all_results[competitor] = ads
             total_ads += len(ads)
             print(f"  => {len(ads)} ads parsed")
