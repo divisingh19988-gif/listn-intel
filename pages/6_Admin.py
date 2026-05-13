@@ -212,7 +212,7 @@ with tab_comp:
             num_rows="fixed",
             column_config={
                 "name":       st.column_config.TextColumn("Name", width="medium", disabled=True),
-                "seo_domain": st.column_config.TextColumn("SEO domain", width="medium", disabled=True),
+                "seo_domain": st.column_config.TextColumn("SEO domain", width="medium"),
                 "active":     st.column_config.CheckboxColumn("Active", width="small"),
                 "notes":      st.column_config.TextColumn("Notes", width="large"),
             },
@@ -225,7 +225,7 @@ with tab_comp:
                 cid = id_list[idx]
                 o, n = display.iloc[idx], edited.iloc[idx]
                 patch = {}
-                for col in ("active", "notes"):
+                for col in ("seo_domain", "active", "notes"):
                     if _diff_value_changed(o[col], n[col]):
                         patch[col] = _cell_or_none(n[col])
                 if patch:
