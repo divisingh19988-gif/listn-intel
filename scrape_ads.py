@@ -15,20 +15,20 @@ COMPETITORS = [
     "Meminto",
     "StoryWorth",
     "Storykeeper",
-    "Tell me",
+    "Tellmel",
     "Keepsake",
     "HereAfter AI",
     "No Story Lost",
 ]
 
 # Words that MUST appear in the page_name for an ad to be counted as that competitor's.
-# Keeps broad searches (e.g. "Tell me", "Keepsake") from pulling in unrelated pages.
+# Keeps broad searches (e.g. "Tellmel", "Keepsake") from pulling in unrelated pages.
 COMPETITOR_PAGE_FILTER = {
     "Remento":       ["remento"],
     "Meminto":       ["meminto"],
     "StoryWorth":    ["storyworth", "story worth"],
     "Storykeeper":   ["storykeeper", "story keeper"],
-    "Tell me":       ["tell me", "tellme"],
+    "Tellmel":      ["tell me", "tellme", "tellmel"],
     "Keepsake":      ["keepsake"],
     "HereAfter AI":  ["hereafter"],
     "No Story Lost": ["no story lost", "nostorylost"],
@@ -42,7 +42,8 @@ COMPETITOR_SEARCH_PLAN = {
     "StoryWorth":    [("StoryWorth",     "page"),
                       ("StoryWorth",     "keyword_unordered")],
     "Storykeeper":   [("Storykeeper",    "page")],
-    "Tell me":       [("Tell me",        "page"),
+    "Tellmel":       [("Tellmel",        "page"),
+                      ("Tell me",        "page"),
                       ("TellMe Stories", "page"),
                       ("Tell Me",        "keyword_unordered")],
     "Keepsake":      [("Keepsake",       "page")],

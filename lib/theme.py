@@ -65,7 +65,7 @@ COMP_COLOR = {
     "StoriedLife AI":    "#22D3EE",                # cyan
     "LifeEcho":          "#EC4899",                # magenta
     "Storii":            "#06B6D4",                # teal
-    "Tell me":           "#9CA3AF",                # muted gray (no Meta presence)
+    "Tellmel":           "#9CA3AF",                # muted gray (no Meta presence)
     "HereAfter AI":      "#9CA3AF",
     "No Story Lost":     "#9CA3AF",
 }

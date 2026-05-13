@@ -14,7 +14,7 @@ COMPETITORS = [
     "Meminto",
     "StoryWorth",
     "Storykeeper",
-    "Tell me",
+    "Tellmel",
     "Keepsake",
     "HereAfter AI",
     "No Story Lost",
