@@ -16,10 +16,11 @@ COMPETITORS = [
     "Meminto",
     "StoryWorth",
     "Storykeeper",
-    "Tell me",
+    "Tellmel",
     "Keepsake",
     "HereAfter AI",
     "No Story Lost",
+    "Heritage Whisper",
 ]
 
 # Words that MUST appear in the page_name for an ad to be counted as that competitor's.
@@ -34,6 +35,7 @@ COMPETITOR_PAGE_FILTER = {
     "Keepsake":      ["keepsake"],
     "HereAfter AI":  ["hereafter"],
     "No Story Lost": ["no story lost", "nostorylost"],
+    "Heritage Whisper": ["heritage whisper", "heritagewhisper"],
 }
 
 # Each entry is a list of (search_term, search_type) pairs tried in order.
@@ -55,6 +57,9 @@ COMPETITOR_SEARCH_PLAN = {
     "No Story Lost": [("No Story Lost",  "page"),
                       ("NoStoryLost",    "page"),
                       ("No Story Lost",  "keyword_unordered")],
+    "Heritage Whisper": [("Heritage Whisper", "page"),
+                         ("HeritageWhisper",  "page"),
+                         ("Heritage Whisper", "keyword_unordered")],
 }
 
 AD_LIBRARY_BASE = "https://www.facebook.com/ads/library/"
@@ -191,9 +196,11 @@ def parse_ad_block(block_text, competitor):
         "days_running": None,
     }
 
-    # Status (English + German)
-    if lines and lines[0] in ("Active", "Inactive", "Aktiv", "Inaktiv"):
-        ad["status"] = "Active" if lines[0] in ("Active", "Aktiv") else "Inactive"
+    # Status (English + German). The "Active"/"Inactive" badge sits on its own
+    # line above the Library ID in Meta's DOM; scan the whole block for it.
+    status_match = re.search(r"(?m)^(Active|Inactive|Aktiv|Inaktiv)\s*$", block_text)
+    if status_match:
+        ad["status"] = "Active" if status_match.group(1) in ("Active", "Aktiv") else "Inactive"
 
     # Library ID (English: "Library ID:" / German: "Bibliotheks-ID:")
     id_match = re.search(r"(?:Library ID|Bibliotheks-ID):\s*(\d+)", block_text)
@@ -235,6 +242,12 @@ def parse_ad_block(block_text, competitor):
                         ).date().isoformat()
                     except ValueError:
                         pass
+
+    # Status is the source of truth. If Meta says Active, the ad is running —
+    # clear any stop_date the date-range regex may have picked up from a
+    # multi-variant "N ads use this creative" aggregate window.
+    if ad["status"] == "Active":
+        ad["stop_date"] = None
 
     if ad["start_date"]:
         ad["days_running"] = days_between(ad["start_date"], ad["stop_date"])
@@ -313,8 +326,26 @@ def scrape_competitor(page, competitor):
         scroll_and_load(page, rounds=5)
         body_text = page.inner_text("body")
 
-        raw_blocks = re.split(r"(?=(?:Library ID|Bibliotheks-ID):)", body_text)
-        raw_blocks = [b for b in raw_blocks if re.search(r"(?:Library ID|Bibliotheks-ID):", b)]
+        # Slice each block to include the "Active"/"Inactive" badge that Meta
+        # renders ABOVE the Library ID line. A simple split-before-Library-ID
+        # would leave that badge at the end of the previous block.
+        id_matches = list(re.finditer(r"(?:Library ID|Bibliotheks-ID):", body_text))
+        raw_blocks = []
+        LOOKBACK = 200  # chars before Library ID — enough to catch the status badge
+        # Each block's start = its Library ID minus LOOKBACK (captures the badge).
+        # Each block's end   = the NEXT block's start (so content isn't dropped).
+        # Each block's start = halfway between previous Library ID and this one
+        # (capped at LOOKBACK chars before this Library ID). This guarantees the
+        # block's start never overlaps the previous block's Library ID, so we
+        # still get the "Active"/"Inactive" badge that sits just above each ID.
+        raw_blocks = []
+        for i, m in enumerate(id_matches):
+            prev_end = id_matches[i - 1].end() if i > 0 else 0
+            block_start = max(prev_end, m.start() - LOOKBACK)
+            block_end = id_matches[i + 1].start() if i + 1 < len(id_matches) else len(body_text)
+            # Pull block_end back toward this block so the next block can grab its badge.
+            block_end = max(m.end(), block_end - LOOKBACK)
+            raw_blocks.append(body_text[block_start:block_end])
 
         ads = [parse_ad_block(block, competitor) for block in raw_blocks]
         ads = [a for a in ads if is_competitor_ad(a, competitor)]
