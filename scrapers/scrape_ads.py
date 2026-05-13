@@ -26,6 +26,7 @@ COMPETITORS = [
 # Keeps broad searches (e.g. "Tell me", "Keepsake") from pulling in unrelated pages.
 COMPETITOR_PAGE_FILTER = {
     "Remento":       ["remento"],
+    "Enna":          ["enna.care"],
     "Meminto":       ["meminto"],
     "StoryWorth":    ["storyworth", "story worth"],
     "Storykeeper":   ["storykeeper", "story keeper"],
@@ -111,7 +112,7 @@ def build_url(search_term, search_type="page"):
     q = search_term.replace(" ", "%20")
     return (
         f"{AD_LIBRARY_BASE}"
-        f"?active_status=all&ad_type=all&country=US"
+        f"?active_status=all&ad_type=all&country=ALL"
         f"&q={q}&search_type={search_type}&media_type=all"
     )
 
