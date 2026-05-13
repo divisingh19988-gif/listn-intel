@@ -38,14 +38,28 @@ except ImportError:  # pragma: no cover
 
 
 def _read_secret(name: str) -> Optional[str]:
-    """st.secrets first, then os.environ. Never raises."""
+    """st.secrets first, then os.environ. Tries case variants so configs that
+    use 'Supabase_URL' or 'supabase_url' still resolve. Never raises."""
+    variants = {name, name.upper(), name.lower()}
+    # Friendlier aliases for the two Supabase keys we use everywhere.
+    aliases = {
+        "SUPABASE_URL": {"Supabase_URL", "supabase_url"},
+        "SUPABASE_KEY": {"Supabase_anon_key", "SUPABASE_ANON_KEY", "supabase_anon_key", "SUPABASE_SERVICE_ROLE_KEY"},
+    }
+    if name in aliases:
+        variants |= aliases[name]
     try:
         import streamlit as st
-        if name in st.secrets:
-            return st.secrets[name]
+        for v in variants:
+            if v in st.secrets:
+                return st.secrets[v]
     except Exception:
         pass
-    return os.environ.get(name)
+    for v in variants:
+        val = os.environ.get(v)
+        if val:
+            return val
+    return None
 
 
 def get_supabase_credentials() -> tuple[Optional[str], Optional[str]]:
@@ -184,7 +198,24 @@ def update_competitors(client: "Client", competitor_id: str, fields: dict) -> No
 
 
 def delete_competitors(client: "Client", competitor_id: str) -> None:
-    """Hard-delete a competitor row."""
+    """Soft-delete: set deleted_at + active=false. Use hard_delete_competitors to remove."""
+    from datetime import datetime, timezone
+    client.table(COMPETITORS_TABLE).update({
+        "deleted_at": datetime.now(timezone.utc).isoformat(),
+        "active": False,
+    }).eq("id", competitor_id).execute()
+
+
+def restore_competitors(client: "Client", competitor_id: str) -> None:
+    """Undo a soft-delete on a competitor row."""
+    client.table(COMPETITORS_TABLE).update({
+        "deleted_at": None,
+        "active": True,
+    }).eq("id", competitor_id).execute()
+
+
+def hard_delete_competitors(client: "Client", competitor_id: str) -> None:
+    """Permanent delete (no undo)."""
     client.table(COMPETITORS_TABLE).delete().eq("id", competitor_id).execute()
 
 
@@ -212,7 +243,24 @@ def update_content_clusters(client: "Client", cluster_id: str, fields: dict) -> 
 
 
 def delete_content_clusters(client: "Client", cluster_id: str) -> None:
-    """Hard-delete a content-cluster row."""
+    """Soft-delete: set deleted_at + active=false."""
+    from datetime import datetime, timezone
+    client.table(CONTENT_CLUSTERS_TABLE).update({
+        "deleted_at": datetime.now(timezone.utc).isoformat(),
+        "active": False,
+    }).eq("id", cluster_id).execute()
+
+
+def restore_content_clusters(client: "Client", cluster_id: str) -> None:
+    """Undo a soft-delete on a content-cluster row."""
+    client.table(CONTENT_CLUSTERS_TABLE).update({
+        "deleted_at": None,
+        "active": True,
+    }).eq("id", cluster_id).execute()
+
+
+def hard_delete_content_clusters(client: "Client", cluster_id: str) -> None:
+    """Permanent delete (no undo)."""
     client.table(CONTENT_CLUSTERS_TABLE).delete().eq("id", cluster_id).execute()
 
 
@@ -239,6 +287,81 @@ def update_tone_keywords(client: "Client", tone_id: str, fields: dict) -> None:
 
 
 def delete_tone_keywords(client: "Client", tone_id: str) -> None:
-    """Hard-delete a tone-keyword row."""
+    """Hard-delete a tone-keyword row. (No soft-delete column on this table.)"""
     client.table(TONE_KEYWORDS_TABLE).delete().eq("id", tone_id).execute()
+
+
+# ── Admin audit log ───────────────────────────────────────────────────────────
+ADMIN_AUDIT_TABLE = "admin_audit"
+
+
+def log_audit(
+    client: "Client",
+    *,
+    table_name: str,
+    action: str,
+    row_id: Optional[str] = None,
+    row_label: Optional[str] = None,
+    field: Optional[str] = None,
+    old_value: Optional[str] = None,
+    new_value: Optional[str] = None,
+    actor: Optional[str] = None,
+    note: Optional[str] = None,
+) -> None:
+    """Best-effort write — never raise back into the admin page."""
+    try:
+        client.table(ADMIN_AUDIT_TABLE).insert({
+            "table_name": table_name,
+            "row_id": row_id,
+            "row_label": row_label,
+            "action": action,
+            "field": field,
+            "old_value": None if old_value is None else str(old_value),
+            "new_value": None if new_value is None else str(new_value),
+            "actor": actor,
+            "note": note,
+        }).execute()
+    except Exception:
+        # Audit must never break the user's edit — swallow and move on.
+        pass
+
+
+def list_audit(client: "Client", limit: int = 50, table_name: Optional[str] = None) -> list[dict]:
+    """Return the most recent audit rows, newest first."""
+    try:
+        q = client.table(ADMIN_AUDIT_TABLE).select("*").order("created_at", desc=True).limit(limit)
+        if table_name:
+            q = q.eq("table_name", table_name)
+        return q.execute().data or []
+    except Exception:
+        return []
+
+
+# ── Competitor candidates queue ───────────────────────────────────────────────
+COMPETITOR_CANDIDATES_TABLE = "competitor_candidates"
+
+
+def list_candidates(client: "Client", status: Optional[str] = "pending") -> list[dict]:
+    """Return candidates, newest first. Pass status=None for all."""
+    try:
+        q = client.table(COMPETITOR_CANDIDATES_TABLE).select("*").order("created_at", desc=True)
+        if status:
+            q = q.eq("status", status)
+        return q.execute().data or []
+    except Exception:
+        return []
+
+
+def add_candidate(client: "Client", **fields) -> dict:
+    """Insert a new candidate row."""
+    resp = client.table(COMPETITOR_CANDIDATES_TABLE).insert(fields).execute()
+    return resp.data[0] if resp.data else fields
+
+
+def update_candidate(client: "Client", candidate_id: str, fields: dict) -> None:
+    client.table(COMPETITOR_CANDIDATES_TABLE).update(fields).eq("id", candidate_id).execute()
+
+
+def delete_candidate(client: "Client", candidate_id: str) -> None:
+    client.table(COMPETITOR_CANDIDATES_TABLE).delete().eq("id", candidate_id).execute()
 
