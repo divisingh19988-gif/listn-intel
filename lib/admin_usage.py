@@ -108,7 +108,6 @@ def coverage_gaps(
     """
     today = today or date.today()
     gaps: dict[str, list[str]] = {
-        "competitors_missing_appstore": [],
         "competitors_missing_domain": [],
         "competitors_missing_terms": [],
         "clusters_empty_keywords": [],
@@ -120,8 +119,6 @@ def coverage_gaps(
         if not c.get("active"):
             continue
         label = c.get("name") or "?"
-        if not (c.get("appstore_id") or "").strip() if isinstance(c.get("appstore_id"), str) else not c.get("appstore_id"):
-            gaps["competitors_missing_appstore"].append(label)
         if not (c.get("seo_domain") or "").strip() if isinstance(c.get("seo_domain"), str) else not c.get("seo_domain"):
             gaps["competitors_missing_domain"].append(label)
         terms = c.get("meta_search_terms") or []

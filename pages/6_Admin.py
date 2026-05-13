@@ -219,7 +219,6 @@ total_gaps = sum(len(v) for v in gaps.values())
 if total_gaps:
     with st.expander(f"⚠️ Coverage gaps ({total_gaps})", expanded=False):
         labels = {
-            "competitors_missing_appstore": "Active competitors with no App Store ID",
             "competitors_missing_domain": "Active competitors with no SEO domain",
             "competitors_missing_terms": "Active competitors with no Meta search terms",
             "clusters_empty_keywords": "Active clusters with zero keywords",
@@ -1043,11 +1042,14 @@ with tab_cand:
                     current_competitors=all_competitors_names + [r.get("name", "") for r in pending],
                     n=8,
                 )
+            result = {"added": 0, "claude_error": None, "raw": None, "insert_errors": [], "candidates": []}
             if not d.get("ok"):
-                st.error(d.get("error") or "Discovery failed.")
+                result["claude_error"] = d.get("error") or "Discovery failed."
+                result["raw"] = d.get("raw")
             else:
-                added = 0
-                for c in d["candidates"]:
+                proposals = d.get("candidates") or []
+                result["candidates"] = proposals
+                for c in proposals:
                     try:
                         add_candidate(
                             client,
@@ -1060,17 +1062,41 @@ with tab_cand:
                             sample_evidence=c.get("sample_evidence"),
                             status="pending",
                         )
-                        added += 1
-                    except Exception:
-                        continue
-                if added:
+                        result["added"] += 1
+                    except Exception as e:
+                        result["insert_errors"].append(f"{c.get('name', '?')}: {e}")
+                if result["added"]:
                     log_audit(
                         client, table_name="competitor_candidates", action="insert",
-                        row_label=f"{added} new candidates via claude_discovery",
+                        row_label=f"{result['added']} new candidates via claude_discovery",
                         actor=actor,
                     )
-                st.success(f"Added {added} new candidates.")
-                st.cache_data.clear()
+            st.session_state["_discover_result"] = result
+            st.cache_data.clear()
+            st.rerun()
+
+        # Persist last discovery result across the rerun so the user sees it
+        dr = st.session_state.get("_discover_result")
+        if dr:
+            if dr.get("claude_error"):
+                st.error(f"Claude error: {dr['claude_error']}")
+                if dr.get("raw"):
+                    with st.expander("Show Claude's raw response"):
+                        st.code(dr["raw"][:4000])
+            else:
+                proposed = len(dr.get("candidates") or [])
+                if dr["added"]:
+                    st.success(f"✅ Added {dr['added']} of {proposed} proposed candidates.")
+                elif proposed == 0:
+                    st.warning("Claude returned 0 candidates. Try again — it varies between calls.")
+                else:
+                    st.error(f"Claude proposed {proposed} but 0 were inserted. See errors below.")
+            if dr.get("insert_errors"):
+                with st.expander(f"Insert errors ({len(dr['insert_errors'])})"):
+                    for e in dr["insert_errors"]:
+                        st.write(f"• {e}")
+            if st.button("Dismiss", key="dismiss_discover_result"):
+                st.session_state.pop("_discover_result", None)
                 st.rerun()
 
     if not pending:
