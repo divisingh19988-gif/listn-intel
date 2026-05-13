@@ -6,6 +6,7 @@ Reads scraped ad data and produces a strategic markdown report.
 import os
 import json
 from datetime import date
+from pathlib import Path
 from anthropic import Anthropic
 from dotenv import load_dotenv
 
@@ -14,7 +15,6 @@ load_dotenv()
 client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
 INPUT_FILE = "data/ads_scraped_latest.json"
-OUTPUT_FILE = "data/strategic_brief_latest.md"
 MODEL = "claude-sonnet-4-6"
 
 SYSTEM_PROMPT = """\
@@ -133,11 +133,19 @@ def run_analysis():
         "---\n\n"
     )
 
-    with open(OUTPUT_FILE, "w") as f:
-        f.write(header + analysis)
+    # Always write the dated copy first
+    week_str = date.today().strftime("%Y-W%W")
+    dated_path = Path("data") / f"strategic_brief_{week_str}.md"
+    latest_path = Path("data") / "strategic_brief_latest.md"
+
+    Path("data").mkdir(exist_ok=True)
+    dated_path.write_text(header + analysis)
+    latest_path.write_text(header + analysis)
+
+    print(f"\n✓ Saved to {dated_path}")
+    print(f"✓ Saved to {latest_path}")
 
     usage = final_msg.usage
-    print(f"\n✓ Saved to {OUTPUT_FILE}")
     print(f"  Input tokens:  {usage.input_tokens:,}")
     print(f"  Output tokens: {usage.output_tokens:,}")
     cache_read = getattr(usage, "cache_read_input_tokens", 0) or 0

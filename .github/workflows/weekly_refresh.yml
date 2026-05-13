@@ -53,8 +53,23 @@ jobs:
         run: |
           python3 -c "import glob, json, os, sys; files = glob.glob('SEO_Intel/seo_raw_*.json') + glob.glob('seo_raw_*.json'); files or sys.exit('No seo_raw_*.json file found'); data = json.load(open(max(files, key=os.path.getmtime))); count = sum(len(v.get('keywords', [])) for v in data.get('competitors', {}).values()); count >= 5 or sys.exit(f'Health check failed - only {count} keywords found (need >= 5)'); print(f'Health check passed: {count} keywords found')"
 
+      - name: Move scraped data to data/ (scrape_ads.py writes to repo root)
+        run: |
+          mkdir -p data
+          # Latest scraped Meta file -> canonical name
+          LATEST_ADS=$(ls -t ads_scraped_*.json 2>/dev/null | head -1 || true)
+          if [ -n "$LATEST_ADS" ]; then cp "$LATEST_ADS" data/ads_scraped_latest.json; fi
+          # Latest SEO file (seo_monitor writes into SEO_Intel/ historically; copy if found)
+          LATEST_SEO=$(ls -t SEO_Intel/seo_raw_*.json seo_raw_*.json 2>/dev/null | head -1 || true)
+          if [ -n "$LATEST_SEO" ]; then cp "$LATEST_SEO" data/seo_raw_latest.json; fi
+
       - name: Run AI Readiness audit
         run: python scrapers/ai_readiness_check.py
+
+      - name: Generate strategic ad brief (Claude analysis)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python analyze_ads.py
 
       - name: Generate Excel reports and send email
         env:
@@ -65,16 +80,6 @@ jobs:
           REPORT_EMAIL: ${{ secrets.REPORT_EMAIL }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python scrapers/weekly_export.py
-
-      - name: Move scraped data to data/ (scrape_ads.py writes to repo root)
-        run: |
-          mkdir -p data
-          # Latest scraped Meta file -> canonical name
-          LATEST_ADS=$(ls -t ads_scraped_*.json 2>/dev/null | head -1 || true)
-          if [ -n "$LATEST_ADS" ]; then cp "$LATEST_ADS" data/ads_scraped_latest.json; fi
-          # Latest SEO file (seo_monitor writes into SEO_Intel/ historically; copy if found)
-          LATEST_SEO=$(ls -t SEO_Intel/seo_raw_*.json seo_raw_*.json 2>/dev/null | head -1 || true)
-          if [ -n "$LATEST_SEO" ]; then cp "$LATEST_SEO" data/seo_raw_latest.json; fi
 
       - name: Commit updated data and reports
         run: |
