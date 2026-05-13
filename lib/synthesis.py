@@ -34,11 +34,79 @@ TONE_KEYWORDS = {
 }
 
 
-def _all_tones(text: Optional[str]) -> list[str]:
+def load_tone_keywords_from_supabase() -> dict:
+    """
+    Load tone-keyword mapping from Supabase `tone_keywords` table.
+    Returns {tone: [keyword, ...]} or {} on any failure.
+    Caller should fall back to the hardcoded TONE_KEYWORDS constant.
+    """
+    try:
+        from lib.supabase_client import get_client
+        client = get_client()
+        if client is None:
+            return {}
+        resp = client.table("tone_keywords").select("tone,keyword_list").execute()
+        rows = resp.data or []
+        if not rows:
+            return {}
+        return {r["tone"]: list(r.get("keyword_list") or []) for r in rows}
+    except Exception as e:
+        print(f"[supabase] load_tone_keywords_from_supabase failed: {e}")
+        return {}
+
+
+def load_seo_clusters_from_supabase() -> list:
+    """
+    Load SEO content clusters from Supabase `content_clusters` table.
+    Returns a list in the same format as the hardcoded SEO_CLUSTERS constant,
+    or [] on any failure. Caller should fall back to the hardcoded SEO_CLUSTERS.
+    """
+    try:
+        from lib.supabase_client import get_client
+        client = get_client()
+        if client is None:
+            return []
+        resp = (
+            client.table("content_clusters")
+            .select("name,window_label,deadline,keywords")
+            .eq("active", True)
+            .execute()
+        )
+        rows = resp.data or []
+        if not rows:
+            return []
+        clusters = []
+        for r in rows:
+            deadline_val = None
+            if r.get("deadline"):
+                try:
+                    deadline_val = date.fromisoformat(r["deadline"])
+                except (ValueError, TypeError):
+                    pass
+            # Supabase stores keywords as JSON arrays [[kw, vol, kd], ...]
+            # Convert each inner list to a tuple to match hardcoded format.
+            keywords = [
+                tuple(k) if isinstance(k, list) else k
+                for k in (r.get("keywords") or [])
+            ]
+            clusters.append({
+                "name": r["name"],
+                "window": r["window_label"],
+                "deadline": deadline_val,
+                "keywords": keywords,
+            })
+        return clusters
+    except Exception as e:
+        print(f"[supabase] load_seo_clusters_from_supabase failed: {e}")
+        return []
+
+
+def _all_tones(text: Optional[str], tone_keywords: Optional[dict] = None) -> list[str]:
     if not text:
         return []
     t = text.lower()
-    return [tone for tone, words in TONE_KEYWORDS.items() if any(w in t for w in words)]
+    kw = tone_keywords if tone_keywords is not None else TONE_KEYWORDS
+    return [tone for tone, words in kw.items() if any(w in t for w in words)]
 
 
 def _parse_date(s: Optional[str]) -> Optional[date]:
@@ -77,6 +145,9 @@ def get_creative_move(ads_data: Optional[dict] = None, today: Optional[date] = N
     ads_data = ads_data or _load_json(ADS_FILE) or {}
     competitors = ads_data.get("competitors", {})
 
+    # Load tone keywords from Supabase; fall back to hardcoded constant.
+    tone_kw = load_tone_keywords_from_supabase() or TONE_KEYWORDS
+
     # Flatten all ads
     all_ads: list[dict] = []
     for ads in competitors.values():
@@ -94,12 +165,12 @@ def get_creative_move(ads_data: Optional[dict] = None, today: Optional[date] = N
     tone_counts: dict[str, int] = {}
     total_tagged = 0
     for ad in all_ads:
-        for tone in _all_tones(ad.get("ad_copy")):
+        for tone in _all_tones(ad.get("ad_copy"), tone_kw):
             tone_counts[tone] = tone_counts.get(tone, 0) + 1
             total_tagged += 1
 
     underplayed_tones = [
-        t for t in TONE_KEYWORDS
+        t for t in tone_kw
         if (tone_counts.get(t, 0) / total_tagged * 100 if total_tagged else 0) < 10
     ]
 
@@ -116,7 +187,7 @@ def get_creative_move(ads_data: Optional[dict] = None, today: Optional[date] = N
 
     # Case 1 — recent ad in an under-played tone (strongest signal)
     for ad, days_old, days_running in recent:
-        ad_tones = _all_tones(ad.get("ad_copy"))
+        ad_tones = _all_tones(ad.get("ad_copy"), tone_kw)
         gap = next((t for t in ad_tones if t in underplayed_tones), None)
         if gap:
             comp = ad.get("competitor", "A competitor")
@@ -257,15 +328,18 @@ def get_content_move(seo_data: Optional[dict] = None, today: Optional[date] = No
     """
     today = today or date.today()
 
+    # Load clusters from Supabase; fall back to hardcoded constant.
+    clusters = load_seo_clusters_from_supabase() or SEO_CLUSTERS
+
     # Pick the nearest *future* dated cluster, falling back to evergreen order
     dated = [
-        c for c in SEO_CLUSTERS
+        c for c in clusters
         if c["deadline"] and c["deadline"] >= today
     ]
     dated.sort(key=lambda c: c["deadline"])
     chosen = dated[0] if dated else next(
-        (c for c in SEO_CLUSTERS if c["window"] == "EVERGREEN"),
-        SEO_CLUSTERS[0],
+        (c for c in clusters if c["window"] == "EVERGREEN"),
+        clusters[0],
     )
 
     # Highest-volume keyword with KD <= 10 (relax to KD <= 14 if nothing fits)
@@ -324,7 +398,8 @@ def next_deadline(today: Optional[date] = None) -> dict:
     Dict: {label, days, cluster}.
     """
     today = today or date.today()
-    upcoming = [c for c in SEO_CLUSTERS if c["deadline"] and c["deadline"] >= today]
+    clusters = load_seo_clusters_from_supabase() or SEO_CLUSTERS
+    upcoming = [c for c in clusters if c["deadline"] and c["deadline"] >= today]
     upcoming.sort(key=lambda c: c["deadline"])
     if not upcoming:
         return {"label": "No seasonal deadline", "days": None, "cluster": "Evergreen"}

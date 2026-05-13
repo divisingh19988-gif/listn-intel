@@ -58,6 +58,43 @@ COMPETITOR_SEARCH_PLAN = {
 
 AD_LIBRARY_BASE = "https://www.facebook.com/ads/library/"
 
+
+def load_competitors_from_supabase():
+    """
+    Load active competitors from Supabase.
+
+    Returns:
+        (names, terms) — names is a list[str] of active competitor names;
+        terms is a dict mapping name -> list[str] of Meta search terms.
+        Returns (None, None) on any failure so callers can fall back to the
+        hardcoded COMPETITORS list and COMPETITOR_SEARCH_PLAN.
+    """
+    try:
+        import os as _os
+        import sys
+        _root = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))
+        if _root not in sys.path:
+            sys.path.insert(0, _root)
+        from lib.supabase_client import get_client
+        client = get_client()
+        if client is None:
+            return None, None
+        resp = (
+            client.table("competitors")
+            .select("name,meta_search_terms")
+            .eq("active", True)
+            .execute()
+        )
+        rows = resp.data or []
+        if not rows:
+            return None, None
+        names = [r["name"] for r in rows]
+        terms = {r["name"]: list(r.get("meta_search_terms") or []) for r in rows}
+        return names, terms
+    except Exception as e:
+        print(f"[supabase] load_competitors_from_supabase failed: {e}")
+        return None, None
+
 PLATFORM_NAMES = ["Facebook", "Instagram", "Messenger", "Audience Network", "WhatsApp"]
 
 
@@ -293,6 +330,15 @@ def main():
     today = date.today().isoformat()
     output_file = f"ads_scraped_{today}.json"
 
+    # Load competitors from Supabase; fall back to hardcoded list if unavailable.
+    sb_names, _sb_terms = load_competitors_from_supabase()
+    if sb_names:
+        active_competitors = sb_names
+        print(f"[supabase] Loaded {len(active_competitors)} active competitors.")
+    else:
+        active_competitors = COMPETITORS
+        print("[fallback] Using hardcoded competitor list.")
+
     all_results = {}
     total_ads = 0
 
@@ -317,7 +363,7 @@ def main():
         dismiss_overlays(page)
         page.wait_for_timeout(1000)
 
-        for competitor in COMPETITORS:
+        for competitor in active_competitors:
             print(f"\nFetching ads for: {competitor}")
             ads = scrape_competitor(page, competitor)
             all_results[competitor] = ads
