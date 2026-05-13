@@ -99,8 +99,8 @@
       "elapsed_seconds": 2.9
     },
     {
-      "name": "Tell Mel",
-      "url": "https://tellmel.com",
+      "name": "Tellmel",
+      "url": "https://tellmel.ai",
       "llms_txt": "No",
       "ai_bots": 0,
       "faq_schema": "No",

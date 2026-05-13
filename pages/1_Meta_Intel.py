@@ -12,8 +12,8 @@ table after the tone chart.
 Competitor scrape list (for scrapers/scrape_ads.py — managed there, not here):
   Remento, Meminto, StoryWorth, Storykeeper, Keepsake,
   Heritage Whisper, StoriedLife AI, LifeEcho, Storii
-  (Tellmel, HereAfter AI, No Story Lost, Tell Mel — DO NOT add Tell Mel,
-   it is phone-based and runs no Meta ads.)
+  (Tellmel, HereAfter AI, No Story Lost — Tellmel is phone-based and runs
+   no Meta ads.)
 """
 
 import json

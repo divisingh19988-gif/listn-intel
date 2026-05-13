@@ -49,7 +49,7 @@ SITES = [
     ("StoriedLife AI",   "https://storiedlife.ai"),
     ("LifeEcho",         "https://lifeecho.org"),
     ("Storii",           "https://www.storii.com"),
-    ("Tell Mel",         "https://tellmel.com"),
+    ("Tellmel",          "https://tellmel.ai"),
     ("Listn",            "https://listn-app.com"),
 ]
 
