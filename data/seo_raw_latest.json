@@ -1,5 +1,5 @@
 {
-  "fetched_date": "2026-05-12",
+  "fetched_date": "2026-05-15",
   "competitors": {
     "Remento": {
       "domain": "remento.co",
@@ -1166,6 +1166,970 @@
           "keyword_count": 1,
           "sample_keywords": [
             "personalized book for grandpa"
+          ]
+        }
+      ]
+    },
+    "Replika": {
+      "domain": "replika.com",
+      "keywords": [
+        {
+          "keyword": "talkie ai",
+          "search_volume": 301000,
+          "position": 78,
+          "keyword_difficulty": 24,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "ai chatbot online",
+          "search_volume": 246000,
+          "position": 23,
+          "keyword_difficulty": 85,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "a\u0131 dungeon",
+          "search_volume": 201000,
+          "position": 40,
+          "keyword_difficulty": 50,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "companions",
+          "search_volume": 165000,
+          "position": 38,
+          "keyword_difficulty": 36,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "ai girlfriend",
+          "search_volume": 135000,
+          "position": 32,
+          "keyword_difficulty": 56,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "chat bot",
+          "search_volume": 60500,
+          "position": 28,
+          "keyword_difficulty": 84,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "a i bot chat",
+          "search_volume": 49500,
+          "position": 40,
+          "keyword_difficulty": 91,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "ai conversation bot",
+          "search_volume": 49500,
+          "position": 28,
+          "keyword_difficulty": 66,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "ai conversational bot",
+          "search_volume": 49500,
+          "position": 16,
+          "keyword_difficulty": 66,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "artificial intelligence apps",
+          "search_volume": 49500,
+          "position": 49,
+          "keyword_difficulty": 44,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "artificial intelligence bot chat",
+          "search_volume": 49500,
+          "position": 31,
+          "keyword_difficulty": 83,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "replica",
+          "search_volume": 49500,
+          "position": 4,
+          "keyword_difficulty": 31,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "ai chat apps",
+          "search_volume": 40500,
+          "position": 27,
+          "keyword_difficulty": 69,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "replika",
+          "search_volume": 40500,
+          "position": 1,
+          "keyword_difficulty": 47,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "talk to ai",
+          "search_volume": 40500,
+          "position": 23,
+          "keyword_difficulty": 72,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "a i chat free",
+          "search_volume": 33100,
+          "position": 43,
+          "keyword_difficulty": 63,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "a i chatbot free",
+          "search_volume": 33100,
+          "position": 39,
+          "keyword_difficulty": 64,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "artificial intelligence chat free",
+          "search_volume": 33100,
+          "position": 54,
+          "keyword_difficulty": 63,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "ai character chat app",
+          "search_volume": 22200,
+          "position": 35,
+          "keyword_difficulty": 69,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "companionship meaning",
+          "search_volume": 22200,
+          "position": 83,
+          "keyword_difficulty": 14,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "ai gf free",
+          "search_volume": 18100,
+          "position": 33,
+          "keyword_difficulty": 45,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "conversational ai app",
+          "search_volume": 18100,
+          "position": 18,
+          "keyword_difficulty": 53,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "a i girlfriend chat",
+          "search_volume": 14800,
+          "position": 28,
+          "keyword_difficulty": 66,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "ai companion",
+          "search_volume": 14800,
+          "position": 8,
+          "keyword_difficulty": 65,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "ai companions",
+          "search_volume": 14800,
+          "position": 11,
+          "keyword_difficulty": 33,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "ai companionship",
+          "search_volume": 14800,
+          "position": 8,
+          "keyword_difficulty": 32,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "ai gf chat",
+          "search_volume": 14800,
+          "position": 39,
+          "keyword_difficulty": 53,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "amig agent login",
+          "search_volume": 14800,
+          "position": 18,
+          "keyword_difficulty": 20,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "companion ai",
+          "search_volume": 14800,
+          "position": 5,
+          "keyword_difficulty": 17,
+          "url": "https://replika.com/"
+        },
+        {
+          "keyword": "companionship ai",
+          "search_volume": 14800,
+          "position": 6,
+          "keyword_difficulty": 21,
+          "url": "https://replika.com/"
+        }
+      ],
+      "top_pages": [
+        {
+          "url": "https://replika.com/",
+          "estimated_traffic": 30911,
+          "keyword_count": 30,
+          "sample_keywords": [
+            "talkie ai",
+            "ai chatbot online",
+            "a\u0131 dungeon",
+            "companions",
+            "ai girlfriend"
+          ]
+        }
+      ]
+    },
+    "ElliQ": {
+      "domain": "elliq.com",
+      "keywords": [
+        {
+          "keyword": "artificial intelligence companion",
+          "search_volume": 14800,
+          "position": 56,
+          "keyword_difficulty": 43,
+          "url": "https://elliq.com/"
+        },
+        {
+          "keyword": "exercise and the elderly",
+          "search_volume": 8100,
+          "position": 85,
+          "keyword_difficulty": 35,
+          "url": "https://blog.elliq.com/exercise-for-elderly-staying-active-at-any-age"
+        },
+        {
+          "keyword": "exercise in elderly",
+          "search_volume": 8100,
+          "position": 52,
+          "keyword_difficulty": 69,
+          "url": "https://blog.elliq.com/exercise-for-elderly-staying-active-at-any-age"
+        },
+        {
+          "keyword": "companion robot",
+          "search_volume": 4400,
+          "position": 10,
+          "keyword_difficulty": 8,
+          "url": "https://elliq.com/"
+        },
+        {
+          "keyword": "companion robots",
+          "search_volume": 4400,
+          "position": 10,
+          "keyword_difficulty": 20,
+          "url": "https://elliq.com/"
+        },
+        {
+          "keyword": "robot companion",
+          "search_volume": 4400,
+          "position": 9,
+          "keyword_difficulty": 13,
+          "url": "https://elliq.com/"
+        },
+        {
+          "keyword": "robotic companionship",
+          "search_volume": 4400,
+          "position": 8,
+          "keyword_difficulty": 13,
+          "url": "https://elliq.com/"
+        },
+        {
+          "keyword": "elliq",
+          "search_volume": 3600,
+          "position": 1,
+          "keyword_difficulty": 14,
+          "url": "https://elliq.com/"
+        },
+        {
+          "keyword": "el q",
+          "search_volume": 2400,
+          "position": 7,
+          "keyword_difficulty": 0,
+          "url": "https://elliq.com/"
+        },
+        {
+          "keyword": "ai companion robot",
+          "search_volume": 1600,
+          "position": 8,
+          "keyword_difficulty": 20,
+          "url": "https://elliq.com/"
+        },
+        {
+          "keyword": "elderly physical activity",
+          "search_volume": 1600,
+          "position": 85,
+          "keyword_difficulty": 54,
+          "url": "https://blog.elliq.com/exercise-for-elderly-staying-active-at-any-age"
+        },
+        {
+          "keyword": "grandma robot",
+          "search_volume": 1600,
+          "position": 55,
+          "keyword_difficulty": 14,
+          "url": "https://elliq.com/"
+        },
+        {
+          "keyword": "personal ai companion",
+          "search_volume": 1600,
+          "position": 53,
+          "keyword_difficulty": 65,
+          "url": "https://elliq.com/"
+        },
+        {
+          "keyword": "elderly people stereotypes",
+          "search_volume": 720,
+          "position": 7,
+          "keyword_difficulty": 3,
+          "url": "https://blog.elliq.com/5-inspiring-seniors-defying-age-stereotypes"
+        },
+        {
+          "keyword": "eliq",
+          "search_volume": 720,
+          "position": 2,
+          "keyword_difficulty": 9,
+          "url": "https://elliq.com/"
+        },
+        {
+          "keyword": "old age stereotypes",
+          "search_volume": 720,
+          "position": 12,
+          "keyword_difficulty": 8,
+          "url": "https://blog.elliq.com/5-inspiring-seniors-defying-age-stereotypes"
+        },
+        {
+          "keyword": "old people stereotypes",
+          "search_volume": 720,
+          "position": 6,
+          "keyword_difficulty": 0,
+          "url": "https://blog.elliq.com/5-inspiring-seniors-defying-age-stereotypes"
+        },
+        {
+          "keyword": "physical activity for older adults",
+          "search_volume": 720,
+          "position": 107,
+          "keyword_difficulty": 57,
+          "url": "https://blog.elliq.com/exercise-for-elderly-staying-active-at-any-age"
+        },
+        {
+          "keyword": "robot companions for adults",
+          "search_volume": 720,
+          "position": 5,
+          "keyword_difficulty": 0,
+          "url": "https://elliq.com/"
+        },
+        {
+          "keyword": "stereotypes about older people",
+          "search_volume": 720,
+          "position": 15,
+          "keyword_difficulty": 9,
+          "url": "https://blog.elliq.com/5-inspiring-seniors-defying-age-stereotypes"
+        },
+        {
+          "keyword": "stereotypes elderly",
+          "search_volume": 720,
+          "position": 7,
+          "keyword_difficulty": 3,
+          "url": "https://blog.elliq.com/5-inspiring-seniors-defying-age-stereotypes"
+        },
+        {
+          "keyword": "stereotypes of elderly",
+          "search_volume": 720,
+          "position": 6,
+          "keyword_difficulty": 12,
+          "url": "https://blog.elliq.com/5-inspiring-seniors-defying-age-stereotypes"
+        },
+        {
+          "keyword": "stereotypes of the elderly",
+          "search_volume": 720,
+          "position": 9,
+          "keyword_difficulty": 0,
+          "url": "https://blog.elliq.com/5-inspiring-seniors-defying-age-stereotypes"
+        },
+        {
+          "keyword": "elder app",
+          "search_volume": 590,
+          "position": 37,
+          "keyword_difficulty": 11,
+          "url": "https://elliq.com/"
+        },
+        {
+          "keyword": "elli q",
+          "search_volume": 590,
+          "position": 1,
+          "keyword_difficulty": 14,
+          "url": "https://elliq.com/"
+        },
+        {
+          "keyword": "ageist examples",
+          "search_volume": 480,
+          "position": 14,
+          "keyword_difficulty": 16,
+          "url": "https://blog.elliq.com/5-inspiring-seniors-defying-age-stereotypes"
+        },
+        {
+          "keyword": "elliq robot",
+          "search_volume": 480,
+          "position": 2,
+          "keyword_difficulty": 27,
+          "url": "https://elliq.com/"
+        },
+        {
+          "keyword": "intuition robotics",
+          "search_volume": 480,
+          "position": 2,
+          "keyword_difficulty": 12,
+          "url": "https://elliq.com/"
+        },
+        {
+          "keyword": "older adults and exercise",
+          "search_volume": 480,
+          "position": 82,
+          "keyword_difficulty": 39,
+          "url": "https://blog.elliq.com/exercise-for-elderly-staying-active-at-any-age"
+        },
+        {
+          "keyword": "smart home companion robot",
+          "search_volume": 480,
+          "position": 11,
+          "keyword_difficulty": 19,
+          "url": "https://elliq.com/"
+        }
+      ],
+      "top_pages": [
+        {
+          "url": "https://elliq.com/",
+          "estimated_traffic": 2199,
+          "keyword_count": 17,
+          "sample_keywords": [
+            "artificial intelligence companion",
+            "companion robot",
+            "companion robots",
+            "robot companion",
+            "robotic companionship"
+          ]
+        },
+        {
+          "url": "https://blog.elliq.com/5-inspiring-seniors-defying-age-stereotypes",
+          "estimated_traffic": 184,
+          "keyword_count": 8,
+          "sample_keywords": [
+            "elderly people stereotypes",
+            "old age stereotypes",
+            "old people stereotypes",
+            "stereotypes about older people",
+            "stereotypes elderly"
+          ]
+        },
+        {
+          "url": "https://blog.elliq.com/exercise-for-elderly-staying-active-at-any-age",
+          "estimated_traffic": 93,
+          "keyword_count": 5,
+          "sample_keywords": [
+            "exercise and the elderly",
+            "exercise in elderly",
+            "elderly physical activity",
+            "physical activity for older adults",
+            "older adults and exercise"
+          ]
+        }
+      ]
+    },
+    "Papa": {
+      "domain": "papa.com",
+      "keywords": [
+        {
+          "keyword": "elderly care",
+          "search_volume": 201000,
+          "position": 20,
+          "keyword_difficulty": 76,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "elderly caring",
+          "search_volume": 201000,
+          "position": 30,
+          "keyword_difficulty": 63,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "papa",
+          "search_volume": 165000,
+          "position": 1,
+          "keyword_difficulty": 48,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "papas",
+          "search_volume": 165000,
+          "position": 43,
+          "keyword_difficulty": 33,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "care and companion",
+          "search_volume": 90500,
+          "position": 5,
+          "keyword_difficulty": 2,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "care companionship",
+          "search_volume": 90500,
+          "position": 2,
+          "keyword_difficulty": 14,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "companion care",
+          "search_volume": 90500,
+          "position": 12,
+          "keyword_difficulty": 18,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "companions care",
+          "search_volume": 90500,
+          "position": 3,
+          "keyword_difficulty": 19,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "companionship care",
+          "search_volume": 90500,
+          "position": 6,
+          "keyword_difficulty": 29,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "companionship carer",
+          "search_volume": 90500,
+          "position": 2,
+          "keyword_difficulty": 9,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "elder homecare",
+          "search_volume": 90500,
+          "position": 67,
+          "keyword_difficulty": 30,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "pappa bar",
+          "search_volume": 74000,
+          "position": 62,
+          "keyword_difficulty": 12,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "elderly care in-home services",
+          "search_volume": 60500,
+          "position": 54,
+          "keyword_difficulty": 82,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "home care services for seniors",
+          "search_volume": 60500,
+          "position": 26,
+          "keyword_difficulty": 81,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "trusted home sitter",
+          "search_volume": 60500,
+          "position": 62,
+          "keyword_difficulty": 31,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "health uber",
+          "search_volume": 40500,
+          "position": 60,
+          "keyword_difficulty": 21,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "home caregivers for seniors",
+          "search_volume": 40500,
+          "position": 57,
+          "keyword_difficulty": 78,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "in home eldercare",
+          "search_volume": 40500,
+          "position": 32,
+          "keyword_difficulty": 80,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "in-home support services",
+          "search_volume": 40500,
+          "position": 42,
+          "keyword_difficulty": 34,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "personal care assistant",
+          "search_volume": 40500,
+          "position": 1,
+          "keyword_difficulty": 3,
+          "url": "https://www.papa.com/resources/blog/whats-the-difference-between-personal-care-aide-and-caregiver"
+        },
+        {
+          "keyword": "elderly in home assistance",
+          "search_volume": 33100,
+          "position": 28,
+          "keyword_difficulty": 76,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "friends apps for adults",
+          "search_volume": 33100,
+          "position": 86,
+          "keyword_difficulty": 20,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "poppa house",
+          "search_volume": 33100,
+          "position": 87,
+          "keyword_difficulty": 17,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "application for money",
+          "search_volume": 27100,
+          "position": 32,
+          "keyword_difficulty": 59,
+          "url": "https://www.papa.com/pals"
+        },
+        {
+          "keyword": "internet pals",
+          "search_volume": 27100,
+          "position": 22,
+          "keyword_difficulty": 47,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "at home moms jobs",
+          "search_volume": 22200,
+          "position": 8,
+          "keyword_difficulty": 6,
+          "url": "https://www.papa.com/resources/blog/4-best-part-time-jobs-for-stay-at-home-moms"
+        },
+        {
+          "keyword": "companion homecare",
+          "search_volume": 22200,
+          "position": 19,
+          "keyword_difficulty": 0,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "define companionship",
+          "search_volume": 22200,
+          "position": 38,
+          "keyword_difficulty": 14,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "errands meaning",
+          "search_volume": 22200,
+          "position": 46,
+          "keyword_difficulty": 1,
+          "url": "https://www.papa.com/"
+        },
+        {
+          "keyword": "home care companions",
+          "search_volume": 22200,
+          "position": 10,
+          "keyword_difficulty": 18,
+          "url": "https://www.papa.com/"
+        }
+      ],
+      "top_pages": [
+        {
+          "url": "https://www.papa.com/",
+          "estimated_traffic": 105304,
+          "keyword_count": 27,
+          "sample_keywords": [
+            "elderly care",
+            "elderly caring",
+            "papa",
+            "papas",
+            "care and companion"
+          ]
+        },
+        {
+          "url": "https://www.papa.com/resources/blog/whats-the-difference-between-personal-care-aide-and-caregiver",
+          "estimated_traffic": 11340,
+          "keyword_count": 1,
+          "sample_keywords": [
+            "personal care assistant"
+          ]
+        },
+        {
+          "url": "https://www.papa.com/resources/blog/4-best-part-time-jobs-for-stay-at-home-moms",
+          "estimated_traffic": 666,
+          "keyword_count": 1,
+          "sample_keywords": [
+            "at home moms jobs"
+          ]
+        },
+        {
+          "url": "https://www.papa.com/pals",
+          "estimated_traffic": 211,
+          "keyword_count": 1,
+          "sample_keywords": [
+            "application for money"
+          ]
+        }
+      ]
+    },
+    "friend.com": {
+      "domain": "friend.com",
+      "keywords": [
+        {
+          "keyword": "friend",
+          "search_volume": 823000,
+          "position": 3,
+          "keyword_difficulty": 37,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "frienps",
+          "search_volume": 823000,
+          "position": 56,
+          "keyword_difficulty": 65,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "the friendships",
+          "search_volume": 49500,
+          "position": 65,
+          "keyword_difficulty": 21,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "design with friend",
+          "search_volume": 14800,
+          "position": 36,
+          "keyword_difficulty": 4,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "a i friend",
+          "search_volume": 12100,
+          "position": 2,
+          "keyword_difficulty": 62,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "a i friends",
+          "search_volume": 12100,
+          "position": 9,
+          "keyword_difficulty": 24,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "ai friend",
+          "search_volume": 12100,
+          "position": 5,
+          "keyword_difficulty": 35,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "ai friendship",
+          "search_volume": 12100,
+          "position": 5,
+          "keyword_difficulty": 33,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "application for friendship",
+          "search_volume": 12100,
+          "position": 22,
+          "keyword_difficulty": 20,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "friend ai",
+          "search_volume": 12100,
+          "position": 1,
+          "keyword_difficulty": 46,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "friend ia",
+          "search_volume": 12100,
+          "position": 1,
+          "keyword_difficulty": 14,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "friends application",
+          "search_volume": 12100,
+          "position": 4,
+          "keyword_difficulty": 44,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "friendship ai",
+          "search_volume": 12100,
+          "position": 5,
+          "keyword_difficulty": 34,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "friendships ai",
+          "search_volume": 12100,
+          "position": 18,
+          "keyword_difficulty": 9,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "locket apps",
+          "search_volume": 12100,
+          "position": 45,
+          "keyword_difficulty": 8,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "frend",
+          "search_volume": 8100,
+          "position": 20,
+          "keyword_difficulty": 4,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "frends",
+          "search_volume": 8100,
+          "position": 41,
+          "keyword_difficulty": 19,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "friends internet",
+          "search_volume": 8100,
+          "position": 20,
+          "keyword_difficulty": 15,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "friendship code",
+          "search_volume": 8100,
+          "position": 77,
+          "keyword_difficulty": 0,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "gadget startup",
+          "search_volume": 8100,
+          "position": 19,
+          "keyword_difficulty": 0,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "best friendship necklace",
+          "search_volume": 6600,
+          "position": 44,
+          "keyword_difficulty": 0,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "best friendship necklaces",
+          "search_volume": 6600,
+          "position": 80,
+          "keyword_difficulty": 0,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "friends finders",
+          "search_volume": 6600,
+          "position": 15,
+          "keyword_difficulty": 28,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "freund",
+          "search_volume": 5400,
+          "position": 44,
+          "keyword_difficulty": 25,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "find and friend",
+          "search_volume": 4400,
+          "position": 34,
+          "keyword_difficulty": 45,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "friend com",
+          "search_volume": 4400,
+          "position": 1,
+          "keyword_difficulty": 33,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "new fiend",
+          "search_volume": 3600,
+          "position": 75,
+          "keyword_difficulty": 0,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "new friend",
+          "search_volume": 3600,
+          "position": 30,
+          "keyword_difficulty": 14,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "a friend",
+          "search_volume": 2900,
+          "position": 33,
+          "keyword_difficulty": 12,
+          "url": "https://friend.com/"
+        },
+        {
+          "keyword": "a friends",
+          "search_volume": 2900,
+          "position": 20,
+          "keyword_difficulty": 15,
+          "url": "https://friend.com/"
+        }
+      ],
+      "top_pages": [
+        {
+          "url": "https://friend.com/",
+          "estimated_traffic": 109442,
+          "keyword_count": 30,
+          "sample_keywords": [
+            "friend",
+            "frienps",
+            "the friendships",
+            "design with friend",
+            "a i friend"
           ]
         }
       ]
