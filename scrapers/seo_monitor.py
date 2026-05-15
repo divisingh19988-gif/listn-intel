@@ -14,10 +14,10 @@ from dotenv import load_dotenv
 
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "..", ".env"))
 
-# Write the dated file to the repo root (parent of scrapers/) so CI's
-# "Move scraped data to data/" step and the SEO health-check find it —
-# same convention as scrape_ads.py.
-OUTPUT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+# Dated snapshot + canonical "_latest" file both live in data/, matching the
+# Meta scraper convention. Trends pages read the dated files; the dashboard
+# reads _latest.
+OUTPUT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data"))
 LOCATION_CODE = 2840  # United States
 LANGUAGE_CODE = "en"
 KEYWORD_LIMIT = 30
@@ -28,7 +28,6 @@ COMPETITORS = {
     "StoryWorth": "storyworth.com",
     "Storykeeper": "storykeeper.com",
     # Adjacent / lateral competitors — companion & care space.
-    "Replika": "replika.com",
     "ElliQ": "elliq.com",
     "Papa": "papa.com",
     "friend.com": "friend.com",
@@ -117,7 +116,9 @@ def derive_top_pages(keywords: list[dict], top_n: int = 10) -> list[dict]:
 
 def run():
     today = date.today().isoformat()
-    output_file = os.path.join(OUTPUT_DIR, f"seo_raw_{today}.json")
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    dated_file = os.path.join(OUTPUT_DIR, f"seo_raw_{today}.json")
+    latest_file = os.path.join(OUTPUT_DIR, "seo_raw_latest.json")
 
     all_data = {"fetched_date": today, "competitors": {}}
 
@@ -138,12 +139,16 @@ def run():
             "top_pages": top_pages,
         }
 
-    with open(output_file, "w") as f:
-        json.dump(all_data, f, indent=2)
+    payload = json.dumps(all_data, indent=2)
+    with open(dated_file, "w") as f:
+        f.write(payload)
+    with open(latest_file, "w") as f:
+        f.write(payload)
 
     total_kw = sum(len(v["keywords"]) for v in all_data["competitors"].values())
     print(f"\n{'='*60}")
-    print(f"✓ Saved to {output_file}")
+    print(f"✓ Saved to {dated_file}")
+    print(f"✓ Saved to {latest_file}")
     print(f"  Total keywords fetched: {total_kw}")
     print(f"  Competitors covered: {', '.join(COMPETITORS)}")
 

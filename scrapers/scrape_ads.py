@@ -24,7 +24,6 @@ COMPETITORS = [
     "No Story Lost",
     "Heritage Whisper",
     # Adjacent / lateral competitors — companion & care space.
-    "Replika",
     "ElliQ",
     "Papa",
     "friend.com",
@@ -43,7 +42,6 @@ COMPETITOR_PAGE_FILTER = {
     "HereAfter AI":  ["hereafter"],
     "No Story Lost": ["no story lost", "nostorylost"],
     "Heritage Whisper": ["heritage whisper", "heritagewhisper"],
-    "Replika":       ["replika"],
     "ElliQ":         ["elliq", "intuition robotics"],
     # "Papa" and "friend" are common English words — keep filters strict so we
     # don't tag random pages (Papa Johns, friendship orgs, etc.).
@@ -76,7 +74,6 @@ COMPETITOR_PAGE_IDS = {
     # at the time of integration. Leave their IDs as None so the scraper skips
     # the deterministic page-profile URL and falls back to keyword search; if
     # the keyword search returns nothing (likely), they'll simply show 0 ads.
-    "Replika":          None,
     "ElliQ":            "434160116949836",
     "Papa":             None,
     "friend.com":       None,
@@ -109,8 +106,6 @@ COMPETITOR_SEARCH_PLAN = {
     # COMPETITOR_PAGE_IDS so this entry is rarely hit. Papa / friend.com
     # are common-word brand names; the page_filter above is the real safety
     # net — search results are best-effort only.
-    "Replika":       [("Replika",          "page"),
-                      ("Replika AI",       "keyword_unordered")],
     "ElliQ":         [("ElliQ",            "page"),
                       ("Intuition Robotics","page")],
     "Papa":          [("Papa Inc",         "page"),
@@ -553,7 +548,10 @@ def main():
     args = parser.parse_args()
 
     today = date.today().isoformat()
-    output_file = f"ads_scraped_{today}.json"
+    data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
+    os.makedirs(data_dir, exist_ok=True)
+    dated_file = os.path.join(data_dir, f"ads_scraped_{today}.json")
+    latest_file = os.path.join(data_dir, "ads_scraped_latest.json")
     debug_dir = os.path.join("debug", today) if args.debug else None
     if debug_dir:
         print(f"[debug] Writing per-competitor dumps to {debug_dir}/")
@@ -616,13 +614,17 @@ def main():
         "competitors": all_results,
     }
 
-    with open(output_file, "w") as f:
-        json.dump(output, f, indent=2)
+    payload = json.dumps(output, indent=2)
+    with open(dated_file, "w") as f:
+        f.write(payload)
+    with open(latest_file, "w") as f:
+        f.write(payload)
 
     # Summary
     print(f"\n{'='*55}")
     print(f"  Total ads collected: {total_ads}")
-    print(f"  Saved to:            {output_file}")
+    print(f"  Saved to:            {dated_file}")
+    print(f"  Saved to:            {latest_file}")
     print(f"{'='*55}")
     for comp, ads in all_results.items():
         print(f"  {comp:<20} {len(ads):>3} ads")

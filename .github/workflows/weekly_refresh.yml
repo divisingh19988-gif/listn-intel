@@ -37,7 +37,7 @@ jobs:
 
       - name: Validate Meta scrape output
         run: |
-          python3 -c "import glob, json, os, sys; files = glob.glob('ads_scraped_*.json'); files or sys.exit('No ads_scraped_*.json file found'); data = json.load(open(max(files, key=os.path.getmtime))); count = data.get('total_ads') or sum(len(v) for v in data.get('competitors', {}).values()); count >= 5 or sys.exit(f'Health check failed - only {count} ads found (need >= 5)'); print(f'Health check passed: {count} ads found')"
+          python3 -c "import glob, json, os, sys; files = glob.glob('data/ads_scraped_*.json'); files or sys.exit('No data/ads_scraped_*.json file found'); data = json.load(open(max(files, key=os.path.getmtime))); count = data.get('total_ads') or sum(len(v) for v in data.get('competitors', {}).values()); count >= 5 or sys.exit(f'Health check failed - only {count} ads found (need >= 5)'); print(f'Health check passed: {count} ads found')"
 
       # SEO data is secondary — a flaky DataForSEO run must not block the
       # Meta-data commit, so these two steps don't fail the job.
@@ -51,17 +51,7 @@ jobs:
       - name: Validate SEO scrape output
         continue-on-error: true
         run: |
-          python3 -c "import glob, json, os, sys; files = glob.glob('SEO_Intel/seo_raw_*.json') + glob.glob('seo_raw_*.json'); files or sys.exit('No seo_raw_*.json file found'); data = json.load(open(max(files, key=os.path.getmtime))); count = sum(len(v.get('keywords', [])) for v in data.get('competitors', {}).values()); count >= 5 or sys.exit(f'Health check failed - only {count} keywords found (need >= 5)'); print(f'Health check passed: {count} keywords found')"
-
-      - name: Move scraped data to data/ (scrape_ads.py writes to repo root)
-        run: |
-          mkdir -p data
-          # Latest scraped Meta file -> canonical name
-          LATEST_ADS=$(ls -t ads_scraped_*.json 2>/dev/null | head -1 || true)
-          if [ -n "$LATEST_ADS" ]; then cp "$LATEST_ADS" data/ads_scraped_latest.json; fi
-          # Latest SEO file (seo_monitor writes into SEO_Intel/ historically; copy if found)
-          LATEST_SEO=$(ls -t SEO_Intel/seo_raw_*.json seo_raw_*.json 2>/dev/null | head -1 || true)
-          if [ -n "$LATEST_SEO" ]; then cp "$LATEST_SEO" data/seo_raw_latest.json; fi
+          python3 -c "import glob, json, os, sys; files = glob.glob('data/seo_raw_*.json'); files or sys.exit('No data/seo_raw_*.json file found'); data = json.load(open(max(files, key=os.path.getmtime))); count = sum(len(v.get('keywords', [])) for v in data.get('competitors', {}).values()); count >= 5 or sys.exit(f'Health check failed - only {count} keywords found (need >= 5)'); print(f'Health check passed: {count} keywords found')"
 
       - name: Run AI Readiness audit
         run: python scrapers/ai_readiness_check.py

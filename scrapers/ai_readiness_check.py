@@ -38,7 +38,8 @@ from urllib.parse import urlparse
 import requests
 
 ROOT = Path(__file__).parent.parent
-OUT_FILE = ROOT / "data" / "ai_readiness_latest.json"
+DATA_DIR = ROOT / "data"
+OUT_FILE = DATA_DIR / "ai_readiness_latest.json"
 
 SITES = [
     ("Remento",          "https://www.remento.co"),
@@ -52,7 +53,6 @@ SITES = [
     ("Tellmel",          "https://tellmel.ai"),
     ("Listn",            "https://listn-app.com"),
     # Adjacent / lateral competitors — companion & care space.
-    ("Replika",          "https://replika.com"),
     ("ElliQ",            "https://elliq.com"),
     ("Papa",             "https://www.papa.com"),
     ("friend.com",       "https://friend.com"),
@@ -274,14 +274,19 @@ def main() -> int:
     print(f"Auditing {len(sites)} site(s)...")
     rows = [audit_site(n, u) for n, u in sites]
 
-    OUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    today = date.today().isoformat()
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
     payload = {
-        "fetched_date": date.today().isoformat(),
+        "fetched_date": today,
         "method": "auto",
         "sites": rows,
     }
-    OUT_FILE.write_text(json.dumps(payload, indent=2))
-    print(f"\nWrote {OUT_FILE} ({len(rows)} rows).")
+    serialized = json.dumps(payload, indent=2)
+    dated_file = DATA_DIR / f"ai_readiness_{today}.json"
+    dated_file.write_text(serialized)
+    OUT_FILE.write_text(serialized)
+    print(f"\nWrote {dated_file} ({len(rows)} rows).")
+    print(f"Wrote {OUT_FILE} ({len(rows)} rows).")
     return 0
 
 

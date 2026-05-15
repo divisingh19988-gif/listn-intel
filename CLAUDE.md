@@ -55,7 +55,7 @@ reportlab==4.4.10      # PDF generation
 ```
 ├── analyze_ads.py          # Claude AI analysis of scraped ad data
 ├── dashboard.py            # Streamlit dashboard for insights
-├── scrape_ads.py           # Playwright scraper for Meta Ad Library
+├── scrapers/scrape_ads.py  # Playwright scraper for Meta Ad Library
 ├── fetch_ads.py            # Meta Graph API client (alternative to scraping)
 ├── weekly_email.py         # Automated email reporting system
 ├── inspect_page.py         # Ad Library page inspection utilities
@@ -72,7 +72,7 @@ reportlab==4.4.10      # PDF generation
 
 ### Data Flow
 
-1. **Collection**: `scrape_ads.py` or `fetch_ads.py` pulls competitor ads
+1. **Collection**: `scrapers/scrape_ads.py` or `scrapers/fetch_ads.py` pulls competitor ads
 2. **Analysis**: `analyze_ads.py` uses Claude to analyze messaging and strategies
 3. **Visualization**: `dashboard.py` displays insights and KPIs
 4. **Reporting**: `weekly_email.py` generates and sends PDF reports
@@ -114,10 +114,10 @@ streamlit run dashboard.py
 
 ```bash
 # Scrape competitor ads (no API key needed)
-python scrape_ads.py
+python scrapers/scrape_ads.py
 
 # Or use Meta Graph API (requires token)
-python fetch_ads.py
+python scrapers/fetch_ads.py
 ```
 
 ### 5. Generate Analysis
@@ -138,10 +138,10 @@ python weekly_email.py
 
 ### Adding a New Competitor
 
-1. Add competitor name to `COMPETITORS` list in both `scrape_ads.py` and `fetch_ads.py`
+1. Add competitor name to `COMPETITORS` list in both `scrapers/scrape_ads.py` and `scrapers/fetch_ads.py`
 2. Add page filter keywords to `COMPETITOR_PAGE_FILTER`
 3. Add search plan to `COMPETITOR_SEARCH_PLAN`
-4. Test scraping: `python scrape_ads.py`
+4. Test scraping: `python scrapers/scrape_ads.py`
 5. Update dashboard filters if needed
 
 ### Modifying Analysis Prompts
