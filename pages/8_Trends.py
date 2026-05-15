@@ -54,14 +54,15 @@ SITE_ALIASES = {
 # only history is a single non-zero day; we need at least a week of data.
 MIN_DAYS_HISTORY = 7
 
-# Listn shipped these AI-readiness fixes — annotate the chart so a score jump on
-# Listn's line is legible as "we did X" rather than mysterious. Keys MUST be unique
-# ISO dates (replace the XX placeholders before relying on these annotations).
-LISTN_AI_READINESS_MILESTONES: dict[str, str] = {
-    "2026-05-XX": "Added llms.txt",              # FIXME: fill in actual ship date
-    "2026-05-YY": "Added FAQ JSON-LD schema",    # FIXME: fill in actual ship date
-    "2026-05-ZZ": "Updated robots.txt for AI crawlers",  # FIXME: fill in actual ship date
-}
+# When Listn ships an AI-readiness fix (llms.txt, FAQ/Article JSON-LD,
+# robots.txt for AI crawlers, etc.), record the ISO ship date here. The Trends
+# page renders each entry as a dotted lavender marker on the AI Readiness
+# chart so a score jump on Listn's line is legible as "we did X" rather than
+# mysterious. Format: "YYYY-MM-DD": "Short label".
+#
+# Left empty intentionally — fill in with real ship dates as the team logs
+# them. Fake or placeholder dates would mislead the chart.
+LISTN_AI_READINESS_MILESTONES: dict[str, str] = {}
 
 # Recommendation cache — survives page reloads so the Claude API only fires for
 # genuinely new (date, competitor, metric) triples. Located in .cache/ to be

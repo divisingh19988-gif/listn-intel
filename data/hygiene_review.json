@@ -1,44 +1,36 @@
 {
   "findings": [
     {
-      "category": "placeholder",
-      "details": "The methodology constants pulled from the Trends page source contain three unresolved placeholders: '2026-05-XX' (Added llms.txt), '2026-05-YY' (Added FAQ JSON-LD schema), and '2026-05-ZZ' (Updated robots.txt for AI crawlers), each tagged '# FIXME: fill in actual ship date'. These render to users as literal XX/YY/ZZ dates and undermine credibility of the AI readiness section.",
-      "location": "METHODOLOGY CONSTANTS \u2192 listn_ai_readiness_milestones_raw",
-      "severity": "high",
-      "suggested_fix": "Replace 2026-05-XX/YY/ZZ with the actual ship dates from git history or deploy logs for llms.txt, FAQ JSON-LD, and the robots.txt AI-crawler update, and remove the FIXME comments.",
-      "title": "AI readiness milestones still contain FIXME placeholders"
+      "category": "contradiction",
+      "details": "Post 06 is titled '50 Questions to Ask Your Parents Before It's Too Late' but its primary_keyword is 'questions to ask dad before its too late'. The title is gender-neutral/parents-generic while the keyword is dad-specific. Either the title undersells the targeted keyword (and won't rank well for 'dad' queries) or the keyword is wrong for the article's actual scope.",
+      "location": "Active Roadmap > Post 06",
+      "severity": "medium",
+      "suggested_fix": "Either retitle Post 06 to '50 Questions to Ask Your Dad Before It's Too Late' to match the dad-targeted keyword, or change primary_keyword to 'questions to ask parents before its too late' to match the parents-scoped title.",
+      "title": "Post 06 title says 'Parents' but primary_keyword targets 'dad'"
     },
     {
       "category": "contradiction",
-      "details": "Post 06 ('50 Questions to Ask Your Parents Before It's Too Late') has publish_by 2026-06-21 and event_date 2026-06-21 \u2014 same day. Google needs days-to-weeks to index and rank seasonal content; publishing on the event date guarantees the post misses the Father's Day search wave entirely. Compare Post 01 which correctly has a ~7-week lead time for the same event.",
-      "location": "ACTIVE CONTENT ROADMAP \u2192 Post 06",
-      "severity": "high",
-      "suggested_fix": "Move Post 06 publish_by back to at least 2026-05-31 (3 weeks of indexing lead time before June 21), or earlier to match the lead time used for Post 01.",
-      "title": "Post 06 publishes on Father's Day itself \u2014 zero indexing lead time"
+      "details": "Post 06 has event_date=2026-06-21 (Father's Day) and window=SOON, implying it's a Father's Day push. But the title targets 'parents' generally and the keyword is the evergreen 'before it's too late' angle, not a Father's Day angle. This will cause it to be auto-archived after June 21 even though the content is evergreen, losing the post from the active view.",
+      "location": "Active Roadmap > Post 06",
+      "severity": "medium",
+      "suggested_fix": "Move Post 06 to window=EVERGREEN with event_date=null so it doesn't get swept after Father's Day. If a Father's-Day-themed companion is wanted, create a separate post.",
+      "title": "Post 06 tagged to Father's Day event but content is generic parents"
     },
     {
-      "category": "stale",
-      "details": "Both archived items (Post 02 and the Mother's Day cluster) had deadline 2026-05-10 but swept_at 2026-05-16 \u2014 meaning they sat on the active dashboard as 'overdue Mother's Day' content for 6 days after Mother's Day had already passed. The sweep should fire on deadline+1. This suggests the auto-archive job is running weekly (or manually) rather than daily.",
-      "location": "ARCHIVED COMPLETION HISTORY \u2192 both 2026-05-10 entries",
-      "severity": "medium",
-      "suggested_fix": "Audit the auto-archive cron \u2014 it should run daily at 00:00 local and sweep anything with deadline < today. Verify it's not gated on completion status (these were Incomplete and still needed to archive on the date basis).",
-      "title": "Sweep ran 6 days after Mother's Day deadline"
-    },
-    {
-      "category": "time_drift",
-      "details": "Post 03 has publish_by 2026-05-10 and event_date null (evergreen commercial-intent). Today is 2026-05-16 so it's 6 days overdue, but unlike Post 01/06 there is no future event to justify the overdue red border \u2014 it's just late evergreen work. The 'pre-event signal' exemption in the note doesn't apply here.",
-      "location": "ACTIVE CONTENT ROADMAP \u2192 Post 03",
-      "severity": "medium",
-      "suggested_fix": "Either ship Post 03 immediately or reset publish_by to a realistic new date. If consistently slipping, deprioritize behind the Father's Day SOON-window posts which have hard event deadlines.",
-      "title": "Post 03 (Remento alternative) is 6 days past publish_by with no event anchor"
+      "category": "contradiction",
+      "details": "Post 01 ('What to Ask Your Dad Before Father's Day: 50 Questions Worth Recording in His Own Voice', publish_by 2026-04-30) and Post 06 ('50 Questions to Ask Your Parents Before It's Too Late', publish_by 2026-05-31, event_date Father's Day) are both 50-question listicles tied to the same Father's Day event. Risk of keyword cannibalization between the two on Listn's own site.",
+      "location": "Active Roadmap > Posts 01 and 06",
+      "severity": "low",
+      "suggested_fix": "Differentiate angles explicitly: keep Post 01 as the Father's Day-targeted dad-specific listicle, and re-scope Post 06 to a different format (e.g., 'How to Get Your Parent to Actually Open Up' or 'What to Do With the Recording After') so they don't compete for the same SERP intent.",
+      "title": "Posts 01 and 06 are near-duplicates ('50 Questions' for Father's Day)"
     }
   ],
   "model": "claude-opus-4-7",
-  "reviewed_at": "2026-05-16T00:44:30",
+  "reviewed_at": "2026-05-16T00:53:49",
   "today": "2026-05-16",
   "usage": {
     "cache_read_input_tokens": 0,
-    "input_tokens": 2834,
-    "output_tokens": 2273
+    "input_tokens": 2847,
+    "output_tokens": 2677
   }
 }

@@ -346,7 +346,7 @@ SEO_ROADMAP_POSTS = [
     },
     {
         "num": "03",
-        "publish_by": date(2026, 5, 10),
+        "publish_by": date(2026, 5, 30),  # was 2026-05-10; reset after slipping with no event anchor
         "event_date": None,
         "window": "COMMERCIAL INTENT",
         "title": "Looking for a Remento Alternative? Here's What Actually Matters in a Memory App",
@@ -376,12 +376,14 @@ SEO_ROADMAP_POSTS = [
     },
     {
         "num": "06",
-        "publish_by": date(2026, 6, 21),
+        "publish_by": date(2026, 5, 31),  # 3 weeks lead time before the Jun 21 event
         "event_date": date(2026, 6, 21),  # Father's Day pairing
         "window": "SOON",
         "title": "50 Questions to Ask Your Parents Before It's Too Late",
-        "primary": ("questions to record with grandparents", 1300, 5),
-        "secondary": ["questions to ask dad before its too late"],
+        # Realigned to a Father's Day-intent keyword (was "questions to record
+        # with grandparents", which targets the wrong audience for this post).
+        "primary": ("questions to ask dad before its too late", 1900, 6),
+        "secondary": ["questions to record with grandparents", "record dads stories fathers day"],
         "why": "Father's Day pairing for Post 01 — same emotional hook, deeper questions.",
     },
 ]

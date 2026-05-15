@@ -8,7 +8,7 @@
       "kind": "cluster",
       "name": "Mother's Day",
       "status": "Incomplete",
-      "swept_at": "2026-05-16"
+      "swept_at": "2026-05-11"
     },
     {
       "completed_at": null,
@@ -17,7 +17,7 @@
       "kind": "roadmap_post",
       "name": "Post 02: The Mother's Day Gift That Actually Lasts: Why Her Voice Is Worth More Than Flowers",
       "status": "Incomplete",
-      "swept_at": "2026-05-16"
+      "swept_at": "2026-05-11"
     }
   ]
 }

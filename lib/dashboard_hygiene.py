@@ -66,7 +66,15 @@ HYGIENE_SYSTEM_PROMPT = (
     "- low: cleanup hygiene with low impact\n\n"
     "If the dashboard looks clean, return an empty findings array. Do NOT "
     "manufacture problems to look thorough. Five real findings beat fifty "
-    "manufactured ones."
+    "manufactured ones.\n\n"
+    "DESIGN INVARIANTS (do not flag these as bugs)\n"
+    "- Evergreen content (event_date=null) is intentional: it stays on the "
+    "dashboard indefinitely until manually retired. Do NOT flag evergreen "
+    "items with publish_by < today as 'should auto-archive' — that only "
+    "applies to items with an event_date. The overdue red border is the "
+    "designed nag signal.\n"
+    "- Past-deadline items in ACTIVE sections are a bug; past-deadline items "
+    "in ARCHIVED sections are normal and expected."
 )
 
 HYGIENE_SCHEMA = {
