@@ -77,7 +77,7 @@ POSTS = [
     {
         "num": "01",
         "publish_by": date(2026, 4, 30),
-        "event_date": date(2026, 6, 15),  # Father's Day
+        "event_date": date(2026, 6, 21),  # Father's Day
         "window": "SOON",
         "title": "What to Ask Your Dad Before Father's Day: 50 Questions Worth Recording in His Own Voice",
         "primary": ("fathers day gift ideas", 74000, 0),
@@ -126,8 +126,8 @@ POSTS = [
     },
     {
         "num": "06",
-        "publish_by": date(2026, 6, 15),
-        "event_date": date(2026, 6, 15),  # Father's Day pairing
+        "publish_by": date(2026, 6, 21),
+        "event_date": date(2026, 6, 21),  # Father's Day pairing
         "window": "SOON",
         "title": "50 Questions to Ask Your Parents Before It's Too Late",
         "primary": ("questions to record with grandparents", 1300, 5),

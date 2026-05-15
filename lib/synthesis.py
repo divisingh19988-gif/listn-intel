@@ -268,7 +268,7 @@ SEO_CLUSTERS = [
     {
         "name": "Father's Day",
         "window": "SOON",
-        "deadline": date(2026, 6, 15),
+        "deadline": date(2026, 6, 21),
         "keywords": [
             ("fathers day gift ideas", 74000, 0),
             ("meaningful fathers day gift", 9900, 8),

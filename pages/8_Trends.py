@@ -377,7 +377,7 @@ def _build_anomaly_prompt(anomaly: dict, kind: str) -> str:
         "- Buyer is the adult child (35-55), not the end user.\n"
         "- US-first launch.\n"
         "- Pre-revenue, two-person team, limited budget.\n"
-        "- Next seasonal anchor: Father's Day, June 15 2026. "
+        "- Next seasonal anchor: Father's Day, June 21 2026. "
         "Mother's Day already passed (May 10).\n\n"
         "STRATEGIC CONSTRAINTS\n"
         "- No head-to-head paid combat with Remento — they outspend us ~10x.\n"
