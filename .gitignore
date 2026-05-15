@@ -12,6 +12,9 @@
 # Keep canonical data files (refreshed weekly by GitHub Actions)
 !data/*.json
 
+# Keep historical scraper snapshots for the Trends page
+!data/archive/*.json
+
 # Keep weekly Excel reports
 !reports/*.xlsx
 
