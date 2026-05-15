@@ -68,6 +68,11 @@ COMP_COLOR = {
     "Tellmel":           "#9CA3AF",                # muted gray (no Meta presence)
     "HereAfter AI":      "#9CA3AF",
     "No Story Lost":     "#9CA3AF",
+    # Adjacent / lateral competitors (companion & care space).
+    "Replika":           "#8B5CF6",                # violet — AI companion
+    "ElliQ":             "#14B8A6",                # teal — robot companion
+    "Papa":              "#FB923C",                # warm orange — caregiving
+    "friend.com":        "#64748B",                # slate — minimal hardware brand
 }
 
 

@@ -23,6 +23,11 @@ COMPETITORS = [
     "HereAfter AI",
     "No Story Lost",
     "Heritage Whisper",
+    # Adjacent / lateral competitors — companion & care space.
+    "Replika",
+    "ElliQ",
+    "Papa",
+    "friend.com",
 ]
 
 # Words that MUST appear in the page_name for an ad to be counted as that competitor's.
@@ -38,6 +43,12 @@ COMPETITOR_PAGE_FILTER = {
     "HereAfter AI":  ["hereafter"],
     "No Story Lost": ["no story lost", "nostorylost"],
     "Heritage Whisper": ["heritage whisper", "heritagewhisper"],
+    "Replika":       ["replika"],
+    "ElliQ":         ["elliq", "intuition robotics"],
+    # "Papa" and "friend" are common English words — keep filters strict so we
+    # don't tag random pages (Papa Johns, friendship orgs, etc.).
+    "Papa":          ["joinpapa", "papa, inc", "papa health", "papa.com"],
+    "friend.com":    ["friend.com", "friend ai", "friend pendant"],
 }
 
 # Meta page IDs — bypass search ranking entirely by hitting view_all_page_id=<id>.
@@ -60,6 +71,15 @@ COMPETITOR_PAGE_IDS = {
     # Meta search results. Leave it on search-fallback until we get the real
     # page_id by visiting the HW profile in a logged-in browser.
     "Heritage Whisper": None,
+    # Adjacent competitors:
+    # ElliQ confirmed via Meta Ad Library; the other three don't run Meta ads
+    # at the time of integration. Leave their IDs as None so the scraper skips
+    # the deterministic page-profile URL and falls back to keyword search; if
+    # the keyword search returns nothing (likely), they'll simply show 0 ads.
+    "Replika":          None,
+    "ElliQ":            "434160116949836",
+    "Papa":             None,
+    "friend.com":       None,
 }
 
 # Each entry is a list of (search_term, search_type) pairs tried in order.
@@ -85,6 +105,18 @@ COMPETITOR_SEARCH_PLAN = {
     "Heritage Whisper": [("Heritage Whisper", "page"),
                          ("HeritageWhisper",  "page"),
                          ("Heritage Whisper", "keyword_unordered")],
+    # Adjacent competitors — broad keyword fallbacks. ElliQ goes through
+    # COMPETITOR_PAGE_IDS so this entry is rarely hit. Papa / friend.com
+    # are common-word brand names; the page_filter above is the real safety
+    # net — search results are best-effort only.
+    "Replika":       [("Replika",          "page"),
+                      ("Replika AI",       "keyword_unordered")],
+    "ElliQ":         [("ElliQ",            "page"),
+                      ("Intuition Robotics","page")],
+    "Papa":          [("Papa Inc",         "page"),
+                      ("Join Papa",        "page")],
+    "friend.com":    [("friend.com",       "page"),
+                      ("Friend AI",        "keyword_unordered")],
 }
 
 AD_LIBRARY_BASE = "https://www.facebook.com/ads/library/"

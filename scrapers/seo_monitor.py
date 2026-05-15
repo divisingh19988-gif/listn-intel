@@ -27,6 +27,11 @@ COMPETITORS = {
     "Meminto": "meminto.com",
     "StoryWorth": "storyworth.com",
     "Storykeeper": "storykeeper.com",
+    # Adjacent / lateral competitors — companion & care space.
+    "Replika": "replika.com",
+    "ElliQ": "elliq.com",
+    "Papa": "papa.com",
+    "friend.com": "friend.com",
 }
 
 CTR_BY_POSITION = {1: 0.28, 2: 0.15, 3: 0.11, 4: 0.08, 5: 0.06,

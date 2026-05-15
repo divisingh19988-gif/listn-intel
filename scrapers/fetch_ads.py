@@ -18,6 +18,10 @@ COMPETITORS = [
     "Keepsake",
     "HereAfter AI",
     "No Story Lost",
+    "Replika",
+    "ElliQ",
+    "Papa",
+    "friend.com",
 ]
 
 AD_LIBRARY_URL = "https://graph.facebook.com/v19.0/ads_archive"

@@ -51,6 +51,11 @@ SITES = [
     ("Storii",           "https://www.storii.com"),
     ("Tellmel",          "https://tellmel.ai"),
     ("Listn",            "https://listn-app.com"),
+    # Adjacent / lateral competitors — companion & care space.
+    ("Replika",          "https://replika.com"),
+    ("ElliQ",            "https://elliq.com"),
+    ("Papa",             "https://www.papa.com"),
+    ("friend.com",       "https://friend.com"),
 ]
 
 AI_BOT_NAMES = ["GPTBot", "ClaudeBot", "PerplexityBot", "Google-Extended", "Bingbot"]
