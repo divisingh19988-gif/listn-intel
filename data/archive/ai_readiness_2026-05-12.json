@@ -1,0 +1,126 @@
+{
+  "fetched_date": "2026-05-12",
+  "method": "auto",
+  "sites": [
+    {
+      "name": "Remento",
+      "url": "https://www.remento.co",
+      "llms_txt": "No",
+      "ai_bots": 0,
+      "faq_schema": "No",
+      "article_schema": "No",
+      "canonical_pct": 100,
+      "metadesc_pct": 100,
+      "score": 40,
+      "elapsed_seconds": 4.8
+    },
+    {
+      "name": "StoryWorth",
+      "url": "https://welcome.storyworth.com",
+      "llms_txt": "No",
+      "ai_bots": 0,
+      "faq_schema": "No",
+      "article_schema": "No",
+      "canonical_pct": 100,
+      "metadesc_pct": 100,
+      "score": 40,
+      "elapsed_seconds": 2.7
+    },
+    {
+      "name": "Meminto",
+      "url": "https://meminto.com",
+      "llms_txt": "No",
+      "ai_bots": 0,
+      "faq_schema": "No",
+      "article_schema": "No",
+      "canonical_pct": 100,
+      "metadesc_pct": 100,
+      "score": 40,
+      "elapsed_seconds": 24.2
+    },
+    {
+      "name": "Storykeeper",
+      "url": "https://storykeeper.app",
+      "llms_txt": "No",
+      "ai_bots": 0,
+      "faq_schema": "No",
+      "article_schema": "No",
+      "canonical_pct": 0,
+      "metadesc_pct": 0,
+      "score": 0,
+      "elapsed_seconds": 2.7
+    },
+    {
+      "name": "Heritage Whisper",
+      "url": "https://www.heritagewhisper.com",
+      "llms_txt": "Yes",
+      "ai_bots": 5,
+      "faq_schema": "Yes",
+      "article_schema": "No",
+      "canonical_pct": 0,
+      "metadesc_pct": 0,
+      "score": 45,
+      "elapsed_seconds": 7.7
+    },
+    {
+      "name": "StoriedLife AI",
+      "url": "https://storiedlife.ai",
+      "llms_txt": "Yes",
+      "ai_bots": 0,
+      "faq_schema": "No",
+      "article_schema": "No",
+      "canonical_pct": 0,
+      "metadesc_pct": 0,
+      "score": 15,
+      "elapsed_seconds": 15.9
+    },
+    {
+      "name": "LifeEcho",
+      "url": "https://lifeecho.org",
+      "llms_txt": "Yes",
+      "ai_bots": 4,
+      "faq_schema": "Yes",
+      "article_schema": "No",
+      "canonical_pct": 100,
+      "metadesc_pct": 100,
+      "score": 85,
+      "elapsed_seconds": 7.7
+    },
+    {
+      "name": "Storii",
+      "url": "https://www.storii.com",
+      "llms_txt": "Yes",
+      "ai_bots": 0,
+      "faq_schema": "Yes",
+      "article_schema": "No",
+      "canonical_pct": 100,
+      "metadesc_pct": 100,
+      "score": 70,
+      "elapsed_seconds": 2.9
+    },
+    {
+      "name": "Tell Mel",
+      "url": "https://tellmel.com",
+      "llms_txt": "No",
+      "ai_bots": 0,
+      "faq_schema": "No",
+      "article_schema": "Timeout",
+      "canonical_pct": 0,
+      "metadesc_pct": 0,
+      "score": 0,
+      "elapsed_seconds": 59.9
+    },
+    {
+      "name": "Listn",
+      "url": "https://listn-app.com",
+      "llms_txt": "Yes",
+      "ai_bots": 5,
+      "faq_schema": "No",
+      "article_schema": "No",
+      "canonical_pct": 100,
+      "metadesc_pct": 100,
+      "score": 70,
+      "elapsed_seconds": 3.5
+    }
+  ]
+}

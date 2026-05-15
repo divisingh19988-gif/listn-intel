@@ -33,7 +33,16 @@ ROOT = Path(__file__).parent.parent
 ARCHIVE_DIR = ROOT / "data" / "archive"
 DATA_DIR = ROOT / "data"
 LATEST_FILE = DATA_DIR / "ads_scraped_latest.json"
+SEO_LATEST_FILE = DATA_DIR / "seo_raw_latest.json"
+AI_LATEST_FILE = DATA_DIR / "ai_readiness_latest.json"
 METHODOLOGY_CHANGE_DATE = "2026-05-13"
+
+# Brand-rename aliases — merge historical names so the chart shows one
+# continuous line instead of two disconnected ones. Rename source-of-truth:
+# commit c423200 renamed "Tell Mel" → "Tellmel" across the codebase.
+SITE_ALIASES = {
+    "Tell Mel": "Tellmel",
+}
 
 TONE_COLORS = {
     "nostalgia":     "#FFB4A2",
@@ -54,25 +63,27 @@ def _all_tones(text: str) -> list[str]:
 
 
 def detect_inflections(
-    df_view: pd.DataFrame,
+    daily: pd.DataFrame,
     z_threshold: float = 1.5,
-    min_abs_delta: int = 10,
+    min_abs_delta: float = 10,
 ) -> list[dict]:
-    """Flag days where a competitor's day-over-day volume change is a z-score
-    outlier within their own history AND the absolute change clears a magnitude
-    floor (prevents noise from tiny advertisers bouncing between 0 and 3 ads).
+    """Flag (date, entity) cells where day-over-day change is a z-score outlier
+    within that entity's own history AND the absolute change clears a magnitude
+    floor (prevents noise from sparse series with tiny values).
 
-    Threshold is 1.5σ rather than the conventional 2σ because the dataset is
-    small (5-6 deltas per competitor); 2σ rarely fires until we have weeks of
-    history. Min |delta| ≥ 10 ads filters out statistical noise from
-    competitors that only run a few ads at a time.
+    `daily` is a wide pivot: rows = dates (sorted), columns = entity names
+    (competitor / site), values = the metric. NaNs in a row are skipped so
+    entities with sparse history don't false-positive.
+
+    Threshold is 1.5σ rather than 2σ because datasets are small (5-6 deltas
+    per entity); 2σ rarely fires until weeks of history accumulate. Tune
+    min_abs_delta per metric (10 for ad counts, 3 for keyword counts, etc.).
     """
-    if df_view.empty:
+    if daily.empty:
         return []
-    daily = df_view.groupby(["date", "competitor"]).size().unstack(fill_value=0).sort_index()
     anomalies = []
-    for competitor in daily.columns:
-        series = daily[competitor]
+    for entity in daily.columns:
+        series = daily[entity].dropna()
         if len(series) < 4:
             continue
         deltas = series.diff().dropna()
@@ -88,7 +99,7 @@ def detect_inflections(
                 idx = series.index.get_loc(date)
                 anomalies.append({
                     "date": date,
-                    "competitor": competitor,
+                    "competitor": entity,
                     "delta": int(delta),
                     "z": float(z),
                     "prev": int(series.iloc[idx - 1]),
@@ -133,6 +144,86 @@ def load_snapshots() -> pd.DataFrame:
         return pd.DataFrame(columns=["date", "competitor", "ad_copy"])
 
     df = pd.DataFrame(rows)
+    df["date"] = pd.to_datetime(df["date"])
+    return df.sort_values("date")
+
+
+def _dedupe_by_fetched_date(paths: list[Path]) -> dict[str, dict]:
+    """Read JSON snapshots and key them by in-file fetched_date (filename fallback)."""
+    out: dict[str, dict] = {}
+    for path in paths:
+        try:
+            data = json.loads(path.read_text())
+        except (json.JSONDecodeError, OSError):
+            continue
+        snapshot_date = data.get("fetched_date")
+        if not snapshot_date:
+            m = DATE_RE.search(path.name)
+            if not m:
+                continue
+            snapshot_date = m.group(1)
+        out[snapshot_date] = data
+    return out
+
+
+@st.cache_data(show_spinner=False)
+def load_seo_snapshots() -> pd.DataFrame:
+    """One row per (date, competitor) with top-10 keyword count."""
+    candidates = (
+        list(ARCHIVE_DIR.glob("seo_raw_*.json"))
+        + list(DATA_DIR.glob("seo_raw_*.json"))
+    )
+    if SEO_LATEST_FILE.exists():
+        candidates.append(SEO_LATEST_FILE)
+    snapshots = _dedupe_by_fetched_date(candidates)
+
+    rows = []
+    for snapshot_date, data in snapshots.items():
+        for competitor, payload in (data.get("competitors") or {}).items():
+            keywords = (payload or {}).get("keywords") or []
+            top10 = sum(1 for k in keywords if (k.get("position") or 999) <= 10)
+            rows.append({
+                "date": snapshot_date,
+                "competitor": competitor,
+                "top10": top10,
+                "tracked": len(keywords),
+            })
+    if not rows:
+        return pd.DataFrame(columns=["date", "competitor", "top10", "tracked"])
+    df = pd.DataFrame(rows)
+    df["date"] = pd.to_datetime(df["date"])
+    return df.sort_values("date")
+
+
+@st.cache_data(show_spinner=False)
+def load_ai_snapshots() -> pd.DataFrame:
+    """One row per (date, site) with composite AI-readiness score."""
+    candidates = (
+        list(ARCHIVE_DIR.glob("ai_readiness_*.json"))
+        + list(DATA_DIR.glob("ai_readiness_*.json"))
+    )
+    if AI_LATEST_FILE.exists():
+        candidates.append(AI_LATEST_FILE)
+    snapshots = _dedupe_by_fetched_date(candidates)
+
+    rows = []
+    for snapshot_date, data in snapshots.items():
+        for site in (data.get("sites") or []):
+            score = site.get("score")
+            if score is None or not isinstance(score, (int, float)):
+                continue
+            raw_name = site.get("name") or site.get("url") or "—"
+            rows.append({
+                "date": snapshot_date,
+                "site": SITE_ALIASES.get(raw_name, raw_name),
+                "score": int(score),
+            })
+    if not rows:
+        return pd.DataFrame(columns=["date", "site", "score"])
+    df = pd.DataFrame(rows)
+    # After aliasing, the same brand may appear twice on one date if a snapshot
+    # somehow recorded both names — keep the higher score (most generous read).
+    df = df.sort_values("score", ascending=False).drop_duplicates(["date", "site"], keep="first")
     df["date"] = pd.to_datetime(df["date"])
     return df.sort_values("date")
 
@@ -244,7 +335,11 @@ st.caption(
     f"{snapshot_dates[0].date()} → {snapshot_dates[-1].date()}"
 )
 
-anomalies = detect_inflections(df_view)
+meta_daily = (
+    df_view.groupby(["date", "competitor"]).size()
+    .unstack(fill_value=0).sort_index()
+)
+anomalies = detect_inflections(meta_daily, min_abs_delta=10)
 if anomalies:
     methodology_date = pd.Timestamp(METHODOLOGY_CHANGE_DATE)
     st.markdown("### Inflection points")
@@ -338,15 +433,112 @@ _add_methodology_marker(fig_total, with_label=False)
 st.plotly_chart(fig_total, use_container_width=True)
 
 st.markdown("---")
-st.markdown("### SEO trends")
-_empty_state(
-    "Awaiting historical data — first dated SEO file will appear after the next scrape. "
-    "The SEO scraper now writes data/seo_raw_YYYY-MM-DD.json alongside _latest, so this "
-    "chart will populate on the next Monday weekly refresh."
-)
 
-st.markdown("### AI Readiness trends")
-_empty_state(
-    "Awaiting historical data — first dated AI Readiness file will appear after the next scrape. "
-    "The audit now writes data/ai_readiness_YYYY-MM-DD.json alongside _latest."
-)
+# ── SEO: keywords ranking in top 10 over time ────────────────────────────────
+seo_df = load_seo_snapshots()
+if seo_df.empty:
+    st.markdown("### SEO trends")
+    _empty_state("No SEO snapshot data found in data/ or data/archive/.")
+else:
+    seo_view = seo_df[seo_df["date"] >= df_view["date"].min()] if not df_view.empty else seo_df
+
+    st.markdown("### SEO: top-10 keyword presence")
+    st.caption(
+        "Count of keywords each competitor ranks in positions 1–10 "
+        "(out of the top 30 tracked via DataForSEO)."
+    )
+
+    if seo_view.empty:
+        _empty_state("No SEO snapshots in the selected window.")
+    else:
+        seo_daily = seo_view.pivot(index="date", columns="competitor", values="top10").sort_index()
+        seo_anomalies = detect_inflections(seo_daily, min_abs_delta=3)
+        if seo_anomalies:
+            for a in seo_anomalies[:5]:
+                direction = "↑" if a["delta"] > 0 else "↓"
+                st.markdown(
+                    f"- **{a['date'].date()}** — {a['competitor']} {direction} "
+                    f"**{abs(a['delta'])} top-10 keywords** "
+                    f"({a['prev']} → {a['curr']}, z = {a['z']:+.1f})"
+                )
+
+        fig_seo = go.Figure()
+        seo_order = (
+            seo_view.groupby("competitor")["top10"].max()
+            .sort_values(ascending=True).index.tolist()
+        )
+        for competitor in seo_order:
+            series = seo_view[seo_view["competitor"] == competitor].sort_values("date")
+            fig_seo.add_trace(go.Scatter(
+                x=series["date"],
+                y=series["top10"],
+                mode="lines+markers",
+                name=competitor,
+                line=dict(color=comp_color(competitor), width=1.5, shape="spline", smoothing=0.6),
+                marker=dict(size=4, color=comp_color(competitor)),
+                hovertemplate=f"<b>{competitor}</b><br>%{{x|%b %d}}: %{{y}} top-10 keywords<extra></extra>",
+            ))
+        fig_seo.update_layout(**_clean_layout(320), hovermode="closest")
+        st.plotly_chart(fig_seo, use_container_width=True)
+
+        n_snaps = seo_view["date"].nunique()
+        if n_snaps < 3:
+            st.caption(
+                f"Only {n_snaps} SEO snapshot{'s' if n_snaps != 1 else ''} so far — "
+                "the series will fill in as the weekly cron accumulates more data."
+            )
+
+# ── AI Readiness scores per site over time ───────────────────────────────────
+ai_df = load_ai_snapshots()
+if ai_df.empty:
+    st.markdown("### AI Readiness trends")
+    _empty_state("No AI Readiness snapshot data found in data/ or data/archive/.")
+else:
+    ai_view = ai_df[ai_df["date"] >= df_view["date"].min()] if not df_view.empty else ai_df
+
+    st.markdown("### AI Readiness scores")
+    st.caption(
+        "Composite 0–100 score per site: llms.txt presence, AI-bot allowlist coverage, "
+        "FAQ/Article schema, canonical and meta-description coverage."
+    )
+
+    if ai_view.empty:
+        _empty_state("No AI Readiness snapshots in the selected window.")
+    else:
+        ai_daily = ai_view.pivot(index="date", columns="site", values="score").sort_index()
+        ai_anomalies = detect_inflections(ai_daily, min_abs_delta=5)
+        if ai_anomalies:
+            for a in ai_anomalies[:5]:
+                direction = "↑" if a["delta"] > 0 else "↓"
+                st.markdown(
+                    f"- **{a['date'].date()}** — {a['competitor']} {direction} "
+                    f"**{abs(a['delta'])} points** "
+                    f"({a['prev']} → {a['curr']}, z = {a['z']:+.1f})"
+                )
+
+        fig_ai = go.Figure()
+        ai_order = (
+            ai_view.groupby("site")["score"].max()
+            .sort_values(ascending=True).index.tolist()
+        )
+        for site in ai_order:
+            series = ai_view[ai_view["site"] == site].sort_values("date")
+            fig_ai.add_trace(go.Scatter(
+                x=series["date"],
+                y=series["score"],
+                mode="lines+markers",
+                name=site,
+                line=dict(color=comp_color(site), width=1.5, shape="spline", smoothing=0.6),
+                marker=dict(size=4, color=comp_color(site)),
+                hovertemplate=f"<b>{site}</b><br>%{{x|%b %d}}: %{{y}}/100<extra></extra>",
+            ))
+        fig_ai.update_layout(**_clean_layout(360), hovermode="closest")
+        fig_ai.update_yaxes(range=[0, 100])
+        st.plotly_chart(fig_ai, use_container_width=True)
+
+        n_snaps = ai_view["date"].nunique()
+        if n_snaps < 3:
+            st.caption(
+                f"Only {n_snaps} AI Readiness snapshot{'s' if n_snaps != 1 else ''} so far — "
+                "the series will fill in as the weekly cron accumulates more data."
+            )
