@@ -21,7 +21,7 @@ import streamlit as st
 
 from lib.theme import inject_global_css, inject_sidebar, COLORS, comp_color, window_badge
 from lib.data_freshness import show_freshness_banner
-from lib.synthesis import SEO_CLUSTERS
+from lib.synthesis import SEO_CLUSTERS, SEO_ROADMAP_POSTS
 from lib.completion_log import (
     sweep as sweep_for_completion,
     is_completed,
@@ -69,72 +69,9 @@ if kw_df.empty:
     st.stop()
 
 
-# ── Roadmap posts — defined up top so the stat card can show the active count.
-# Each post has `publish_by` (self-imposed target — drives "overdue" red border)
-# AND `event_date` (the real seasonal deadline — drives auto-archive). Evergreen
-# posts have `event_date: None` and never auto-archive.
-POSTS = [
-    {
-        "num": "01",
-        "publish_by": date(2026, 4, 30),
-        "event_date": date(2026, 6, 21),  # Father's Day
-        "window": "SOON",
-        "title": "What to Ask Your Dad Before Father's Day: 50 Questions Worth Recording in His Own Voice",
-        "primary": ("fathers day gift ideas", 74000, 0),
-        "secondary": ["meaningful fathers day gift", "gift for dad from daughter"],
-        "why": "6.5 weeks to rank. KD 0. No memory app has written this post.",
-    },
-    {
-        "num": "02",
-        "publish_by": date(2026, 5, 1),
-        "event_date": date(2026, 5, 10),  # Mother's Day
-        "window": "URGENT",
-        "title": "The Mother's Day Gift That Actually Lasts: Why Her Voice Is Worth More Than Flowers",
-        "primary": ("meaningful mothers day gift", 8100, 12),
-        "secondary": ["gift for mom from daughter", "mothers day gift for mom who has everything"],
-        "why": "9 days to index before May 10.",
-    },
-    {
-        "num": "03",
-        "publish_by": date(2026, 5, 10),
-        "event_date": None,  # evergreen — Remento alternative, no seasonal anchor
-        "window": "COMMERCIAL INTENT",
-        "title": "Looking for a Remento Alternative? Here's What Actually Matters in a Memory App",
-        "primary": ("remento alternative", 1900, 8),
-        "secondary": ["storyworth alternative", "heritage whisper alternative"],
-        "why": "Remento's 4 cannibalized pages create a clear opening.",
-    },
-    {
-        "num": "04",
-        "publish_by": date(2026, 5, 15),
-        "event_date": None,  # evergreen — grandparent gifts
-        "window": "EVERGREEN",
-        "title": "The Gift That Won't Get Donated: Why Voice Memories Beat Any Physical Present for Grandparents",
-        "primary": ("grandparent gift ideas", 14800, 0),
-        "secondary": ["gift for grandma", "gift for grandpa"],
-        "why": "KD 0 · 14.8K volume · Meminto's #99 ranking is beatable.",
-    },
-    {
-        "num": "05",
-        "publish_by": date(2026, 6, 1),
-        "event_date": None,  # evergreen — caregiver content
-        "window": "EVERGREEN",
-        "title": "How to Record Your Parent's Life Stories Before It's Too Late",
-        "primary": ("how to record parents life stories", 2900, 8),
-        "secondary": ["record grandparents stories", "recording memories before dementia"],
-        "why": "Targets caregiver segment at peak emotional urgency.",
-    },
-    {
-        "num": "06",
-        "publish_by": date(2026, 6, 21),
-        "event_date": date(2026, 6, 21),  # Father's Day pairing
-        "window": "SOON",
-        "title": "50 Questions to Ask Your Parents Before It's Too Late",
-        "primary": ("questions to record with grandparents", 1300, 5),
-        "secondary": ["questions to ask dad before its too late"],
-        "why": "Father's Day pairing for Post 01 — same emotional hook, deeper questions.",
-    },
-]
+# Local alias — roadmap posts are now defined in lib.synthesis so the hygiene
+# module and other consumers can import them without Streamlit context.
+POSTS = SEO_ROADMAP_POSTS
 
 # ── Post-deadline sweep — Mother's Day etc. archive to history once past ──────
 today = date.today()

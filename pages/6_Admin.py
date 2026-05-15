@@ -15,6 +15,7 @@ restore (except tone_keywords, which has no soft-delete column today).
 from __future__ import annotations
 
 import json
+import os
 from datetime import date, datetime
 
 import pandas as pd
@@ -23,6 +24,7 @@ import streamlit as st
 from lib.theme import inject_global_css, inject_sidebar, COLORS
 from lib.data_freshness import show_freshness_banner
 from lib import admin_claude
+from lib.dashboard_hygiene import run_hygiene_check, get_last_review
 from lib.admin_validation import (
     validate_competitor,
     validate_cluster,
@@ -230,6 +232,63 @@ if total_gaps:
                 continue
             st.markdown(f"**{labels[key]}** — {len(items)}")
             st.caption(", ".join(items[:20]) + (" …" if len(items) > 20 else ""))
+
+# ── Dashboard hygiene (Claude-powered review) ────────────────────────────────
+_SEVERITY_EMOJI = {"high": "🚨", "medium": "⚠️", "low": "ℹ️"}
+_SEVERITY_ORDER = {"high": 0, "medium": 1, "low": 2}
+
+_last_review = get_last_review()
+_review_label = "🔍 Dashboard hygiene"
+if _last_review:
+    _n = len(_last_review.get("findings", []))
+    _review_label += f" ({_n} finding{'s' if _n != 1 else ''} · last run {_last_review['reviewed_at'][:10]})"
+with st.expander(_review_label, expanded=False):
+    st.caption(
+        "Claude reviews the dashboard for issues a deterministic rule can't catch — "
+        "wrong dates baked into data, placeholders left in production, contradictions "
+        "between sections, methodology markers older than they should be."
+    )
+    col_run, col_status = st.columns([1, 3])
+    with col_run:
+        run_clicked = st.button("Run review", key="run_hygiene", type="primary")
+    with col_status:
+        if not os.getenv("ANTHROPIC_API_KEY"):
+            st.warning("Set ANTHROPIC_API_KEY in .env to enable.")
+        elif _last_review:
+            usage = _last_review.get("usage") or {}
+            in_tok = usage.get("input_tokens") or 0
+            out_tok = usage.get("output_tokens") or 0
+            st.caption(f"Last run used {in_tok:,} input + {out_tok:,} output tokens.")
+
+    if run_clicked:
+        with st.spinner("Reviewing dashboard with Claude (this takes ~15-30s)..."):
+            try:
+                _last_review = run_hygiene_check()
+                st.success(f"Review complete — {len(_last_review['findings'])} findings.")
+            except Exception as _exc:
+                st.error(f"Review failed: {_exc}")
+                _last_review = get_last_review()
+
+    _findings = (_last_review or {}).get("findings", [])
+    if _findings:
+        _sorted = sorted(_findings, key=lambda f: _SEVERITY_ORDER.get(f.get("severity"), 99))
+        for f in _sorted:
+            sev = f.get("severity", "low")
+            emoji = _SEVERITY_EMOJI.get(sev, "ℹ️")
+            st.markdown(f"#### {emoji} {f.get('title','(no title)')}")
+            meta_bits = [sev.upper(), f.get("category", "other")]
+            loc = f.get("location")
+            if loc:
+                meta_bits.append(f"location: {loc}")
+            st.caption(" · ".join(meta_bits))
+            st.markdown(f.get("details", ""))
+            fix = f.get("suggested_fix")
+            if fix and fix.strip().lower() not in ("none", "n/a", ""):
+                st.markdown(f"**Fix:** {fix}")
+    elif _last_review:
+        st.info("No issues found in the last review — dashboard looks clean.")
+    else:
+        st.info("No review on file. Click **Run review** to ask Claude.")
 
 # ── Tabs ──────────────────────────────────────────────────────────────────────
 tab_comp, tab_cluster, tab_tone, tab_cand, tab_audit = st.tabs(
