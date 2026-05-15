@@ -74,7 +74,16 @@ HYGIENE_SYSTEM_PROMPT = (
     "applies to items with an event_date. The overdue red border is the "
     "designed nag signal.\n"
     "- Past-deadline items in ACTIVE sections are a bug; past-deadline items "
-    "in ARCHIVED sections are normal and expected."
+    "in ARCHIVED sections are normal and expected.\n"
+    "- Two posts in the same cluster targeting different keyword intents "
+    "(e.g. one going after a 74K-volume head term, the other after a 1-2K "
+    "long-tail urgency keyword) are a deliberate head/long-tail pairing, NOT "
+    "a duplicate. Only flag duplication if title AND primary keyword AND "
+    "secondary keywords overlap.\n"
+    "- sample_keywords on clusters is truncated to the first 8 — if the "
+    "cluster has more keywords, you do not see all of them. Do not conclude "
+    "'cluster is 100% X-intent' from the sample alone; check sample_note to "
+    "see if there are more keywords you can't see."
 )
 
 HYGIENE_SCHEMA = {
@@ -120,12 +129,21 @@ def _serialize_state(today: date) -> dict:
         deadline = c.get("deadline")
         if deadline is not None and deadline < today:
             continue  # already archived to completion_history below
+        # Send up to 8 sample keywords (was 3) so Claude can judge intent
+        # spread, not just guess from the first few. With only 3 samples it
+        # was falsely flagging clusters as "100% gift-intent" when the rest
+        # of the cluster covered other intents.
+        keywords = c.get("keywords", [])
         clusters_view.append({
             "name": c["name"],
             "window": c["window"],
             "deadline": deadline.isoformat() if deadline else None,
-            "keyword_count": len(c.get("keywords", [])),
-            "sample_keywords": [k[0] for k in c.get("keywords", [])[:3]],
+            "keyword_count": len(keywords),
+            "sample_keywords": [k[0] for k in keywords[:8]],
+            "sample_note": (
+                f"first 8 of {len(keywords)} keywords"
+                if len(keywords) > 8 else "complete keyword list"
+            ),
         })
 
     posts_view = []

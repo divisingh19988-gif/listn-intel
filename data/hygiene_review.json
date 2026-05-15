@@ -2,35 +2,27 @@
   "findings": [
     {
       "category": "contradiction",
-      "details": "Post 06 is titled '50 Questions to Ask Your Parents Before It's Too Late' but its primary_keyword is 'questions to ask dad before its too late'. The title is gender-neutral/parents-generic while the keyword is dad-specific. Either the title undersells the targeted keyword (and won't rank well for 'dad' queries) or the keyword is wrong for the article's actual scope.",
-      "location": "Active Roadmap > Post 06",
+      "details": "Post 01 is titled 'What to Ask Your Dad Before Father's Day: 50 Questions Worth Recording in His Own Voice' but its primary_keyword is 'fathers day gift ideas'. Someone searching 'fathers day gift ideas' expects a gift list, not a list of questions to ask dad. The page will not rank well for this head term, and the intent mismatch will also hurt bounce rate. The Father's Day cluster includes 'meaningful fathers day gift' and 'unique fathers day gift' which are better-matched head terms \u2014 or this post should be re-pointed at a question-themed keyword (e.g. 'questions to ask dad before fathers day').",
+      "location": "ACTIVE roadmap, Post 01",
       "severity": "medium",
-      "suggested_fix": "Either retitle Post 06 to '50 Questions to Ask Your Dad Before It's Too Late' to match the dad-targeted keyword, or change primary_keyword to 'questions to ask parents before its too late' to match the parents-scoped title.",
-      "title": "Post 06 title says 'Parents' but primary_keyword targets 'dad'"
+      "suggested_fix": "Either rewrite Post 01's title to lead with a gift framing ('50 Voice-Memory Gifts to Give Dad This Father's Day' etc.) OR change its primary_keyword to a question-intent keyword and let Post 06 carry the head term. Right now Post 01 cannot serve either intent well.",
+      "title": "Post 01 title and primary keyword don't match search intent"
     },
     {
       "category": "contradiction",
-      "details": "Post 06 has event_date=2026-06-21 (Father's Day) and window=SOON, implying it's a Father's Day push. But the title targets 'parents' generally and the keyword is the evergreen 'before it's too late' angle, not a Father's Day angle. This will cause it to be auto-archived after June 21 even though the content is evergreen, losing the post from the active view.",
-      "location": "Active Roadmap > Post 06",
-      "severity": "medium",
-      "suggested_fix": "Move Post 06 to window=EVERGREEN with event_date=null so it doesn't get swept after Father's Day. If a Father's-Day-themed companion is wanted, create a separate post.",
-      "title": "Post 06 tagged to Father's Day event but content is generic parents"
-    },
-    {
-      "category": "contradiction",
-      "details": "Post 01 ('What to Ask Your Dad Before Father's Day: 50 Questions Worth Recording in His Own Voice', publish_by 2026-04-30) and Post 06 ('50 Questions to Ask Your Parents Before It's Too Late', publish_by 2026-05-31, event_date Father's Day) are both 50-question listicles tied to the same Father's Day event. Risk of keyword cannibalization between the two on Listn's own site.",
-      "location": "Active Roadmap > Posts 01 and 06",
+      "details": "Post 01 ('What to Ask Your Dad Before Father's Day: 50 Questions Worth Recording in His Own Voice') and Post 06 ('50 Questions to Ask Your Dad Before It's Too Late') both promise a 50-question list to ask dad. While their primary keywords differ (fathers day gift ideas vs questions to ask dad before its too late) and head/long-tail pairing is designed, here both posts use the same '50 questions' content frame rather than genuinely different angles. This will produce two pages competing for the same long-tail question searches and may trigger Google to pick one and ignore the other.",
+      "location": "ACTIVE roadmap, Posts 01 and 06",
       "severity": "low",
-      "suggested_fix": "Differentiate angles explicitly: keep Post 01 as the Father's Day-targeted dad-specific listicle, and re-scope Post 06 to a different format (e.g., 'How to Get Your Parent to Actually Open Up' or 'What to Do With the Recording After') so they don't compete for the same SERP intent.",
-      "title": "Posts 01 and 06 are near-duplicates ('50 Questions' for Father's Day)"
+      "suggested_fix": "Differentiate the content frames: keep '50 questions' on Post 06 (which actually targets the question keyword), and pivot Post 01 to a non-list angle (story prompts, conversation starters by life stage, or gift-focused framing) that supports the Father's Day gift-intent keyword it's assigned.",
+      "title": "Post 01 and Post 06 carry near-identical '50 questions to ask dad' framing"
     }
   ],
   "model": "claude-opus-4-7",
-  "reviewed_at": "2026-05-16T00:53:49",
+  "reviewed_at": "2026-05-16T00:58:33",
   "today": "2026-05-16",
   "usage": {
     "cache_read_input_tokens": 0,
-    "input_tokens": 2847,
-    "output_tokens": 2677
+    "input_tokens": 3295,
+    "output_tokens": 3298
   }
 }

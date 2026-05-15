@@ -379,11 +379,12 @@ SEO_ROADMAP_POSTS = [
         "publish_by": date(2026, 5, 31),  # 3 weeks lead time before the Jun 21 event
         "event_date": date(2026, 6, 21),  # Father's Day pairing
         "window": "SOON",
-        "title": "50 Questions to Ask Your Parents Before It's Too Late",
-        # Realigned to a Father's Day-intent keyword (was "questions to record
-        # with grandparents", which targets the wrong audience for this post).
+        # Retitled from "...Parents..." to match the dad-targeted primary
+        # keyword and Father's Day event tagging. Post 01 is the Father's Day
+        # gift-intent piece; Post 06 is the deeper-questions sister.
+        "title": "50 Questions to Ask Your Dad Before It's Too Late",
         "primary": ("questions to ask dad before its too late", 1900, 6),
-        "secondary": ["questions to record with grandparents", "record dads stories fathers day"],
+        "secondary": ["meaningful fathers day gift", "record dads stories fathers day"],
         "why": "Father's Day pairing for Post 01 — same emotional hook, deeper questions.",
     },
 ]
