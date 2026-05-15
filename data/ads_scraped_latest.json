@@ -1,7 +1,7 @@
 {
-  "fetched_date": "2026-05-14",
+  "fetched_date": "2026-05-15",
   "method": "web_scrape",
-  "total_ads": 69,
+  "total_ads": 87,
   "competitors": {
     "Remento": [
       {
@@ -17,22 +17,7 @@
         "impression_upper": null,
         "start_date": "2026-05-13",
         "stop_date": null,
-        "days_running": 1
-      },
-      {
-        "competitor": "Remento",
-        "ad_id": "1432821038292957",
-        "status": "Active",
-        "page_name": "Remento",
-        "ad_copy": "See why Mark Cuban invested on Shark Tank: \"With Remento, you\u2019ll always have the voices of the people you love.\u201d Give your parent something meaningful\u2026 not homework. Remento captures their stories by voice, writes them in their own style, and turns them into a beautiful, interactive, color hardcover book for your entire family.",
-        "headline": "No typing. No passwords. No tech stress.",
-        "cta": null,
-        "platforms": [],
-        "impression_lower": null,
-        "impression_upper": null,
-        "start_date": "2026-02-20",
-        "stop_date": null,
-        "days_running": 83
+        "days_running": 2
       },
       {
         "competitor": "Remento",
@@ -47,7 +32,7 @@
         "impression_upper": null,
         "start_date": "2026-05-13",
         "stop_date": null,
-        "days_running": 1
+        "days_running": 2
       },
       {
         "competitor": "Remento",
@@ -62,22 +47,7 @@
         "impression_upper": null,
         "start_date": "2026-05-13",
         "stop_date": null,
-        "days_running": 1
-      },
-      {
-        "competitor": "Remento",
-        "ad_id": "884053280914752",
-        "status": "Active",
-        "page_name": "Remento",
-        "ad_copy": "See why Mark Cuban invested on Shark Tank: \"With Remento, you\u2019ll always have the voices of the people you love.\u201d Give your parent something meaningful\u2026 not homework. Remento captures their stories by voice, writes them in their own style, and turns them into a beautiful, interactive, color hardcover book for your entire family.",
-        "headline": "No typing. No passwords. No tech stress.",
-        "cta": null,
-        "platforms": [],
-        "impression_lower": null,
-        "impression_upper": null,
-        "start_date": "2026-02-20",
-        "stop_date": null,
-        "days_running": 83
+        "days_running": 2
       },
       {
         "competitor": "Remento",
@@ -92,22 +62,7 @@
         "impression_upper": null,
         "start_date": "2026-05-13",
         "stop_date": null,
-        "days_running": 1
-      },
-      {
-        "competitor": "Remento",
-        "ad_id": "685092221298672",
-        "status": "Active",
-        "page_name": "Remento",
-        "ad_copy": "See why Mark Cuban invested on Shark Tank: \"With Remento, you\u2019ll always have the voices of the people you love.\u201d Give your parent something meaningful\u2026 not homework. Remento captures their stories by voice, writes them in their own style, and turns them into a beautiful, interactive, color hardcover book for your entire family.",
-        "headline": "No typing. No passwords. No tech stress.",
-        "cta": null,
-        "platforms": [],
-        "impression_lower": null,
-        "impression_upper": null,
-        "start_date": "2026-02-20",
-        "stop_date": null,
-        "days_running": 83
+        "days_running": 2
       },
       {
         "competitor": "Remento",
@@ -122,7 +77,7 @@
         "impression_upper": null,
         "start_date": "2026-05-13",
         "stop_date": null,
-        "days_running": 1
+        "days_running": 2
       },
       {
         "competitor": "Remento",
@@ -137,7 +92,7 @@
         "impression_upper": null,
         "start_date": "2026-05-13",
         "stop_date": null,
-        "days_running": 1
+        "days_running": 2
       },
       {
         "competitor": "Remento",
@@ -152,7 +107,7 @@
         "impression_upper": null,
         "start_date": "2026-05-13",
         "stop_date": null,
-        "days_running": 1
+        "days_running": 2
       },
       {
         "competitor": "Remento",
@@ -167,7 +122,7 @@
         "impression_upper": null,
         "start_date": "2026-05-13",
         "stop_date": null,
-        "days_running": 1
+        "days_running": 2
       },
       {
         "competitor": "Remento",
@@ -182,7 +137,22 @@
         "impression_upper": null,
         "start_date": "2026-05-13",
         "stop_date": null,
-        "days_running": 1
+        "days_running": 2
+      },
+      {
+        "competitor": "Remento",
+        "ad_id": "1701124344229972",
+        "status": "Active",
+        "page_name": "Remento",
+        "ad_copy": "See why Mark Cuban invested on Shark Tank: \"With Remento, you\u2019ll always have the voices of the people you love.\u201d Give your parent something meaningful\u2026 not homework. Remento captures their stories by voice, writes them in their own style, and turns them into a beautiful, interactive, color hardcover book for your entire family.",
+        "headline": "No typing. No passwords. No tech stress.",
+        "cta": null,
+        "platforms": [],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2026-05-13",
+        "stop_date": null,
+        "days_running": 2
       },
       {
         "competitor": "Remento",
@@ -197,7 +167,7 @@
         "impression_upper": null,
         "start_date": "2026-05-13",
         "stop_date": null,
-        "days_running": 1
+        "days_running": 2
       },
       {
         "competitor": "Remento",
@@ -212,7 +182,7 @@
         "impression_upper": null,
         "start_date": "2026-05-13",
         "stop_date": null,
-        "days_running": 1
+        "days_running": 2
       },
       {
         "competitor": "Remento",
@@ -227,7 +197,7 @@
         "impression_upper": null,
         "start_date": "2026-05-13",
         "stop_date": null,
-        "days_running": 1
+        "days_running": 2
       },
       {
         "competitor": "Remento",
@@ -242,7 +212,7 @@
         "impression_upper": null,
         "start_date": "2026-05-13",
         "stop_date": null,
-        "days_running": 1
+        "days_running": 2
       }
     ],
     "Enna": [
@@ -259,7 +229,7 @@
         "impression_upper": null,
         "start_date": "2025-11-14",
         "stop_date": null,
-        "days_running": 181
+        "days_running": 182
       },
       {
         "competitor": "Enna",
@@ -274,7 +244,7 @@
         "impression_upper": null,
         "start_date": "2026-04-28",
         "stop_date": null,
-        "days_running": 16
+        "days_running": 17
       },
       {
         "competitor": "Enna",
@@ -289,7 +259,7 @@
         "impression_upper": null,
         "start_date": "2025-11-14",
         "stop_date": null,
-        "days_running": 181
+        "days_running": 182
       },
       {
         "competitor": "Enna",
@@ -304,7 +274,7 @@
         "impression_upper": null,
         "start_date": "2025-11-07",
         "stop_date": null,
-        "days_running": 188
+        "days_running": 189
       },
       {
         "competitor": "Enna",
@@ -319,7 +289,7 @@
         "impression_upper": null,
         "start_date": "2025-11-07",
         "stop_date": null,
-        "days_running": 188
+        "days_running": 189
       },
       {
         "competitor": "Enna",
@@ -334,7 +304,7 @@
         "impression_upper": null,
         "start_date": "2025-11-07",
         "stop_date": null,
-        "days_running": 188
+        "days_running": 189
       },
       {
         "competitor": "Enna",
@@ -349,7 +319,7 @@
         "impression_upper": null,
         "start_date": "2025-11-07",
         "stop_date": null,
-        "days_running": 188
+        "days_running": 189
       },
       {
         "competitor": "Enna",
@@ -364,7 +334,7 @@
         "impression_upper": null,
         "start_date": "2026-02-11",
         "stop_date": null,
-        "days_running": 92
+        "days_running": 93
       },
       {
         "competitor": "Enna",
@@ -379,7 +349,7 @@
         "impression_upper": null,
         "start_date": "2025-12-22",
         "stop_date": null,
-        "days_running": 143
+        "days_running": 144
       },
       {
         "competitor": "Enna",
@@ -394,7 +364,7 @@
         "impression_upper": null,
         "start_date": "2025-11-07",
         "stop_date": null,
-        "days_running": 188
+        "days_running": 189
       },
       {
         "competitor": "Enna",
@@ -409,7 +379,7 @@
         "impression_upper": null,
         "start_date": "2026-04-12",
         "stop_date": null,
-        "days_running": 32
+        "days_running": 33
       },
       {
         "competitor": "Enna",
@@ -424,7 +394,7 @@
         "impression_upper": null,
         "start_date": "2025-11-14",
         "stop_date": null,
-        "days_running": 181
+        "days_running": 182
       },
       {
         "competitor": "Enna",
@@ -439,7 +409,7 @@
         "impression_upper": null,
         "start_date": "2026-04-22",
         "stop_date": null,
-        "days_running": 22
+        "days_running": 23
       },
       {
         "competitor": "Enna",
@@ -454,7 +424,7 @@
         "impression_upper": null,
         "start_date": "2025-12-22",
         "stop_date": null,
-        "days_running": 143
+        "days_running": 144
       },
       {
         "competitor": "Enna",
@@ -469,7 +439,7 @@
         "impression_upper": null,
         "start_date": "2025-11-07",
         "stop_date": null,
-        "days_running": 188
+        "days_running": 189
       },
       {
         "competitor": "Enna",
@@ -484,7 +454,7 @@
         "impression_upper": null,
         "start_date": "2025-11-14",
         "stop_date": null,
-        "days_running": 181
+        "days_running": 182
       },
       {
         "competitor": "Enna",
@@ -499,7 +469,7 @@
         "impression_upper": null,
         "start_date": "2026-04-22",
         "stop_date": null,
-        "days_running": 22
+        "days_running": 23
       },
       {
         "competitor": "Enna",
@@ -514,7 +484,7 @@
         "impression_upper": null,
         "start_date": "2025-12-22",
         "stop_date": null,
-        "days_running": 143
+        "days_running": 144
       },
       {
         "competitor": "Enna",
@@ -529,7 +499,7 @@
         "impression_upper": null,
         "start_date": "2025-11-07",
         "stop_date": null,
-        "days_running": 188
+        "days_running": 189
       },
       {
         "competitor": "Enna",
@@ -544,7 +514,7 @@
         "impression_upper": null,
         "start_date": "2025-12-22",
         "stop_date": null,
-        "days_running": 143
+        "days_running": 144
       },
       {
         "competitor": "Enna",
@@ -559,7 +529,7 @@
         "impression_upper": null,
         "start_date": "2025-11-15",
         "stop_date": null,
-        "days_running": 180
+        "days_running": 181
       },
       {
         "competitor": "Enna",
@@ -574,7 +544,7 @@
         "impression_upper": null,
         "start_date": "2026-01-22",
         "stop_date": null,
-        "days_running": 112
+        "days_running": 113
       },
       {
         "competitor": "Enna",
@@ -589,7 +559,7 @@
         "impression_upper": null,
         "start_date": "2026-04-22",
         "stop_date": null,
-        "days_running": 22
+        "days_running": 23
       },
       {
         "competitor": "Enna",
@@ -604,7 +574,7 @@
         "impression_upper": null,
         "start_date": "2026-02-11",
         "stop_date": null,
-        "days_running": 92
+        "days_running": 93
       },
       {
         "competitor": "Enna",
@@ -619,7 +589,7 @@
         "impression_upper": null,
         "start_date": "2025-12-22",
         "stop_date": null,
-        "days_running": 143
+        "days_running": 144
       },
       {
         "competitor": "Enna",
@@ -634,7 +604,7 @@
         "impression_upper": null,
         "start_date": "2026-04-23",
         "stop_date": null,
-        "days_running": 21
+        "days_running": 22
       },
       {
         "competitor": "Enna",
@@ -649,7 +619,7 @@
         "impression_upper": null,
         "start_date": "2025-11-07",
         "stop_date": null,
-        "days_running": 188
+        "days_running": 189
       },
       {
         "competitor": "Enna",
@@ -664,7 +634,7 @@
         "impression_upper": null,
         "start_date": "2025-11-14",
         "stop_date": null,
-        "days_running": 181
+        "days_running": 182
       },
       {
         "competitor": "Enna",
@@ -679,7 +649,7 @@
         "impression_upper": null,
         "start_date": "2026-01-17",
         "stop_date": null,
-        "days_running": 117
+        "days_running": 118
       },
       {
         "competitor": "Enna",
@@ -694,7 +664,7 @@
         "impression_upper": null,
         "start_date": "2025-11-07",
         "stop_date": null,
-        "days_running": 188
+        "days_running": 189
       }
     ],
     "Meminto": [],
@@ -713,7 +683,7 @@
         "impression_upper": null,
         "start_date": "2026-05-07",
         "stop_date": null,
-        "days_running": 7
+        "days_running": 8
       },
       {
         "competitor": "Storykeeper",
@@ -728,7 +698,7 @@
         "impression_upper": null,
         "start_date": "2026-04-30",
         "stop_date": null,
-        "days_running": 14
+        "days_running": 15
       },
       {
         "competitor": "Storykeeper",
@@ -743,7 +713,7 @@
         "impression_upper": null,
         "start_date": "2026-04-30",
         "stop_date": null,
-        "days_running": 14
+        "days_running": 15
       },
       {
         "competitor": "Storykeeper",
@@ -758,7 +728,7 @@
         "impression_upper": null,
         "start_date": "2026-05-07",
         "stop_date": null,
-        "days_running": 7
+        "days_running": 8
       },
       {
         "competitor": "Storykeeper",
@@ -773,7 +743,7 @@
         "impression_upper": null,
         "start_date": "2026-05-07",
         "stop_date": null,
-        "days_running": 7
+        "days_running": 8
       },
       {
         "competitor": "Storykeeper",
@@ -788,7 +758,7 @@
         "impression_upper": null,
         "start_date": "2026-04-30",
         "stop_date": null,
-        "days_running": 14
+        "days_running": 15
       },
       {
         "competitor": "Storykeeper",
@@ -803,7 +773,7 @@
         "impression_upper": null,
         "start_date": "2026-05-07",
         "stop_date": null,
-        "days_running": 7
+        "days_running": 8
       },
       {
         "competitor": "Storykeeper",
@@ -818,7 +788,7 @@
         "impression_upper": null,
         "start_date": "2026-05-10",
         "stop_date": null,
-        "days_running": 4
+        "days_running": 5
       },
       {
         "competitor": "Storykeeper",
@@ -833,7 +803,7 @@
         "impression_upper": null,
         "start_date": "2026-05-07",
         "stop_date": null,
-        "days_running": 7
+        "days_running": 8
       },
       {
         "competitor": "Storykeeper",
@@ -848,7 +818,7 @@
         "impression_upper": null,
         "start_date": "2026-05-07",
         "stop_date": null,
-        "days_running": 7
+        "days_running": 8
       },
       {
         "competitor": "Storykeeper",
@@ -863,7 +833,7 @@
         "impression_upper": null,
         "start_date": "2026-05-07",
         "stop_date": null,
-        "days_running": 7
+        "days_running": 8
       },
       {
         "competitor": "Storykeeper",
@@ -878,7 +848,7 @@
         "impression_upper": null,
         "start_date": "2026-05-07",
         "stop_date": null,
-        "days_running": 7
+        "days_running": 8
       },
       {
         "competitor": "Storykeeper",
@@ -893,7 +863,7 @@
         "impression_upper": null,
         "start_date": "2026-05-07",
         "stop_date": null,
-        "days_running": 7
+        "days_running": 8
       },
       {
         "competitor": "Storykeeper",
@@ -908,7 +878,7 @@
         "impression_upper": null,
         "start_date": "2026-05-12",
         "stop_date": null,
-        "days_running": 2
+        "days_running": 3
       },
       {
         "competitor": "Storykeeper",
@@ -923,7 +893,7 @@
         "impression_upper": null,
         "start_date": "2026-05-12",
         "stop_date": null,
-        "days_running": 2
+        "days_running": 3
       },
       {
         "competitor": "Storykeeper",
@@ -938,7 +908,7 @@
         "impression_upper": null,
         "start_date": "2026-05-04",
         "stop_date": null,
-        "days_running": 10
+        "days_running": 11
       },
       {
         "competitor": "Storykeeper",
@@ -953,7 +923,7 @@
         "impression_upper": null,
         "start_date": "2026-05-12",
         "stop_date": null,
-        "days_running": 2
+        "days_running": 3
       },
       {
         "competitor": "Storykeeper",
@@ -968,7 +938,7 @@
         "impression_upper": null,
         "start_date": "2026-04-30",
         "stop_date": null,
-        "days_running": 14
+        "days_running": 15
       },
       {
         "competitor": "Storykeeper",
@@ -983,7 +953,7 @@
         "impression_upper": null,
         "start_date": "2026-05-05",
         "stop_date": null,
-        "days_running": 9
+        "days_running": 10
       },
       {
         "competitor": "Storykeeper",
@@ -998,7 +968,7 @@
         "impression_upper": null,
         "start_date": "2026-04-30",
         "stop_date": null,
-        "days_running": 14
+        "days_running": 15
       },
       {
         "competitor": "Storykeeper",
@@ -1013,7 +983,7 @@
         "impression_upper": null,
         "start_date": "2026-04-30",
         "stop_date": null,
-        "days_running": 14
+        "days_running": 15
       },
       {
         "competitor": "Storykeeper",
@@ -1028,7 +998,7 @@
         "impression_upper": null,
         "start_date": "2026-05-07",
         "stop_date": null,
-        "days_running": 7
+        "days_running": 8
       }
     ],
     "Tellmel": [],
@@ -1046,11 +1016,319 @@
         "impression_upper": null,
         "start_date": "2025-05-20",
         "stop_date": null,
-        "days_running": 359
+        "days_running": 360
       }
     ],
     "HereAfter AI": [],
     "No Story Lost": [],
-    "Heritage Whisper": []
+    "Heritage Whisper": [],
+    "Replika": [
+      {
+        "competitor": "Replika",
+        "ad_id": "1196325971839818",
+        "status": "Active",
+        "page_name": "Replika Scents",
+        "ad_copy": "Did you know your fave designer scents can't be patented? \ud83e\udd2f \ud83d\ude0d Smell irresistible without the hefty price tag \u2705 Smell amazing the whole day",
+        "headline": "\ud83c\udf31 Vegan & cruelty-free",
+        "cta": null,
+        "platforms": [],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2025-04-06",
+        "stop_date": null,
+        "days_running": 404
+      },
+      {
+        "competitor": "Replika",
+        "ad_id": "1271869701757462",
+        "status": "Active",
+        "page_name": "Replika Scents",
+        "ad_copy": "Did you know your fave designer scents can't be patented? \ud83e\udd2f \ud83d\ude0d Smell irresistible without the hefty price tag \u2705 Smell amazing the whole day",
+        "headline": "\ud83c\udf31 Vegan & cruelty-free",
+        "cta": null,
+        "platforms": [],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2026-04-10",
+        "stop_date": null,
+        "days_running": 35
+      },
+      {
+        "competitor": "Replika",
+        "ad_id": "1254256422698342",
+        "status": "Active",
+        "page_name": "Replika Scents",
+        "ad_copy": "Did you know your fave designer scents can't be patented? \ud83e\udd2f \ud83d\ude0d Smell irresistible without the hefty price tag \u2705 Smell amazing the whole day",
+        "headline": "\ud83c\udf31 Vegan & cruelty-free",
+        "cta": null,
+        "platforms": [],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2025-05-07",
+        "stop_date": null,
+        "days_running": 373
+      },
+      {
+        "competitor": "Replika",
+        "ad_id": "931417823180347",
+        "status": "Active",
+        "page_name": "RepLika",
+        "ad_copy": "\u260e\ufe0f \u0544\u0561\u0576\u0580\u0561\u0574\u0561\u057d\u0576\u0565\u0580\u056b \u0570\u0561\u0574\u0561\u0580 \u056f\u0561\u0580\u0578\u0572 \u0565\u0584 \u0566\u0561\u0576\u0563\u0561\u0570\u0561\u0580\u0565\u056c\u055d #\u056d\u0578\u057d\u0584\u056b\u057e\u0561\u0580\u057a\u0565\u057f\u0578\u0582\u0569\u0575\u0578\u0582\u0576 #\u0570\u0561\u0576\u0580\u0561\u0575\u056b\u0576\u0565\u056c\u0578\u0582\u0575\u0569 #\u0561\u057c\u0561\u057b\u0576\u0578\u0580\u0564\u0578\u0582\u0569\u0575\u0578\u0582\u0576 #\u0566\u0561\u0580\u0563\u0561\u0581\u0578\u0582\u0574 Sorry, we're having trouble playing this video.",
+        "headline": "Sorry, we're having trouble playing this video.",
+        "cta": "Learn more",
+        "platforms": [
+          "Instagram"
+        ],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2026-03-06",
+        "stop_date": null,
+        "days_running": 70
+      }
+    ],
+    "ElliQ": [
+      {
+        "competitor": "ElliQ",
+        "ad_id": "1685628942752739",
+        "status": "Active",
+        "page_name": "ElliQ",
+        "ad_copy": "Conversation, interaction, and mental stimulation are essential for cognitive health \ud83d\udca1 ElliQ helps support healthy aging by providing meaningful daily engagement and companionship. Sorry, we're having trouble playing this video.",
+        "headline": "Sorry, we're having trouble playing this video.",
+        "cta": "Learn more",
+        "platforms": [],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2026-04-02",
+        "stop_date": null,
+        "days_running": 43
+      },
+      {
+        "competitor": "ElliQ",
+        "ad_id": "1688004719222897",
+        "status": "Active",
+        "page_name": "ElliQ",
+        "ad_copy": "Conversation, interaction, and mental stimulation are essential for cognitive health \ud83d\udca1 ElliQ helps support healthy aging by providing meaningful daily engagement and companionship. Sorry, we're having trouble playing this video.",
+        "headline": "Sorry, we're having trouble playing this video.",
+        "cta": "Learn more",
+        "platforms": [],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2026-04-10",
+        "stop_date": null,
+        "days_running": 35
+      },
+      {
+        "competitor": "ElliQ",
+        "ad_id": "1657931948555000",
+        "status": "Active",
+        "page_name": "ElliQ",
+        "ad_copy": "With ElliQ, getting started takes minutes - not hours. From the moment you plug it in, ElliQ fills your home with meaningful conversation and a sense of connection that fits right into your day. \u2728 Plug in and go",
+        "headline": "\u2728 Daily check-ins & reminders",
+        "cta": null,
+        "platforms": [],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2026-04-03",
+        "stop_date": null,
+        "days_running": 42
+      },
+      {
+        "competitor": "ElliQ",
+        "ad_id": "2082672142583809",
+        "status": "Active",
+        "page_name": "ElliQ",
+        "ad_copy": "There\u2019s a lot to keep track of. ElliQ helps by sending reminders about appointments, plans, and important moments - and provides company along the way. She makes your life feel simpler and more enjoyable. Sorry, we're having trouble playing this video.",
+        "headline": "Sorry, we're having trouble playing this video.",
+        "cta": "Learn more",
+        "platforms": [],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2026-03-02",
+        "stop_date": null,
+        "days_running": 74
+      },
+      {
+        "competitor": "ElliQ",
+        "ad_id": "952068907735194",
+        "status": "Active",
+        "page_name": "ElliQ",
+        "ad_copy": "A friendly voice. A daily routine. A healthier mind. \ud83d\udca1 ElliQ helps keep minds active and spirits lifted with daily interaction, gentle prompts, and engaging moments that support long-term cognitive health. Sorry, we're having trouble playing this video.",
+        "headline": "Sorry, we're having trouble playing this video.",
+        "cta": "Learn more",
+        "platforms": [],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2026-04-30",
+        "stop_date": null,
+        "days_running": 15
+      },
+      {
+        "competitor": "ElliQ",
+        "ad_id": "1470273817898181",
+        "status": "Active",
+        "page_name": "ElliQ",
+        "ad_copy": "Because no one should feel alone. ElliQ is more than technology - she\u2019s a companion who\u2019s there every day to talk, laugh, and brighten your little moments. From sharing stories to telling jokes, ElliQ brings connection, comfort, and smiles right into your home.",
+        "headline": "\u2728 A friendly voice",
+        "cta": null,
+        "platforms": [],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2026-04-23",
+        "stop_date": null,
+        "days_running": 22
+      },
+      {
+        "competitor": "ElliQ",
+        "ad_id": "1488992326012147",
+        "status": "Active",
+        "page_name": "ElliQ",
+        "ad_copy": "A friendly voice. A daily routine. A healthier mind. \ud83d\udca1 ElliQ helps keep minds active and spirits lifted with daily interaction, gentle prompts, and engaging moments that support long-term cognitive health. Sorry, we're having trouble playing this video.",
+        "headline": "Sorry, we're having trouble playing this video.",
+        "cta": "Learn more",
+        "platforms": [],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2026-05-11",
+        "stop_date": null,
+        "days_running": 4
+      },
+      {
+        "competitor": "ElliQ",
+        "ad_id": "1885769545476096",
+        "status": "Active",
+        "page_name": "ElliQ",
+        "ad_copy": "A digital care companion designed for healthy, happy aging at home. Get it free today by your local Area Agency on Aging or your Medicaid provider. Sorry, we're having trouble playing this video.",
+        "headline": "Sorry, we're having trouble playing this video.",
+        "cta": "Learn more",
+        "platforms": [],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2026-04-03",
+        "stop_date": null,
+        "days_running": 42
+      },
+      {
+        "competitor": "ElliQ",
+        "ad_id": "1682907829804633",
+        "status": "Active",
+        "page_name": "ElliQ",
+        "ad_copy": "Conversation, interaction, and mental stimulation are essential for cognitive health \ud83d\udca1 ElliQ helps support healthy aging by providing meaningful daily engagement and companionship. Sorry, we're having trouble playing this video.",
+        "headline": "Sorry, we're having trouble playing this video.",
+        "cta": "Learn more",
+        "platforms": [],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2026-05-05",
+        "stop_date": null,
+        "days_running": 10
+      },
+      {
+        "competitor": "ElliQ",
+        "ad_id": "2052874168989707",
+        "status": "Active",
+        "page_name": "ElliQ",
+        "ad_copy": "A digital care companion designed for healthy, happy aging at home. Get it at no cost today by the Area Agency on Aging of Broward County. Check you eligibility today at ElliQ.com/free Apply for a free ElliQ today!",
+        "headline": "Get it free today",
+        "cta": null,
+        "platforms": [],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2026-04-03",
+        "stop_date": null,
+        "days_running": 42
+      },
+      {
+        "competitor": "ElliQ",
+        "ad_id": "1536669871452455",
+        "status": "Active",
+        "page_name": "ElliQ",
+        "ad_copy": "Because no one should feel alone. ElliQ is more than technology - she\u2019s a companion who\u2019s there every day to talk, laugh, and brighten your little moments. From sharing stories to telling jokes, ElliQ brings connection, comfort, and smiles right into your home.",
+        "headline": "\u2728 A friendly voice",
+        "cta": null,
+        "platforms": [],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2026-05-10",
+        "stop_date": null,
+        "days_running": 5
+      },
+      {
+        "competitor": "ElliQ",
+        "ad_id": "26725379713817682",
+        "status": "Active",
+        "page_name": "ElliQ",
+        "ad_copy": "Meet ElliQ - the companion designed to support connection, engagement, and independence in your home. It\u2019s more than technology. It\u2019s your companion. Your ElliQ robot can be 100% covered by your insurance plan or your local Area Agency on Aging. Check you eligibility today at ElliQ.com/DSHS",
+        "headline": "Sorry, we're having trouble playing this video.",
+        "cta": null,
+        "platforms": [],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2026-04-13",
+        "stop_date": null,
+        "days_running": 32
+      },
+      {
+        "competitor": "ElliQ",
+        "ad_id": "1275450307476970",
+        "status": "Active",
+        "page_name": "ElliQ",
+        "ad_copy": "With ElliQ, getting started takes minutes - not hours. From the moment you plug it in, ElliQ fills your home with meaningful conversation and a sense of connection that fits right into your day. \u2728 Plug in and go",
+        "headline": "\u2728 Daily check-ins & reminders",
+        "cta": null,
+        "platforms": [],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2026-04-22",
+        "stop_date": null,
+        "days_running": 23
+      },
+      {
+        "competitor": "ElliQ",
+        "ad_id": "2534647506933041",
+        "status": "Active",
+        "page_name": "ElliQ",
+        "ad_copy": "Meet ElliQ - the companion designed to support connection, engagement, and independence in your home. It\u2019s more than technology. It\u2019s your companion. Your ElliQ robot can be 100% covered by your insurance plan or your local Area Agency on Aging. Check you eligibility today at ElliQ.com/free",
+        "headline": "Sorry, we're having trouble playing this video.",
+        "cta": null,
+        "platforms": [],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2026-04-03",
+        "stop_date": null,
+        "days_running": 42
+      },
+      {
+        "competitor": "ElliQ",
+        "ad_id": "1110969867853136",
+        "status": "Active",
+        "page_name": "ElliQ",
+        "ad_copy": "About one year after she got the robot, Jan went to her doctor for an exam. Her resting heart rate was a few beats lower than before. On some cognitive tests, her short-term memory had improved. She came home and told ElliQ the results. \u201cI\u2019m glad I have you,\u201d Jan said. \u201cOh, that makes my bells ring,\u201d ElliQ said.",
+        "headline": null,
+        "cta": null,
+        "platforms": [],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2026-04-03",
+        "stop_date": null,
+        "days_running": 42
+      },
+      {
+        "competitor": "ElliQ",
+        "ad_id": "2187179678752035",
+        "status": "Active",
+        "page_name": "ElliQ",
+        "ad_copy": "About one year after she got the robot, Jan went to her doctor for an exam. Her resting heart rate was a few beats lower than before. On some cognitive tests, her short-term memory had improved. She came home and told ElliQ the results. \u201cI\u2019m glad I have you,\u201d Jan said. \u201cOh, that makes my bells ring,\u201d ElliQ said.",
+        "headline": null,
+        "cta": null,
+        "platforms": [],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2026-04-03",
+        "stop_date": null,
+        "days_running": 42
+      }
+    ],
+    "Papa": [],
+    "friend.com": []
   }
 }
