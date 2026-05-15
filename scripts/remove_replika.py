@@ -45,19 +45,26 @@ def scrub_supabase() -> str:
     if client is None:
         return "Supabase: SKIPPED (no SUPABASE_URL / SUPABASE_KEY configured)"
 
-    resp = (
-        client.table(COMPETITORS_TABLE)
-        .select("id,name")
-        .eq("name", TARGET_NAME)
-        .execute()
-    )
-    rows = resp.data or []
-    if not rows:
-        return f"Supabase: no row named '{TARGET_NAME}' found (already gone)"
+    # Wrap the network calls so a bad URL, expired key, or transient failure
+    # doesn't kill the JSON-scrub step that follows. The deployed dashboard
+    # uses Streamlit Cloud secrets (which we can't reach from CLI), so a
+    # local-only run with a broken .env should still clean the cached JSONs.
+    try:
+        resp = (
+            client.table(COMPETITORS_TABLE)
+            .select("id,name")
+            .eq("name", TARGET_NAME)
+            .execute()
+        )
+        rows = resp.data or []
+        if not rows:
+            return f"Supabase: no row named '{TARGET_NAME}' found (already gone)"
 
-    for row in rows:
-        delete_competitors(client, row["id"])
-    return f"Supabase: soft-deleted {len(rows)} row(s) named '{TARGET_NAME}'"
+        for row in rows:
+            delete_competitors(client, row["id"])
+        return f"Supabase: soft-deleted {len(rows)} row(s) named '{TARGET_NAME}'"
+    except Exception as e:
+        return f"Supabase: SKIPPED ({type(e).__name__}: {str(e)[:120]})"
 
 
 def scrub_json(path: Path) -> str:

@@ -1,7 +1,7 @@
 {
   "fetched_date": "2026-05-15",
   "method": "web_scrape",
-  "total_ads": 87,
+  "total_ads": 83,
   "competitors": {
     "Remento": [
       {
@@ -1022,70 +1022,6 @@
     "HereAfter AI": [],
     "No Story Lost": [],
     "Heritage Whisper": [],
-    "Replika": [
-      {
-        "competitor": "Replika",
-        "ad_id": "1196325971839818",
-        "status": "Active",
-        "page_name": "Replika Scents",
-        "ad_copy": "Did you know your fave designer scents can't be patented? \ud83e\udd2f \ud83d\ude0d Smell irresistible without the hefty price tag \u2705 Smell amazing the whole day",
-        "headline": "\ud83c\udf31 Vegan & cruelty-free",
-        "cta": null,
-        "platforms": [],
-        "impression_lower": null,
-        "impression_upper": null,
-        "start_date": "2025-04-06",
-        "stop_date": null,
-        "days_running": 404
-      },
-      {
-        "competitor": "Replika",
-        "ad_id": "1271869701757462",
-        "status": "Active",
-        "page_name": "Replika Scents",
-        "ad_copy": "Did you know your fave designer scents can't be patented? \ud83e\udd2f \ud83d\ude0d Smell irresistible without the hefty price tag \u2705 Smell amazing the whole day",
-        "headline": "\ud83c\udf31 Vegan & cruelty-free",
-        "cta": null,
-        "platforms": [],
-        "impression_lower": null,
-        "impression_upper": null,
-        "start_date": "2026-04-10",
-        "stop_date": null,
-        "days_running": 35
-      },
-      {
-        "competitor": "Replika",
-        "ad_id": "1254256422698342",
-        "status": "Active",
-        "page_name": "Replika Scents",
-        "ad_copy": "Did you know your fave designer scents can't be patented? \ud83e\udd2f \ud83d\ude0d Smell irresistible without the hefty price tag \u2705 Smell amazing the whole day",
-        "headline": "\ud83c\udf31 Vegan & cruelty-free",
-        "cta": null,
-        "platforms": [],
-        "impression_lower": null,
-        "impression_upper": null,
-        "start_date": "2025-05-07",
-        "stop_date": null,
-        "days_running": 373
-      },
-      {
-        "competitor": "Replika",
-        "ad_id": "931417823180347",
-        "status": "Active",
-        "page_name": "RepLika",
-        "ad_copy": "\u260e\ufe0f \u0544\u0561\u0576\u0580\u0561\u0574\u0561\u057d\u0576\u0565\u0580\u056b \u0570\u0561\u0574\u0561\u0580 \u056f\u0561\u0580\u0578\u0572 \u0565\u0584 \u0566\u0561\u0576\u0563\u0561\u0570\u0561\u0580\u0565\u056c\u055d #\u056d\u0578\u057d\u0584\u056b\u057e\u0561\u0580\u057a\u0565\u057f\u0578\u0582\u0569\u0575\u0578\u0582\u0576 #\u0570\u0561\u0576\u0580\u0561\u0575\u056b\u0576\u0565\u056c\u0578\u0582\u0575\u0569 #\u0561\u057c\u0561\u057b\u0576\u0578\u0580\u0564\u0578\u0582\u0569\u0575\u0578\u0582\u0576 #\u0566\u0561\u0580\u0563\u0561\u0581\u0578\u0582\u0574 Sorry, we're having trouble playing this video.",
-        "headline": "Sorry, we're having trouble playing this video.",
-        "cta": "Learn more",
-        "platforms": [
-          "Instagram"
-        ],
-        "impression_lower": null,
-        "impression_upper": null,
-        "start_date": "2026-03-06",
-        "stop_date": null,
-        "days_running": 70
-      }
-    ],
     "ElliQ": [
       {
         "competitor": "ElliQ",
