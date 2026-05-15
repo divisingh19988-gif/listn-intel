@@ -93,25 +93,28 @@ def load_snapshots() -> pd.DataFrame:
     return df.sort_values("date")
 
 
-def _add_methodology_marker(fig: go.Figure, y_top: float) -> None:
+def _rgba(hex_color: str, alpha: float) -> str:
+    h = hex_color.lstrip("#")
+    r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+    return f"rgba({r},{g},{b},{alpha})"
+
+
+def _add_methodology_marker(fig: go.Figure) -> None:
     marker = pd.Timestamp(METHODOLOGY_CHANGE_DATE)
     fig.add_vline(
         x=marker,
-        line=dict(color=COLORS["muted"], width=1, dash="dot"),
+        line=dict(color=_rgba(COLORS["muted"], 0.35), width=1, dash="dot"),
     )
     fig.add_annotation(
         x=marker,
-        y=y_top,
-        yref="y",
+        y=1.0,
+        yref="paper",
         text="Scraper methodology change — pre/post not comparable",
         showarrow=False,
-        font=dict(color=COLORS["soon"], size=11),
+        font=dict(color=COLORS["muted"], size=10),
         xanchor="left",
         xshift=6,
-        bgcolor="rgba(0,0,0,0.4)",
-        bordercolor=COLORS["soon"],
-        borderwidth=1,
-        borderpad=4,
+        yshift=4,
     )
 
 
@@ -164,15 +167,14 @@ for competitor in sorted(vol["competitor"].unique()):
     fig_vol.add_trace(go.Scatter(
         x=series["date"],
         y=series["ads"],
-        mode="lines+markers",
+        mode="lines",
         name=competitor,
-        line=dict(color=comp_color(competitor), width=2),
-        marker=dict(size=6),
+        line=dict(color=comp_color(competitor), width=1.5, shape="spline", smoothing=0.6),
+        opacity=0.85,
         hovertemplate=f"<b>{competitor}</b><br>%{{x|%b %d}}: %{{y}} ads<extra></extra>",
     ))
-y_top_vol = vol["ads"].max() if not vol.empty else 0
-fig_vol.update_layout(**PLOTLY_LAYOUT, height=420, hovermode="x unified")
-_add_methodology_marker(fig_vol, y_top_vol * 0.95 if y_top_vol else 1)
+fig_vol.update_layout(**PLOTLY_LAYOUT, height=380, hovermode="x unified")
+_add_methodology_marker(fig_vol)
 st.plotly_chart(fig_vol, use_container_width=True)
 
 st.markdown("### Tone share over time")
@@ -195,19 +197,20 @@ else:
         series = tone_counts[tone_counts["tone"] == tone].sort_values("date")
         if series.empty:
             continue
+        tone_hex = TONE_COLORS.get(tone, COLORS["muted"])
         fig_tone.add_trace(go.Scatter(
             x=series["date"],
             y=series["share"],
             mode="lines",
             stackgroup="tone",
             name=tone,
-            line=dict(width=0.5, color=TONE_COLORS.get(tone, COLORS["muted"])),
-            fillcolor=TONE_COLORS.get(tone, COLORS["muted"]),
+            line=dict(width=0, color=tone_hex),
+            fillcolor=_rgba(tone_hex, 0.45),
             hovertemplate=f"<b>{tone}</b><br>%{{x|%b %d}}: %{{y:.1f}}%<extra></extra>",
         ))
-    fig_tone.update_layout(**PLOTLY_LAYOUT, height=380, hovermode="x unified")
+    fig_tone.update_layout(**PLOTLY_LAYOUT, height=320, hovermode="x unified")
     fig_tone.update_yaxes(ticksuffix="%", range=[0, 100])
-    _add_methodology_marker(fig_tone, 95)
+    _add_methodology_marker(fig_tone)
     st.plotly_chart(fig_tone, use_container_width=True)
 
 st.markdown("### Total ads in market")
@@ -217,17 +220,15 @@ fig_total = go.Figure()
 fig_total.add_trace(go.Scatter(
     x=totals["date"],
     y=totals["total"],
-    mode="lines+markers",
-    line=dict(color=COLORS["accent"], width=3),
-    marker=dict(size=8, color=COLORS["accent"]),
+    mode="lines",
+    line=dict(color=COLORS["accent"], width=1.5, shape="spline", smoothing=0.6),
     fill="tozeroy",
-    fillcolor=f"rgba(159,155,255,0.12)",
+    fillcolor=_rgba(COLORS["accent"], 0.06),
     hovertemplate="<b>%{x|%b %d}</b><br>%{y} ads total<extra></extra>",
     showlegend=False,
 ))
-y_top_total = totals["total"].max() if not totals.empty else 0
-fig_total.update_layout(**PLOTLY_LAYOUT, height=320, hovermode="x unified")
-_add_methodology_marker(fig_total, y_top_total * 0.95 if y_top_total else 1)
+fig_total.update_layout(**PLOTLY_LAYOUT, height=260, hovermode="x unified")
+_add_methodology_marker(fig_total)
 st.plotly_chart(fig_total, use_container_width=True)
 
 st.markdown("---")
