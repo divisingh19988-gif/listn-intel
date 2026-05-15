@@ -18,7 +18,6 @@ COMPETITORS = [
     "Keepsake",
     "HereAfter AI",
     "No Story Lost",
-    "Replika",
     "ElliQ",
     "Papa",
     "friend.com",

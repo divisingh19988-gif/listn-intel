@@ -1,14 +1,8 @@
--- Insert (or update if name already exists) the four adjacent competitors.
+-- Insert (or update if name already exists) the three adjacent competitors.
 -- Idempotent: safe to re-run. Mirrors scripts/insert_new_competitors.py.
 
 insert into competitors (name, meta_search_terms, seo_domain, appstore_id, active, notes)
 values
-  ('Replika',
-   array['Replika', 'Replika AI'],
-   'replika.com',
-   null,
-   true,
-   'Adjacent: AI companion chatbot. Not elderly-focused but overlaps on emotional companionship.'),
   ('ElliQ',
    array['ElliQ', 'Intuition Robotics'],
    'elliq.com',
@@ -34,4 +28,4 @@ on conflict (name) do update set
   active            = excluded.active,
   notes             = excluded.notes;
 
-select name, seo_domain, active from competitors where name in ('Replika', 'ElliQ', 'Papa', 'friend.com');
+select name, seo_domain, active from competitors where name in ('ElliQ', 'Papa', 'friend.com');

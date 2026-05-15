@@ -69,7 +69,6 @@ COMP_COLOR = {
     "HereAfter AI":      "#9CA3AF",
     "No Story Lost":     "#9CA3AF",
     # Adjacent / lateral competitors (companion & care space).
-    "Replika":           "#8B5CF6",                # violet — AI companion
     "ElliQ":             "#14B8A6",                # teal — robot companion
     "Papa":              "#FB923C",                # warm orange — caregiving
     "friend.com":        "#64748B",                # slate — minimal hardware brand
@@ -340,6 +339,32 @@ def inject_global_css() -> None:
     st.markdown(_GLOBAL_CSS, unsafe_allow_html=True)
 
 
+@st.dialog("🔄 Refresh started")
+def _refresh_success_dialog(actions_link: str) -> None:
+    """Center-screen modal shown right after the workflow is dispatched."""
+    st.markdown(
+        "Your updated competitive intelligence will be ready in "
+        "**about 20 minutes**."
+    )
+    st.markdown(
+        "Feel free to keep exploring in the meantime — the dashboard will "
+        "reflect the new data once the workflow finishes and Streamlit "
+        "picks up the latest files."
+    )
+    st.markdown(f"[View running jobs ↗]({actions_link})")
+    if st.button("Got it", type="primary", use_container_width=True):
+        st.rerun()
+
+
+@st.dialog("⚠️ Refresh failed")
+def _refresh_failure_dialog(message: str, actions_link: str) -> None:
+    """Center-screen modal shown when the GitHub API dispatch fails."""
+    st.error(message)
+    st.markdown(f"[Open Actions page ↗]({actions_link})")
+    if st.button("Dismiss", use_container_width=True):
+        st.rerun()
+
+
 def inject_sidebar() -> None:
     """Render logo + Intelligence Hub branding in the sidebar. Call once per page."""
     logo_path = _ASSETS / "listn_logo.png"
@@ -359,9 +384,19 @@ def inject_sidebar() -> None:
             unsafe_allow_html=True,
         )
 
-        # Global refresh — clears all @st.cache_data and reloads from disk.
-        # One click, no API calls. Shows in every page's sidebar (below the nav).
+        # Global refresh — dispatches the Weekly Intelligence Refresh workflow
+        # on GitHub Actions (same pipeline as the Monday cron). Runs scrapers,
+        # SEO fetch, AI-readiness audit, Claude brief, and email report.
+        from lib.refresh_trigger import actions_url, trigger_weekly_refresh
+
         st.markdown("<br>", unsafe_allow_html=True)
         if st.button("🔄 Refresh data", use_container_width=True):
-            st.cache_data.clear()
-            st.rerun()
+            with st.spinner("Dispatching refresh workflow…"):
+                ok, message = trigger_weekly_refresh()
+            link = actions_url()
+            # Modal dialog renders center-screen — impossible to miss, unlike
+            # st.toast which slides into the bottom-right corner for ~4s.
+            if ok:
+                _refresh_success_dialog(link)
+            else:
+                _refresh_failure_dialog(message, link)

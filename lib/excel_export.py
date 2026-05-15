@@ -246,7 +246,6 @@ AI_BASELINE = [
     {"name": "StoriedLife AI",   "llms_txt": "—",   "ai_bots": "—","faq_schema": "—",   "article_schema": "—",   "canonical_pct": "—",  "metadesc_pct": "—",  "score": "Not yet audited"},
     {"name": "LifeEcho",         "llms_txt": "—",   "ai_bots": "—","faq_schema": "—",   "article_schema": "—",   "canonical_pct": "—",  "metadesc_pct": "—",  "score": "Not yet audited"},
     {"name": "Storii",           "llms_txt": "—",   "ai_bots": "—","faq_schema": "—",   "article_schema": "—",   "canonical_pct": "—",  "metadesc_pct": "—",  "score": "Not yet audited"},
-    {"name": "Replika",          "llms_txt": "—",   "ai_bots": "—","faq_schema": "—",   "article_schema": "—",   "canonical_pct": "—",  "metadesc_pct": "—",  "score": "Not yet audited"},
     {"name": "ElliQ",            "llms_txt": "—",   "ai_bots": "—","faq_schema": "—",   "article_schema": "—",   "canonical_pct": "—",  "metadesc_pct": "—",  "score": "Not yet audited"},
     {"name": "Papa",             "llms_txt": "—",   "ai_bots": "—","faq_schema": "—",   "article_schema": "—",   "canonical_pct": "—",  "metadesc_pct": "—",  "score": "Not yet audited"},
     {"name": "friend.com",       "llms_txt": "—",   "ai_bots": "—","faq_schema": "—",   "article_schema": "—",   "canonical_pct": "—",  "metadesc_pct": "—",  "score": "Not yet audited"},

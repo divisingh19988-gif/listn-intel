@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-One-shot script to add the four adjacent/lateral competitors (Replika, ElliQ,
-Papa, friend.com) to the Supabase `competitors` table.
+One-shot script to add the three adjacent/lateral competitors (ElliQ, Papa,
+friend.com) to the Supabase `competitors` table.
 
 The hardcoded fallback lists in `scrapers/scrape_ads.py`, `scrapers/fetch_ads.py`,
 `scrapers/ai_readiness_check.py`, and `scrapers/seo_monitor.py` have already been
@@ -36,14 +36,6 @@ from lib.supabase_client import (  # noqa: E402
 # "Discover with Claude" flow to populate them after the rows exist, so the
 # values are verified rather than fabricated.
 NEW_COMPETITORS = [
-    {
-        "name": "Replika",
-        "meta_search_terms": ["Replika", "Replika AI"],
-        "seo_domain": "replika.com",
-        "appstore_id": None,
-        "active": True,
-        "notes": "Adjacent: AI companion chatbot. Not elderly-focused but overlaps on emotional companionship.",
-    },
     {
         "name": "ElliQ",
         "meta_search_terms": ["ElliQ", "Intuition Robotics"],

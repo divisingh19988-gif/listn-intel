@@ -35,6 +35,9 @@ env/
 # Spartan AI config (contains API keys)
 .spartan/ai.env
 
+# Claude Code runtime lock files
+.claude/*.lock
+
 # Unrelated nested projects sitting in this working directory
 caveman/
 claude-seo/
