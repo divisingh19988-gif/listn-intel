@@ -31,6 +31,7 @@ PAGES = [
     st.Page("pages/4_Action_Tracker.py",  title="Action Tracker",  icon="✅", url_path="Action_Tracker"),
     st.Page("pages/5_Reports_Archive.py", title="Reports Archive", icon="📄", url_path="Reports_Archive"),
     st.Page("pages/7_Strategic_Brief.py", title="Strategic Brief", icon="🧭", url_path="Strategic_Brief"),
+    st.Page("pages/8_Trends.py",          title="Trends",          icon="📈", url_path="Trends"),
     st.Page("pages/6_Admin.py",           title="Admin",           icon="⚙️", url_path="Admin"),
 ]
 
