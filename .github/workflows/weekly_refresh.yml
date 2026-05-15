@@ -61,6 +61,17 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python analyze_ads.py
 
+      # Claude reviews the dashboard for non-deterministic staleness issues
+      # (wrong dates baked in, placeholders left in production, contradictions
+      # the rule-based sweep can't see). continue-on-error so a flaky API
+      # call doesn't block the rest of the refresh — last week's findings
+      # stay on disk if this run fails.
+      - name: Run dashboard hygiene review
+        continue-on-error: true
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python -m lib.dashboard_hygiene
+
       - name: Generate Excel reports and send email
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
