@@ -1,0 +1,23 @@
+{
+  "completions": {},
+  "swept": [
+    {
+      "completed_at": null,
+      "deadline": "2026-05-10",
+      "id": "Mother's Day",
+      "kind": "cluster",
+      "name": "Mother's Day",
+      "status": "Incomplete",
+      "swept_at": "2026-05-16"
+    },
+    {
+      "completed_at": null,
+      "deadline": "2026-05-10",
+      "id": "02",
+      "kind": "roadmap_post",
+      "name": "Post 02: The Mother's Day Gift That Actually Lasts: Why Her Voice Is Worth More Than Flowers",
+      "status": "Incomplete",
+      "swept_at": "2026-05-16"
+    }
+  ]
+}

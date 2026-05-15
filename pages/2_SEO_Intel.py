@@ -22,6 +22,13 @@ import streamlit as st
 from lib.theme import inject_global_css, inject_sidebar, COLORS, comp_color, window_badge
 from lib.data_freshness import show_freshness_banner
 from lib.synthesis import SEO_CLUSTERS
+from lib.completion_log import (
+    sweep as sweep_for_completion,
+    is_completed,
+    mark_complete,
+    unmark_complete,
+    get_history,
+)
 
 # ── Page chrome (page config is set once in streamlit_app.py) ─────────────────
 inject_global_css()
@@ -62,13 +69,108 @@ if kw_df.empty:
     st.stop()
 
 
+# ── Roadmap posts — defined up top so the stat card can show the active count.
+# Each post has `publish_by` (self-imposed target — drives "overdue" red border)
+# AND `event_date` (the real seasonal deadline — drives auto-archive). Evergreen
+# posts have `event_date: None` and never auto-archive.
+POSTS = [
+    {
+        "num": "01",
+        "publish_by": date(2026, 4, 30),
+        "event_date": date(2026, 6, 15),  # Father's Day
+        "window": "SOON",
+        "title": "What to Ask Your Dad Before Father's Day: 50 Questions Worth Recording in His Own Voice",
+        "primary": ("fathers day gift ideas", 74000, 0),
+        "secondary": ["meaningful fathers day gift", "gift for dad from daughter"],
+        "why": "6.5 weeks to rank. KD 0. No memory app has written this post.",
+    },
+    {
+        "num": "02",
+        "publish_by": date(2026, 5, 1),
+        "event_date": date(2026, 5, 10),  # Mother's Day
+        "window": "URGENT",
+        "title": "The Mother's Day Gift That Actually Lasts: Why Her Voice Is Worth More Than Flowers",
+        "primary": ("meaningful mothers day gift", 8100, 12),
+        "secondary": ["gift for mom from daughter", "mothers day gift for mom who has everything"],
+        "why": "9 days to index before May 10.",
+    },
+    {
+        "num": "03",
+        "publish_by": date(2026, 5, 10),
+        "event_date": None,  # evergreen — Remento alternative, no seasonal anchor
+        "window": "COMMERCIAL INTENT",
+        "title": "Looking for a Remento Alternative? Here's What Actually Matters in a Memory App",
+        "primary": ("remento alternative", 1900, 8),
+        "secondary": ["storyworth alternative", "heritage whisper alternative"],
+        "why": "Remento's 4 cannibalized pages create a clear opening.",
+    },
+    {
+        "num": "04",
+        "publish_by": date(2026, 5, 15),
+        "event_date": None,  # evergreen — grandparent gifts
+        "window": "EVERGREEN",
+        "title": "The Gift That Won't Get Donated: Why Voice Memories Beat Any Physical Present for Grandparents",
+        "primary": ("grandparent gift ideas", 14800, 0),
+        "secondary": ["gift for grandma", "gift for grandpa"],
+        "why": "KD 0 · 14.8K volume · Meminto's #99 ranking is beatable.",
+    },
+    {
+        "num": "05",
+        "publish_by": date(2026, 6, 1),
+        "event_date": None,  # evergreen — caregiver content
+        "window": "EVERGREEN",
+        "title": "How to Record Your Parent's Life Stories Before It's Too Late",
+        "primary": ("how to record parents life stories", 2900, 8),
+        "secondary": ["record grandparents stories", "recording memories before dementia"],
+        "why": "Targets caregiver segment at peak emotional urgency.",
+    },
+    {
+        "num": "06",
+        "publish_by": date(2026, 6, 15),
+        "event_date": date(2026, 6, 15),  # Father's Day pairing
+        "window": "SOON",
+        "title": "50 Questions to Ask Your Parents Before It's Too Late",
+        "primary": ("questions to record with grandparents", 1300, 5),
+        "secondary": ["questions to ask dad before its too late"],
+        "why": "Father's Day pairing for Post 01 — same emotional hook, deeper questions.",
+    },
+]
+
+# ── Post-deadline sweep — Mother's Day etc. archive to history once past ──────
+today = date.today()
+_cluster_items_for_sweep = [
+    {
+        "kind": "cluster",
+        "id": c["name"],
+        "name": c["name"],
+        "deadline": c.get("deadline"),
+        "_raw": c,
+    }
+    for c in SEO_CLUSTERS
+]
+_active_cluster_items, _ = sweep_for_completion(_cluster_items_for_sweep, today)
+active_clusters = [item["_raw"] for item in _active_cluster_items]
+
+_post_items_for_sweep = [
+    {
+        "kind": "roadmap_post",
+        "id": p["num"],
+        "name": f"Post {p['num']}: {p['title']}",
+        "deadline": p.get("event_date"),
+        "_raw": p,
+    }
+    for p in POSTS
+]
+_active_post_items, _ = sweep_for_completion(_post_items_for_sweep, today)
+active_posts = [item["_raw"] for item in _active_post_items]
+
 # ── Header + 4 stat cards ─────────────────────────────────────────────────────
 total_kw_tracked = len(kw_df)
 avg_kd = round(kw_df["kd"].mean(), 1) if total_kw_tracked else 0
-all_cluster_kws = [k for c in SEO_CLUSTERS for k in c["keywords"]]
+all_cluster_kws = [k for c in active_clusters for k in c["keywords"]]
 total_cluster_volume = sum(k[1] for k in all_cluster_kws)
-n_clusters = len(SEO_CLUSTERS)
-n_posts = 6
+n_clusters = len(active_clusters)
+n_posts = len(active_posts)
 
 st.markdown(
     f'<h1 style="margin-bottom:0.2rem;">🔍 SEO Intel</h1>'
@@ -104,9 +206,13 @@ st.markdown("<hr>", unsafe_allow_html=True)
 # Keyword Clusters
 # ═══════════════════════════════════════════════════════════════════════════════
 st.markdown("## 🎯 Keyword clusters")
+_cluster_caption = (
+    f"{n_clusters} hand-curated cluster{'s' if n_clusters != 1 else ''} · "
+    "sorted by deadline / commercial intent"
+)
 st.markdown(
     f'<p class="muted" style="margin-top:-0.5rem;font-size:0.88rem;">'
-    "4 hand-curated clusters · sorted by deadline / commercial intent"
+    f"{_cluster_caption}"
     "</p>",
     unsafe_allow_html=True,
 )
@@ -173,8 +279,31 @@ def render_cluster(cluster: dict) -> None:
     st.markdown(rows_html, unsafe_allow_html=True)
 
 
-for cluster in SEO_CLUSTERS:
+for cluster in active_clusters:
     render_cluster(cluster)
+
+# ── Completion management + history ──────────────────────────────────────────
+_dated_clusters = [c for c in active_clusters if c.get("deadline")]
+if _dated_clusters:
+    with st.expander("✓ Mark clusters complete"):
+        st.caption(
+            "Mark a cluster complete once you've shipped the content. After the "
+            "deadline passes, marked clusters archive as **Completed**; unmarked "
+            "ones archive as **Incomplete** below."
+        )
+        for c in _dated_clusters:
+            name = c["name"]
+            key = f"complete_cluster_{name}"
+            current = is_completed("cluster", name)
+            new = st.checkbox(
+                f"{name} (deadline {c['deadline'].strftime('%b %d, %Y')})",
+                value=current, key=key,
+            )
+            if new and not current:
+                mark_complete("cluster", name)
+            elif current and not new:
+                unmark_complete("cluster", name)
+
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # Remento Cannibalization Gap insight
@@ -204,64 +333,6 @@ st.markdown(
     "</p>",
     unsafe_allow_html=True,
 )
-
-POSTS = [
-    {
-        "num": "01",
-        "publish_by": date(2026, 4, 30),
-        "window": "SOON",
-        "title": "What to Ask Your Dad Before Father's Day: 50 Questions Worth Recording in His Own Voice",
-        "primary": ("fathers day gift ideas", 74000, 0),
-        "secondary": ["meaningful fathers day gift", "gift for dad from daughter"],
-        "why": "6.5 weeks to rank. KD 0. No memory app has written this post.",
-    },
-    {
-        "num": "02",
-        "publish_by": date(2026, 5, 1),
-        "window": "URGENT",
-        "title": "The Mother's Day Gift That Actually Lasts: Why Her Voice Is Worth More Than Flowers",
-        "primary": ("meaningful mothers day gift", 8100, 12),
-        "secondary": ["gift for mom from daughter", "mothers day gift for mom who has everything"],
-        "why": "9 days to index before May 10.",
-    },
-    {
-        "num": "03",
-        "publish_by": date(2026, 5, 10),
-        "window": "COMMERCIAL INTENT",
-        "title": "Looking for a Remento Alternative? Here's What Actually Matters in a Memory App",
-        "primary": ("remento alternative", 1900, 8),
-        "secondary": ["storyworth alternative", "heritage whisper alternative"],
-        "why": "Remento's 4 cannibalized pages create a clear opening.",
-    },
-    {
-        "num": "04",
-        "publish_by": date(2026, 5, 15),
-        "window": "EVERGREEN",
-        "title": "The Gift That Won't Get Donated: Why Voice Memories Beat Any Physical Present for Grandparents",
-        "primary": ("grandparent gift ideas", 14800, 0),
-        "secondary": ["gift for grandma", "gift for grandpa"],
-        "why": "KD 0 · 14.8K volume · Meminto's #99 ranking is beatable.",
-    },
-    {
-        "num": "05",
-        "publish_by": date(2026, 6, 1),
-        "window": "EVERGREEN",
-        "title": "How to Record Your Parent's Life Stories Before It's Too Late",
-        "primary": ("how to record parents life stories", 2900, 8),
-        "secondary": ["record grandparents stories", "recording memories before dementia"],
-        "why": "Targets caregiver segment at peak emotional urgency.",
-    },
-    {
-        "num": "06",
-        "publish_by": date(2026, 6, 15),
-        "window": "SOON",
-        "title": "50 Questions to Ask Your Parents Before It's Too Late",
-        "primary": ("questions to record with grandparents", 1300, 5),
-        "secondary": ["questions to ask dad before its too late"],
-        "why": "Father's Day pairing for Post 01 — same emotional hook, deeper questions.",
-    },
-]
-
 
 def post_card(post: dict) -> str:
     today = date.today()
@@ -321,8 +392,32 @@ def post_card(post: dict) -> str:
 
 
 col_a, col_b = st.columns(2)
-for i, post in enumerate(POSTS):
+for i, post in enumerate(active_posts):
     (col_a if i % 2 == 0 else col_b).markdown(post_card(post), unsafe_allow_html=True)
+
+# ── Roadmap completion management ────────────────────────────────────────────
+_dated_posts = [p for p in active_posts if p.get("event_date")]
+if _dated_posts:
+    with st.expander("✓ Mark roadmap posts complete"):
+        st.caption(
+            "Mark a post complete once you've shipped it. Posts with a seasonal "
+            "event auto-archive once the event date passes — marked posts to "
+            "**Completed**, unmarked to **Incomplete**. Evergreen posts stay "
+            "until you archive them manually."
+        )
+        for p in _dated_posts:
+            num = p["num"]
+            key = f"complete_post_{num}"
+            current = is_completed("roadmap_post", num)
+            short_title = p["title"] if len(p["title"]) <= 70 else p["title"][:67] + "..."
+            new = st.checkbox(
+                f"Post {num}: {short_title}  (event {p['event_date'].strftime('%b %d, %Y')})",
+                value=current, key=key,
+            )
+            if new and not current:
+                mark_complete("roadmap_post", num)
+            elif current and not new:
+                unmark_complete("roadmap_post", num)
 
 st.markdown("<hr>", unsafe_allow_html=True)
 
@@ -381,6 +476,27 @@ with chart_col:
         colorbar_title_font_color=COLORS["text"],
     )
     st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+
+# ── Unified history: clusters + roadmap posts that have passed their event ───
+_history = get_history(limit=20)
+if _history:
+    st.markdown("<hr>", unsafe_allow_html=True)
+    st.markdown("### 📚 Recently completed / missed")
+    st.caption(
+        "Items auto-archive once their event date passes. "
+        "Marked complete before the deadline → **Completed**, otherwise → **Incomplete**."
+    )
+    for h in _history:
+        emoji = "✅" if h["status"] == "Completed" else "❌"
+        kind_label = "Cluster" if h["kind"] == "cluster" else "Roadmap post"
+        detail = (
+            f" · marked complete {h['completed_at'][:10]}"
+            if h.get("completed_at") else ""
+        )
+        st.markdown(
+            f"- {emoji} **{h['name']}** ({kind_label}) — "
+            f"deadline {h['deadline']} · **{h['status']}**{detail}"
+        )
 
 st.markdown("<hr>", unsafe_allow_html=True)
 st.markdown(
