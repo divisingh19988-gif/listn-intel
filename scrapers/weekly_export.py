@@ -22,7 +22,7 @@ from __future__ import annotations
 import base64
 import os
 import sys
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 
 # Allow `from lib...` from the repo root regardless of where we run from.
@@ -37,12 +37,28 @@ except ImportError:
 
 from lib.excel_export import build_all_reports
 from lib.supabase_client import current_iso_week
+from lib.supabase_writer import upload_report
 from lib.synthesis import (
     get_creative_move,
     get_content_move,
     count_new_ads_this_week,
     next_deadline,
 )
+
+# Maps the short keys returned by build_all_reports() to the canonical
+# report_type values stored in Supabase (and used as storage path prefixes).
+REPORT_TYPE_MAP = {
+    "meta": "meta_intel",
+    "seo": "seo_intel",
+    "ai": "ai_readiness",
+}
+
+
+def _monday_of_iso_week(week_label: str) -> str:
+    """'2026-W18' -> '2026-04-27' (Monday of that ISO week, as YYYY-MM-DD)."""
+    year_str, week_str = week_label.split("-W")
+    monday = date.fromisocalendar(int(year_str), int(week_str), 1)
+    return monday.isoformat()
 
 REPORT_EMAIL_DEFAULT = "digvijayudawat064@gmail.com"
 FROM_EMAIL_DEFAULT = "onboarding@resend.dev"  # Resend's verified sandbox sender
@@ -119,6 +135,22 @@ def main() -> int:
     for kind, path in paths.items():
         size_kb = path.stat().st_size / 1024
         print(f"  · {kind:5s}  {path.name}  ({size_kb:.0f} KB)")
+
+    # Mirror each report to Supabase. Local xlsx remains source of truth on
+    # disk; Supabase is the source for the Next.js dashboard. A failure here
+    # logs but never blocks the email step or the cron commit.
+    report_date = _monday_of_iso_week(week)
+    print(f"\nMirroring reports to Supabase (date={report_date})…")
+    for kind, path in paths.items():
+        report_type = REPORT_TYPE_MAP.get(kind)
+        if not report_type:
+            print(f"  ⚠ Skipping unknown report kind '{kind}'")
+            continue
+        result = upload_report(str(path), report_type, report_date)
+        if result.get("uploaded"):
+            print(f"  ✓ {report_type}: {result['storage_path']}")
+        else:
+            print(f"  ⚠ {report_type} upload failed: {result.get('error', 'unknown error')}")
 
     api_key = _read_secret("RESEND_API_KEY")
     to_email = _read_secret("REPORT_EMAIL", REPORT_EMAIL_DEFAULT)

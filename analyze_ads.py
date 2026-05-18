@@ -10,6 +10,8 @@ from pathlib import Path
 from anthropic import Anthropic
 from dotenv import load_dotenv
 
+from lib.supabase_writer import upload_brief
+
 load_dotenv()
 
 client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
@@ -156,11 +158,21 @@ def run_analysis():
     latest_path = Path("data") / "strategic_brief_latest.md"
 
     Path("data").mkdir(exist_ok=True)
-    dated_path.write_text(header + analysis)
-    latest_path.write_text(header + analysis)
+    full_markdown = header + analysis
+    dated_path.write_text(full_markdown)
+    latest_path.write_text(full_markdown)
 
     print(f"\n✓ Saved to {dated_path}")
     print(f"✓ Saved to {latest_path}")
+
+    # Mirror to Supabase so the Next.js dashboard reads fresh data on cron.
+    # Local writes above remain the source of truth on disk; this is a side
+    # channel and a failure here must not break the script.
+    result = upload_brief(week_str, full_markdown)
+    if result.get("uploaded"):
+        print(f"✓ Mirrored to Supabase: {result['storage_path']}")
+    else:
+        print(f"⚠ Supabase upload failed: {result.get('error', 'unknown error')}")
 
     usage = final_msg.usage
     print(f"  Input tokens:  {usage.input_tokens:,}")
