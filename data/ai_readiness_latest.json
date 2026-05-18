@@ -12,7 +12,7 @@
       "canonical_pct": 100,
       "metadesc_pct": 100,
       "score": 40,
-      "elapsed_seconds": 2.1
+      "elapsed_seconds": 4.0
     },
     {
       "name": "StoryWorth",
@@ -24,7 +24,7 @@
       "canonical_pct": 100,
       "metadesc_pct": 100,
       "score": 40,
-      "elapsed_seconds": 1.7
+      "elapsed_seconds": 1.8
     },
     {
       "name": "Meminto",
@@ -36,7 +36,7 @@
       "canonical_pct": 100,
       "metadesc_pct": 100,
       "score": 40,
-      "elapsed_seconds": 17.0
+      "elapsed_seconds": 18.5
     },
     {
       "name": "Storykeeper",
@@ -48,7 +48,7 @@
       "canonical_pct": 0,
       "metadesc_pct": 0,
       "score": 0,
-      "elapsed_seconds": 1.0
+      "elapsed_seconds": 1.4
     },
     {
       "name": "Heritage Whisper",
@@ -60,7 +60,7 @@
       "canonical_pct": 0,
       "metadesc_pct": 0,
       "score": 45,
-      "elapsed_seconds": 4.0
+      "elapsed_seconds": 5.5
     },
     {
       "name": "StoriedLife AI",
@@ -72,7 +72,7 @@
       "canonical_pct": 0,
       "metadesc_pct": 0,
       "score": 15,
-      "elapsed_seconds": 2.4
+      "elapsed_seconds": 24.3
     },
     {
       "name": "LifeEcho",
@@ -84,7 +84,7 @@
       "canonical_pct": 100,
       "metadesc_pct": 100,
       "score": 85,
-      "elapsed_seconds": 3.5
+      "elapsed_seconds": 6.4
     },
     {
       "name": "Storii",
@@ -96,7 +96,7 @@
       "canonical_pct": 100,
       "metadesc_pct": 100,
       "score": 70,
-      "elapsed_seconds": 1.4
+      "elapsed_seconds": 1.8
     },
     {
       "name": "Tellmel",
@@ -108,7 +108,7 @@
       "canonical_pct": 100,
       "metadesc_pct": 100,
       "score": 40,
-      "elapsed_seconds": 2.8
+      "elapsed_seconds": 2.5
     },
     {
       "name": "Listn",
@@ -120,7 +120,7 @@
       "canonical_pct": 100,
       "metadesc_pct": 100,
       "score": 85,
-      "elapsed_seconds": 2.9
+      "elapsed_seconds": 2.6
     },
     {
       "name": "ElliQ",
@@ -132,7 +132,7 @@
       "canonical_pct": 0,
       "metadesc_pct": 0,
       "score": 15,
-      "elapsed_seconds": 2.4
+      "elapsed_seconds": 2.7
     },
     {
       "name": "Papa",
@@ -144,7 +144,7 @@
       "canonical_pct": 100,
       "metadesc_pct": 100,
       "score": 40,
-      "elapsed_seconds": 1.5
+      "elapsed_seconds": 2.0
     },
     {
       "name": "friend.com",
@@ -156,7 +156,7 @@
       "canonical_pct": 100,
       "metadesc_pct": 100,
       "score": 40,
-      "elapsed_seconds": 1.2
+      "elapsed_seconds": 1.3
     }
   ]
 }
