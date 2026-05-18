@@ -1,28 +1,11 @@
 {
-  "findings": [
-    {
-      "category": "contradiction",
-      "details": "Post 01 is titled 'What to Ask Your Dad Before Father's Day: 50 Questions Worth Recording in His Own Voice' but its primary_keyword is 'fathers day gift ideas'. Someone searching 'fathers day gift ideas' expects a gift list, not a list of questions to ask dad. The page will not rank well for this head term, and the intent mismatch will also hurt bounce rate. The Father's Day cluster includes 'meaningful fathers day gift' and 'unique fathers day gift' which are better-matched head terms \u2014 or this post should be re-pointed at a question-themed keyword (e.g. 'questions to ask dad before fathers day').",
-      "location": "ACTIVE roadmap, Post 01",
-      "severity": "medium",
-      "suggested_fix": "Either rewrite Post 01's title to lead with a gift framing ('50 Voice-Memory Gifts to Give Dad This Father's Day' etc.) OR change its primary_keyword to a question-intent keyword and let Post 06 carry the head term. Right now Post 01 cannot serve either intent well.",
-      "title": "Post 01 title and primary keyword don't match search intent"
-    },
-    {
-      "category": "contradiction",
-      "details": "Post 01 ('What to Ask Your Dad Before Father's Day: 50 Questions Worth Recording in His Own Voice') and Post 06 ('50 Questions to Ask Your Dad Before It's Too Late') both promise a 50-question list to ask dad. While their primary keywords differ (fathers day gift ideas vs questions to ask dad before its too late) and head/long-tail pairing is designed, here both posts use the same '50 questions' content frame rather than genuinely different angles. This will produce two pages competing for the same long-tail question searches and may trigger Google to pick one and ignore the other.",
-      "location": "ACTIVE roadmap, Posts 01 and 06",
-      "severity": "low",
-      "suggested_fix": "Differentiate the content frames: keep '50 questions' on Post 06 (which actually targets the question keyword), and pivot Post 01 to a non-list angle (story prompts, conversation starters by life stage, or gift-focused framing) that supports the Father's Day gift-intent keyword it's assigned.",
-      "title": "Post 01 and Post 06 carry near-identical '50 questions to ask dad' framing"
-    }
-  ],
+  "findings": [],
   "model": "claude-opus-4-7",
-  "reviewed_at": "2026-05-16T00:58:33",
-  "today": "2026-05-16",
+  "reviewed_at": "2026-05-18T12:15:27",
+  "today": "2026-05-18",
   "usage": {
     "cache_read_input_tokens": 0,
     "input_tokens": 3295,
-    "output_tokens": 3298
+    "output_tokens": 2062
   }
 }
