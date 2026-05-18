@@ -1,7 +1,7 @@
 {
   "fetched_date": "2026-05-18",
   "method": "web_scrape",
-  "total_ads": 80,
+  "total_ads": 79,
   "competitors": {
     "Remento": [
       {
@@ -27,21 +27,6 @@
         "ad_copy": "I decided I wasn't going to miss the chance to ask so many more questions... Make history for your family. Give a loved one Remento, not a writing assignment, and their timeless stories will be captured forever for the whole family in an interactive hardcover book. Sorry, we're having trouble playing this video.",
         "headline": "Sorry, we're having trouble playing this video.",
         "cta": "Learn more",
-        "platforms": [],
-        "impression_lower": null,
-        "impression_upper": null,
-        "start_date": "2026-05-13",
-        "stop_date": null,
-        "days_running": 5
-      },
-      {
-        "competitor": "Remento",
-        "ad_id": "944701718393132",
-        "status": "Active",
-        "page_name": "Remento",
-        "ad_copy": "With Remento, preserving precious stories is as easy as having a conversation. They will simply speak, and Remento will do the rest. Turning their spoken words into professionally written stories. Each story is paired with a QR code that when scanned, links back to original recordings. This way, you can watch or listen to them anytime as they tell their story. \ud83d\udc46 Pick storytelling prompts/photos \ud83d\udcf1 Record spoken answers",
-        "headline": "\ud83d\udcd6 Remento turns recordings into a book of written stories",
-        "cta": null,
         "platforms": [],
         "impression_lower": null,
         "impression_upper": null,
@@ -101,21 +86,6 @@
         "page_name": "Remento",
         "ad_copy": "See why Mark Cuban invested on Shark Tank: \"With Remento, you\u2019ll always have the voices of the people you love.\u201d Give your parent something meaningful\u2026 not homework. Remento captures their stories by voice, writes them in their own style, and turns them into a beautiful, interactive, color hardcover book for your entire family.",
         "headline": "No typing. No passwords. No tech stress.",
-        "cta": null,
-        "platforms": [],
-        "impression_lower": null,
-        "impression_upper": null,
-        "start_date": "2026-05-13",
-        "stop_date": null,
-        "days_running": 5
-      },
-      {
-        "competitor": "Remento",
-        "ad_id": "4435145500031851",
-        "status": "Active",
-        "page_name": "Remento",
-        "ad_copy": "Con Remento, preservar historias valiosas es tan f\u00e1cil como tener una conversaci\u00f3n. Ellos simplemente hablan, y Remento hace el resto: convierte sus palabras en historias escritas profesionalmente. Cada historia incluye un c\u00f3digo QR que, al escanearlo, te lleva a las grabaciones originales. As\u00ed puedes verlos o escucharlos cuando quieras, cont\u00e1ndote su historia. \ud83d\udc46 Elige preguntas o fotos para inspirar las historias \ud83d\udcf1 Graba las respuestas habladas",
-        "headline": "\ud83d\udcd6 Remento convierte las grabaciones en un libro lleno de historias escritas",
         "cta": null,
         "platforms": [],
         "impression_lower": null,
@@ -986,7 +956,23 @@
         "days_running": 18
       }
     ],
-    "Tellmel": [],
+    "Tellmel": [
+      {
+        "competitor": "Tellmel",
+        "ad_id": "1326709665998121",
+        "status": "Active",
+        "page_name": "TellMel Mental Health Pllc.",
+        "ad_copy": "Do you need a provider that will actually listen and HEAR you? That's me! I\u2019d love to connect and support those who may benefit from compassionate psychiatric medication management and supportive therapy. Low impression count TellMel Mental Health Pllc.",
+        "headline": "Ad Library APIAbout ads and data usePrivacyTermsCookies",
+        "cta": null,
+        "platforms": [],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2026-05-18",
+        "stop_date": null,
+        "days_running": 0
+      }
+    ],
     "Keepsake": [
       {
         "competitor": "Keepsake",
