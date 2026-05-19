@@ -717,21 +717,6 @@
       },
       {
         "competitor": "Storykeeper",
-        "ad_id": "1342635554344428",
-        "status": "Active",
-        "page_name": "StoryKeeper",
-        "ad_copy": "This Mother's Day, go beyond flowers! Turn her life story into a keepsake book. What if you could give her a gift that lasts forever?",
-        "headline": "Her Story. Bound Forever.",
-        "cta": null,
-        "platforms": [],
-        "impression_lower": null,
-        "impression_upper": null,
-        "start_date": "2026-05-07",
-        "stop_date": null,
-        "days_running": 12
-      },
-      {
-        "competitor": "Storykeeper",
         "ad_id": "792414230413551",
         "status": "Active",
         "page_name": "StoryKeeper",
@@ -864,6 +849,21 @@
         "start_date": "2026-05-07",
         "stop_date": null,
         "days_running": 12
+      },
+      {
+        "competitor": "Storykeeper",
+        "ad_id": "1521599959561340",
+        "status": "Active",
+        "page_name": "StoryKeeper",
+        "ad_copy": "This Mother's Day, go beyond flowers! Turn her life story into a keepsake book. What if you could give her a gift that lasts forever?",
+        "headline": "$99 for 1 Book & 2 Copies",
+        "cta": null,
+        "platforms": [],
+        "impression_lower": null,
+        "impression_upper": null,
+        "start_date": "2026-04-30",
+        "stop_date": null,
+        "days_running": 19
       },
       {
         "competitor": "Storykeeper",
