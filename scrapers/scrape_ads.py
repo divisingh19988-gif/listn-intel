@@ -277,6 +277,126 @@ def build_status_map(body_text):
     return result
 
 
+_EXTRACT_CREATIVES_JS = r"""
+() => {
+  // Walks the rendered Ad Library page and returns one record per ad card,
+  // keyed by Library ID. Format detection is heuristic — Meta obfuscates
+  // class names so we lean on structural hints (card width, media size)
+  // instead of named selectors.
+  //
+  // Heuristics:
+  //   * Card container = nearest ancestor with width >= 400px AND height
+  //     >= 300px. Width alone isn't enough: the inline "Library ID: …"
+  //     row often spans the full card width but has tiny height. Cards
+  //     are tall because they pack media + copy + actions.
+  //   * Logo/avatar filter: drop <img> with natural dimensions < 200px.
+  //     Profile pics on Meta are 40-60px; ad creatives are >= 240px.
+  //   * Video presence dominates classification (Meta videos always include
+  //     a poster image, but a poster alone without <video> = static image).
+  const MIN_MEDIA_PX = 200;
+  const MAX_PARENT_WALK = 10;
+  const MIN_CARD_WIDTH = 400;
+  const MIN_CARD_HEIGHT = 300;
+
+  function findCard(el) {
+    let cur = el;
+    let hops = 0;
+    while (cur && cur !== document.body && hops < MAX_PARENT_WALK) {
+      const rect = cur.getBoundingClientRect();
+      if (rect.width >= MIN_CARD_WIDTH && rect.height >= MIN_CARD_HEIGHT) {
+        return cur;
+      }
+      cur = cur.parentElement;
+      hops += 1;
+    }
+    return null;
+  }
+
+  function isLargeImg(img) {
+    const w = img.naturalWidth || img.width || 0;
+    const h = img.naturalHeight || img.height || 0;
+    return w >= MIN_MEDIA_PX && h >= MIN_MEDIA_PX;
+  }
+
+  function videoSrc(video) {
+    if (video.src) return video.src;
+    const source = video.querySelector('source[src]');
+    return source ? source.src : null;
+  }
+
+  const out = {};
+  // Locate every "Library ID:" / "Bibliotheks-ID:" text node, then walk up
+  // to its enclosing card. document.evaluate is the only reliable way to
+  // text-match across arbitrary inline spans Meta inserts mid-string.
+  const xpath = "//*[contains(text(), 'Library ID:') or contains(text(), 'Bibliotheks-ID:')]";
+  const snapshot = document.evaluate(
+    xpath, document.body, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null
+  );
+
+  for (let i = 0; i < snapshot.snapshotLength; i++) {
+    const node = snapshot.snapshotItem(i);
+    const text = (node.textContent || "").trim();
+    const m = text.match(/(?:Library ID|Bibliotheks-ID):\s*(\d+)/);
+    if (!m) continue;
+    const adId = m[1];
+    if (out[adId]) continue; // first hit wins; duplicates happen in carousels
+
+    const card = findCard(node);
+    if (!card) continue;
+
+    const videos = Array.from(card.querySelectorAll('video'));
+    const allImgs = Array.from(card.querySelectorAll('img[src]'));
+    const largeImgs = allImgs.filter(isLargeImg);
+
+    let format = "text";
+    const creativeUrls = [];
+    let thumbnailUrl = null;
+
+    if (videos.length > 0) {
+      format = "video";
+      for (const v of videos) {
+        const src = videoSrc(v);
+        if (src) creativeUrls.push(src);
+        if (!thumbnailUrl && v.poster) thumbnailUrl = v.poster;
+      }
+      if (!thumbnailUrl && largeImgs.length > 0) thumbnailUrl = largeImgs[0].src;
+    } else if (largeImgs.length > 1) {
+      format = "carousel";
+      for (const img of largeImgs) creativeUrls.push(img.src);
+      thumbnailUrl = creativeUrls[0] || null;
+    } else if (largeImgs.length === 1) {
+      format = "image";
+      creativeUrls.push(largeImgs[0].src);
+      thumbnailUrl = largeImgs[0].src;
+    }
+
+    out[adId] = {
+      format: format,
+      creative_urls: creativeUrls,
+      thumbnail_url: thumbnailUrl,
+    };
+  }
+
+  return out;
+}
+"""
+
+
+def extract_creatives_from_dom(page):
+    """Walk the DOM for each loaded ad card and pull format + media URLs.
+
+    Returns a dict ``{ad_id: {"format": str, "creative_urls": list[str],
+    "thumbnail_url": str | None}}``. Empty dict on any failure — callers
+    should fall back to ``None`` defaults so a flaky page doesn't drop
+    ads from the output.
+    """
+    try:
+        return page.evaluate(_EXTRACT_CREATIVES_JS) or {}
+    except Exception as e:
+        print(f"  [creative-extract] page.evaluate failed: {e}")
+        return {}
+
+
 def parse_ad_block(block_text, competitor):
     """
     Parse one ad card's text block into structured fields.
@@ -310,6 +430,13 @@ def parse_ad_block(block_text, competitor):
         "start_date": None,
         "stop_date": None,
         "days_running": None,
+        # Populated by extract_creatives_from_dom() in scrape_competitor().
+        # Kept here so the JSON shape is consistent even when DOM extraction
+        # misses a card (e.g. heuristics fail on a layout variant).
+        "format": None,
+        "creative_urls": [],
+        "thumbnail_url": None,
+        "data_source": None,
     }
 
     # Note: status is NOT parsed here. Meta renders the "Active"/"Inactive"
@@ -475,6 +602,22 @@ def scrape_competitor(page, competitor, debug_dir=None):
                     if a.get("start_date"):
                         a["days_running"] = days_between(a["start_date"], None)
 
+        # DOM-side enrichment: format + creative URLs come from img/video tags
+        # inside each ad card, not the rendered text. Run once per page; any
+        # ad whose card isn't found stays at default (format=None, dashboard
+        # renders a dash).
+        creatives_by_id = extract_creatives_from_dom(page)
+        for a in ads:
+            ad_id = a.get("ad_id")
+            if not ad_id:
+                continue
+            a["data_source"] = "playwright"
+            extra = creatives_by_id.get(ad_id)
+            if extra:
+                a["format"] = extra.get("format")
+                a["creative_urls"] = extra.get("creative_urls") or []
+                a["thumbnail_url"] = extra.get("thumbnail_url")
+
         parsed_count = len(ads)
         parsed_page_names = sorted({(a.get("page_name") or "").strip() for a in ads if a.get("page_name")})
         if search_type == "page_id":
@@ -503,22 +646,28 @@ def scrape_competitor(page, competitor, debug_dir=None):
             kept = [a for a in ads if is_competitor_ad(a, competitor)]
         active_kept = sum(1 for a in kept if a.get("status") == "Active")
 
+        creative_hits = sum(1 for a in ads if a.get("format"))
+
         if debug_dir:
             _debug_write(debug_dir, f"{safe_name}_{attempt_idx}_BODY.txt",
                          f"url={url}\nsearch_term={search_term!r} search_type={search_type}\n"
                          f"raw_blocks={len(raw_blocks)} parsed={parsed_count} "
                          f"status_map_size={len(status_by_id)} "
+                         f"creative_hits={creative_hits} "
                          f"filtered_in={len(kept)} active_kept={active_kept}\n"
                          f"page_names_seen={parsed_page_names}\n"
                          f"filter_keywords={COMPETITOR_PAGE_FILTER.get(competitor)}\n"
                          f"\n===== BODY TEXT =====\n{body_text}")
             _debug_write(debug_dir, f"{safe_name}_{attempt_idx}_STATUS_MAP.json",
                          json.dumps(status_by_id, indent=2))
+            _debug_write(debug_dir, f"{safe_name}_{attempt_idx}_CREATIVES.json",
+                         json.dumps(creatives_by_id, indent=2))
             _debug_write(debug_dir, f"{safe_name}_{attempt_idx}_PARSED.json",
                          json.dumps(ads, indent=2, default=str))
 
         print(f"  raw_blocks={len(raw_blocks)} parsed={parsed_count} "
-              f"status_badges={len(status_by_id)} kept={len(kept)} active={active_kept}")
+              f"status_badges={len(status_by_id)} creatives={creative_hits} "
+              f"kept={len(kept)} active={active_kept}")
 
         if kept:
             return kept
