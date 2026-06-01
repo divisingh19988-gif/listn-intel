@@ -96,9 +96,30 @@ jobs:
           else
             git commit -m "weekly refresh: $(date -u +%Y-W%V)"
             git fetch origin main
-            git rebase origin/main
+            git rebase -X theirs origin/main
             git push   # fail the job if the push doesn't land
           fi
+
+      - name: Record refresh completion
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          python - <<'PYEOF'
+          import os, requests
+          requests.post(
+              f"{os.environ['SUPABASE_URL']}/rest/v1/admin_audit",
+              headers={
+                  "apikey": os.environ["SUPABASE_SERVICE_ROLE_KEY"],
+                  "Authorization": f"Bearer {os.environ['SUPABASE_SERVICE_ROLE_KEY']}",
+                  "Content-Type": "application/json",
+                  "Prefer": "return=minimal",
+              },
+              json={"table_name": "scraper_run", "action": "scraper_run",
+                    "actor": "cron", "note": "Weekly refresh completed"},
+          ).raise_for_status()
+          print("Logged scraper_run to admin_audit")
+          PYEOF
 
       - name: Send failure alert
         if: failure()
