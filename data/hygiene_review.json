@@ -1,11 +1,20 @@
 {
-  "findings": [],
+  "findings": [
+    {
+      "category": "contradiction",
+      "details": "Post 01 is titled 'What to Ask Your Dad Before Father's Day: 50 Questions Worth Recording in His Own Voice' but its primary_keyword is 'fathers day gift ideas'. The word 'gift' (or any gift framing) appears nowhere in the title. Meanwhile Post 06 ('50 Questions to Ask Your Dad Before It's Too Late') correctly targets 'questions to ask dad before its too late'. As-is, Post 01 has no realistic chance of ranking for 'fathers day gift ideas' and is effectively competing with Post 06 for the same 'questions to ask dad' intent \u2014 defeating the head/long-tail pairing.",
+      "location": "ACTIVE roadmap \u2192 Post 01",
+      "severity": "medium",
+      "suggested_fix": "Either (a) repoint Post 01's primary_keyword to a gift-framed term from the Father's Day cluster (e.g. 'meaningful fathers day gift' or 'fathers day gift for dad who has everything') and rewrite the title to include gift language, or (b) reassign 'fathers day gift ideas' to a different post that actually pitches the app as a gift and give Post 01 a questions-focused keyword distinct from Post 06.",
+      "title": "Post 01 primary keyword doesn't match its title"
+    }
+  ],
   "model": "claude-opus-4-7",
-  "reviewed_at": "2026-06-01T14:06:20",
+  "reviewed_at": "2026-06-01T18:11:26",
   "today": "2026-06-01",
   "usage": {
     "cache_read_input_tokens": 0,
     "input_tokens": 3295,
-    "output_tokens": 1297
+    "output_tokens": 3305
   }
 }
