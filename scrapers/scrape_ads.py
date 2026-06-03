@@ -396,13 +396,20 @@ def extract_creatives_from_dom(page):
         print(f"  [creative-extract] page.evaluate failed: {e}")
         return {}
 
-_EXTRACT_SINGLE_AD_JS = """
+_EXTRACT_SINGLE_AD_JS = r"""
 () => {
   const MIN_MEDIA_PX = 200;
   const isHttp = (u) => typeof u === "string" && /^https?:/.test(u);
+  const isProfile = (u) => /t51\.2885-19/.test(u);      // FB profile-pic token
+  const isCreativeTok = (u) => /t39\.\d+-\d+/.test(u);  // FB ad-creative token
   const isLargeImg = (img) =>
     (img.naturalWidth || img.width || 0) >= MIN_MEDIA_PX &&
     (img.naturalHeight || img.height || 0) >= MIN_MEDIA_PX;
+  // Headless CI often has not-yet-decoded imgs (naturalWidth=0). Accept by
+  // creative-token URL too, so carousel cards are not lost to size checks.
+  const qualifies = (img) =>
+    isHttp(img.src) && !isProfile(img.src) &&
+    (isLargeImg(img) || isCreativeTok(img.src));
 
   // Permalink renders exactly one ad. Scope to the card holding the single
   // "Library ID:" so we skip page chrome and any "suggested" ads.
@@ -413,37 +420,56 @@ _EXTRACT_SINGLE_AD_JS = """
   let root = document.body;
   if (node) {
     let cur = node, hops = 0;
-    while (cur && cur !== document.body && hops < 12) {
+    while (cur && cur !== document.body && hops < 14) {
       const r = cur.getBoundingClientRect();
       if (r.width >= 320 && r.height >= 300) { root = cur; break; }
       cur = cur.parentElement; hops++;
     }
   }
 
-  const videos = Array.from(root.querySelectorAll('video'));
-  const largeImgs = Array.from(root.querySelectorAll('img[src]')).filter(isLargeImg);
+  const collect = (scope) => ({
+    vids: Array.from(scope.querySelectorAll('video')),
+    imgs: Array.from(scope.querySelectorAll('img[src]')).filter(qualifies),
+  });
+
+  let { vids, imgs } = collect(root);
+  // Fallback: scoped root yielded nothing (lazy/virtualized carousel) -> scan
+  // whole doc, still token/size filtered + profile-pic excluded. Permalink
+  // shows a single ad, so doc-wide creative-token imgs belong to that ad.
+  if (vids.length === 0 && imgs.length === 0) {
+    ({ vids, imgs } = collect(document));
+  }
+
+  // Dedupe img srcs, preserve order.
+  const seen = new Set();
+  const uniqImgs = [];
+  for (const img of imgs) {
+    if (seen.has(img.src)) continue;
+    seen.add(img.src); uniqImgs.push(img.src);
+  }
 
   let format = "text";
   const creativeUrls = [];
   let thumbnailUrl = null;
   let videoUrl = null;
 
-  if (videos.length > 0) {
+  if (vids.length > 0) {
     format = "video";
-    for (const v of videos) {
+    for (const v of vids) {
       if (isHttp(v.src) && !videoUrl) videoUrl = v.src;
-      if (isHttp(v.poster) && !thumbnailUrl) thumbnailUrl = v.poster;
+      if (isHttp(v.poster) && !isProfile(v.poster) && !thumbnailUrl) thumbnailUrl = v.poster;
     }
-    if (!thumbnailUrl && largeImgs.length) thumbnailUrl = largeImgs[0].src;
+    if (!thumbnailUrl && uniqImgs.length) thumbnailUrl = uniqImgs[0];
     if (thumbnailUrl) creativeUrls.push(thumbnailUrl);
-  } else if (largeImgs.length > 1) {
+    for (const u of uniqImgs) if (!creativeUrls.includes(u)) creativeUrls.push(u);
+  } else if (uniqImgs.length > 1) {
     format = "carousel";
-    for (const img of largeImgs) if (isHttp(img.src)) creativeUrls.push(img.src);
+    for (const u of uniqImgs) creativeUrls.push(u);
     thumbnailUrl = creativeUrls[0] || null;
-  } else if (largeImgs.length === 1) {
+  } else if (uniqImgs.length === 1) {
     format = "image";
-    if (isHttp(largeImgs[0].src)) creativeUrls.push(largeImgs[0].src);
-    thumbnailUrl = creativeUrls[0] || null;
+    creativeUrls.push(uniqImgs[0]);
+    thumbnailUrl = uniqImgs[0];
   }
 
   return { format, creative_urls: creativeUrls, thumbnail_url: thumbnailUrl, video_url: videoUrl };
@@ -463,12 +489,22 @@ def creative_for_single_ad(enrich_page, ad_id):
     url = f"https://www.facebook.com/ads/library/?id={ad_id}"
     try:
         enrich_page.goto(url, wait_until="domcontentloaded", timeout=30000)
-        enrich_page.wait_for_timeout(2500)
+        enrich_page.wait_for_timeout(3500)
         dismiss_overlays(enrich_page)
         enrich_page.wait_for_timeout(800)
+        # Nudge lazy-loaded carousel/video media into the DOM (CI headless is
+        # slower to populate off-screen cards than a local browser).
+        try:
+            enrich_page.mouse.wheel(0, 1400)
+            enrich_page.wait_for_timeout(800)
+            enrich_page.mouse.wheel(0, -700)
+            enrich_page.wait_for_timeout(500)
+        except Exception:
+            pass
         data = enrich_page.evaluate(_EXTRACT_SINGLE_AD_JS)
         if data and (data.get("creative_urls") or data.get("thumbnail_url")):
             return data
+        print(f"  [per-ad {ad_id}] no media (fmt={data.get('format') if data else '?'})")
     except Exception as e:
         print(f"  [per-ad {ad_id}] failed: {e}")
     return None
