@@ -396,6 +396,84 @@ def extract_creatives_from_dom(page):
         print(f"  [creative-extract] page.evaluate failed: {e}")
         return {}
 
+_EXTRACT_SINGLE_AD_JS = """
+() => {
+  const MIN_MEDIA_PX = 200;
+  const isHttp = (u) => typeof u === "string" && /^https?:/.test(u);
+  const isLargeImg = (img) =>
+    (img.naturalWidth || img.width || 0) >= MIN_MEDIA_PX &&
+    (img.naturalHeight || img.height || 0) >= MIN_MEDIA_PX;
+
+  // Permalink renders exactly one ad. Scope to the card holding the single
+  // "Library ID:" so we skip page chrome and any "suggested" ads.
+  const xpath = "//*[contains(text(),'Library ID:') or contains(text(),'Bibliotheks-ID:')]";
+  const node = document.evaluate(
+    xpath, document.body, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null
+  ).singleNodeValue;
+  let root = document.body;
+  if (node) {
+    let cur = node, hops = 0;
+    while (cur && cur !== document.body && hops < 12) {
+      const r = cur.getBoundingClientRect();
+      if (r.width >= 320 && r.height >= 300) { root = cur; break; }
+      cur = cur.parentElement; hops++;
+    }
+  }
+
+  const videos = Array.from(root.querySelectorAll('video'));
+  const largeImgs = Array.from(root.querySelectorAll('img[src]')).filter(isLargeImg);
+
+  let format = "text";
+  const creativeUrls = [];
+  let thumbnailUrl = null;
+  let videoUrl = null;
+
+  if (videos.length > 0) {
+    format = "video";
+    for (const v of videos) {
+      if (isHttp(v.src) && !videoUrl) videoUrl = v.src;
+      if (isHttp(v.poster) && !thumbnailUrl) thumbnailUrl = v.poster;
+    }
+    if (!thumbnailUrl && largeImgs.length) thumbnailUrl = largeImgs[0].src;
+    if (thumbnailUrl) creativeUrls.push(thumbnailUrl);
+  } else if (largeImgs.length > 1) {
+    format = "carousel";
+    for (const img of largeImgs) if (isHttp(img.src)) creativeUrls.push(img.src);
+    thumbnailUrl = creativeUrls[0] || null;
+  } else if (largeImgs.length === 1) {
+    format = "image";
+    if (isHttp(largeImgs[0].src)) creativeUrls.push(largeImgs[0].src);
+    thumbnailUrl = creativeUrls[0] || null;
+  }
+
+  return { format, creative_urls: creativeUrls, thumbnail_url: thumbnailUrl, video_url: videoUrl };
+}
+"""
+
+
+PER_AD_NAV_DELAY_MS = 1200   # politeness between permalink loads (avoid throttling)
+
+
+def creative_for_single_ad(enrich_page, ad_id):
+    """Load one ad's permalink (renders exactly that ad) and pull its creative.
+
+    Returns a dict ``{format, creative_urls, thumbnail_url, video_url}`` or
+    ``None``. Never raises so a flaky permalink can't abort the scrape.
+    """
+    url = f"https://www.facebook.com/ads/library/?id={ad_id}"
+    try:
+        enrich_page.goto(url, wait_until="domcontentloaded", timeout=30000)
+        enrich_page.wait_for_timeout(2500)
+        dismiss_overlays(enrich_page)
+        enrich_page.wait_for_timeout(800)
+        data = enrich_page.evaluate(_EXTRACT_SINGLE_AD_JS)
+        if data and (data.get("creative_urls") or data.get("thumbnail_url")):
+            return data
+    except Exception as e:
+        print(f"  [per-ad {ad_id}] failed: {e}")
+    return None
+
+
 
 def parse_ad_block(block_text, competitor):
     """
@@ -668,6 +746,28 @@ def scrape_competitor(page, competitor, debug_dir=None):
         print(f"  raw_blocks={len(raw_blocks)} parsed={parsed_count} "
               f"status_badges={len(status_by_id)} creatives={creative_hits} "
               f"kept={len(kept)} active={active_kept}")
+        # Per-ad creative enrichment: each ad's own permalink renders exactly
+        # that ad, so its creative binds unambiguously (no shared-container
+        # bleed from the results grid). Overrides the results-page guess above.
+        if kept:
+            enrich_page = page.context.new_page()
+            try:
+                for a in kept:
+                    ad_id = a.get("ad_id")
+                    if not ad_id:
+                        continue
+                    a["data_source"] = "playwright"
+                    extra = creative_for_single_ad(enrich_page, ad_id)
+                    if extra:
+                        a["format"] = extra.get("format")
+                        a["creative_urls"] = extra.get("creative_urls") or []
+                        a["thumbnail_url"] = extra.get("thumbnail_url")
+                        if extra.get("video_url"):
+                            a["video_url"] = extra["video_url"]
+                    enrich_page.wait_for_timeout(PER_AD_NAV_DELAY_MS)
+            finally:
+                enrich_page.close()
+
 
         if kept:
             return kept
