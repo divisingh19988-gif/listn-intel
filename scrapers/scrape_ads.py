@@ -279,74 +279,81 @@ def build_status_map(body_text):
 
 _EXTRACT_CREATIVES_JS = r"""
 () => {
-  // Walks the rendered Ad Library page and returns one record per ad card,
-  // keyed by Library ID. Format detection is heuristic — Meta obfuscates
-  // class names so we lean on structural hints (card width, media size)
-  // instead of named selectors.
-  //
-  // Heuristics:
-  //   * Card container = nearest ancestor with width >= 400px AND height
-  //     >= 300px. Width alone isn't enough: the inline "Library ID: …"
-  //     row often spans the full card width but has tiny height. Cards
-  //     are tall because they pack media + copy + actions.
-  //   * Logo/avatar filter: drop <img> with natural dimensions < 200px.
-  //     Profile pics on Meta are 40-60px; ad creatives are >= 240px.
-  //   * Video presence dominates classification (Meta videos always include
-  //     a poster image, but a poster alone without <video> = static image).
   const MIN_MEDIA_PX = 200;
-  const MAX_PARENT_WALK = 10;
-  const MIN_CARD_WIDTH = 400;
-  const MIN_CARD_HEIGHT = 300;
+  const isHttp = (u) => typeof u === "string" && /^https?:/.test(u);
+  const isProfile = (u) => /t51\.2885-19/.test(u);        // FB profile-pic token
+  const isCreativeTok = (u) => /t39\.\d+-\d+/.test(u);    // FB ad-creative token
+  // Meta's "over-filtering" empty-state and other static UI art live under
+  // /images/ or static.*.fbcdn ; never treat them as an ad creative.
+  const isStaticAsset = (u) =>
+    /\/(images|rsrc)\//.test(u) || /empty-state/.test(u) || /static\.[^/]*fbcdn/.test(u);
+  const pathOf = (u) => { try { return new URL(u).pathname; } catch (e) { return u; } };
 
-  function findCard(el) {
-    let cur = el;
-    let hops = 0;
-    while (cur && cur !== document.body && hops < MAX_PARENT_WALK) {
-      const rect = cur.getBoundingClientRect();
-      if (rect.width >= MIN_CARD_WIDTH && rect.height >= MIN_CARD_HEIGHT) {
-        return cur;
-      }
-      cur = cur.parentElement;
-      hops += 1;
-    }
-    return null;
-  }
-
-  function isLargeImg(img) {
-    const w = img.naturalWidth || img.width || 0;
-    const h = img.naturalHeight || img.height || 0;
-    return w >= MIN_MEDIA_PX && h >= MIN_MEDIA_PX;
-  }
+  const isLargeImg = (img) =>
+    (img.naturalWidth || img.width || 0) >= MIN_MEDIA_PX &&
+    (img.naturalHeight || img.height || 0) >= MIN_MEDIA_PX;
+  // Accept an <img> as a creative if it is a real ad-creative URL (token) or a
+  // decoded large image, and never a profile pic or static UI asset. Token
+  // acceptance matters in headless where imgs are often undecoded (naturalWidth=0).
+  const isCreativeImg = (img) =>
+    isHttp(img.src) && !isProfile(img.src) && !isStaticAsset(img.src) &&
+    (isCreativeTok(img.src) || isLargeImg(img));
 
   function videoSrc(video) {
-    if (video.src) return video.src;
-    const source = video.querySelector('source[src]');
-    return source ? source.src : null;
+    if (isHttp(video.src)) return video.src;
+    const s = video.querySelector('source[src]');
+    return s && isHttp(s.src) ? s.src : null;
+  }
+
+  const xpath = "//*[contains(text(), 'Library ID:') or contains(text(), 'Bibliotheks-ID:')]";
+  const snap = document.evaluate(
+    xpath, document.body, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null
+  );
+  const idRe = /(?:Library ID|Bibliotheks-ID):\s*(\d+)/;
+  const libInfo = [];
+  for (let i = 0; i < snap.snapshotLength; i++) {
+    const n = snap.snapshotItem(i);
+    const m = (n.textContent || "").match(idRe);
+    if (m) libInfo.push({ node: n, id: m[1] });
+  }
+
+  // Scope to the LARGEST ancestor still covering exactly ONE distinct ad (by
+  // Library ID). Walking up to a fixed pixel size overshoots into a container
+  // holding several cards, so every ad in it shares one creative. Bounding by
+  // distinct-Library-ID count stops one level before a sibling ad is pulled in
+  // -> exactly one card per ad. Carousels emit duplicate same-id rows, so we
+  // count DISTINCT ids, not row count.
+  function cardFor(node) {
+    let cur = node, best = node, hops = 0;
+    while (cur && cur !== document.body && hops < 24) {
+      const ids = new Set();
+      for (const info of libInfo) if (cur.contains(info.node)) ids.add(info.id);
+      if (ids.size <= 1) { best = cur; } else { break; }
+      cur = cur.parentElement; hops += 1;
+    }
+    return best;
   }
 
   const out = {};
-  // Locate every "Library ID:" / "Bibliotheks-ID:" text node, then walk up
-  // to its enclosing card. document.evaluate is the only reliable way to
-  // text-match across arbitrary inline spans Meta inserts mid-string.
-  const xpath = "//*[contains(text(), 'Library ID:') or contains(text(), 'Bibliotheks-ID:')]";
-  const snapshot = document.evaluate(
-    xpath, document.body, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null
-  );
+  for (const info of libInfo) {
+    const adId = info.id;
+    if (out[adId]) continue; // first hit wins; carousels repeat the id
 
-  for (let i = 0; i < snapshot.snapshotLength; i++) {
-    const node = snapshot.snapshotItem(i);
-    const text = (node.textContent || "").trim();
-    const m = text.match(/(?:Library ID|Bibliotheks-ID):\s*(\d+)/);
-    if (!m) continue;
-    const adId = m[1];
-    if (out[adId]) continue; // first hit wins; duplicates happen in carousels
-
-    const card = findCard(node);
+    const card = cardFor(info.node);
     if (!card) continue;
 
     const videos = Array.from(card.querySelectorAll('video'));
-    const allImgs = Array.from(card.querySelectorAll('img[src]'));
-    const largeImgs = allImgs.filter(isLargeImg);
+    const imgs = Array.from(card.querySelectorAll('img[src]')).filter(isCreativeImg);
+
+    // Dedupe by image PATH: signed fbcdn URLs differ only by the ?oe= token for
+    // the SAME picture, so URL-level dedupe would miss duplicates.
+    const seenPath = new Set();
+    const pushUniq = (arr, u) => {
+      if (!isHttp(u)) return;
+      const p = pathOf(u);
+      if (seenPath.has(p)) return;
+      seenPath.add(p); arr.push(u);
+    };
 
     let format = "text";
     const creativeUrls = [];
@@ -355,19 +362,18 @@ _EXTRACT_CREATIVES_JS = r"""
     if (videos.length > 0) {
       format = "video";
       for (const v of videos) {
-        const src = videoSrc(v);
-        if (src) creativeUrls.push(src);
-        if (!thumbnailUrl && v.poster) thumbnailUrl = v.poster;
+        if (!thumbnailUrl && isHttp(v.poster) && !isProfile(v.poster) && !isStaticAsset(v.poster)) {
+          thumbnailUrl = v.poster;
+        }
       }
-      if (!thumbnailUrl && largeImgs.length > 0) thumbnailUrl = largeImgs[0].src;
-    } else if (largeImgs.length > 1) {
-      format = "carousel";
-      for (const img of largeImgs) creativeUrls.push(img.src);
+      if (!thumbnailUrl && imgs.length) thumbnailUrl = imgs[0].src;
+      if (thumbnailUrl) pushUniq(creativeUrls, thumbnailUrl);   // poster first
+      for (const v of videos) { const vs = videoSrc(v); if (vs) pushUniq(creativeUrls, vs); }
+    } else {
+      for (const img of imgs) pushUniq(creativeUrls, img.src);
+      if (creativeUrls.length > 1) format = "carousel";
+      else if (creativeUrls.length === 1) format = "image";
       thumbnailUrl = creativeUrls[0] || null;
-    } else if (largeImgs.length === 1) {
-      format = "image";
-      creativeUrls.push(largeImgs[0].src);
-      thumbnailUrl = largeImgs[0].src;
     }
 
     out[adId] = {
@@ -782,27 +788,12 @@ def scrape_competitor(page, competitor, debug_dir=None):
         print(f"  raw_blocks={len(raw_blocks)} parsed={parsed_count} "
               f"status_badges={len(status_by_id)} creatives={creative_hits} "
               f"kept={len(kept)} active={active_kept}")
-        # Per-ad creative enrichment: each ad's own permalink renders exactly
-        # that ad, so its creative binds unambiguously (no shared-container
-        # bleed from the results grid). Overrides the results-page guess above.
-        if kept:
-            enrich_page = page.context.new_page()
-            try:
-                for a in kept:
-                    ad_id = a.get("ad_id")
-                    if not ad_id:
-                        continue
-                    a["data_source"] = "playwright"
-                    extra = creative_for_single_ad(enrich_page, ad_id)
-                    if extra:
-                        a["format"] = extra.get("format")
-                        a["creative_urls"] = extra.get("creative_urls") or []
-                        a["thumbnail_url"] = extra.get("thumbnail_url")
-                        if extra.get("video_url"):
-                            a["video_url"] = extra["video_url"]
-                    enrich_page.wait_for_timeout(PER_AD_NAV_DELAY_MS)
-            finally:
-                enrich_page.close()
+        # Bind data_source. Creatives come from the results-page extraction
+        # above, scoped per card by distinct Library ID. No per-ad permalink:
+        # those render Meta's empty-state from datacenter (CI) IPs and overwrite
+        # good creatives with placeholder images.
+        for a in kept:
+            a["data_source"] = "playwright"
 
 
         if kept:
