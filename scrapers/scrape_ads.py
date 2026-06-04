@@ -403,79 +403,82 @@ def extract_creatives_from_dom(page):
         return {}
 
 _EXTRACT_SINGLE_AD_JS = r"""
-() => {
-  const MIN_MEDIA_PX = 200;
+(wantId) => {
+  const want = wantId ? String(wantId) : null;
   const isHttp = (u) => typeof u === "string" && /^https?:/.test(u);
-  const isProfile = (u) => /t51\.2885-19/.test(u);      // FB profile-pic token
-  const isCreativeTok = (u) => /t39\.\d+-\d+/.test(u);  // FB ad-creative token
-  const isLargeImg = (img) =>
-    (img.naturalWidth || img.width || 0) >= MIN_MEDIA_PX &&
-    (img.naturalHeight || img.height || 0) >= MIN_MEDIA_PX;
-  // Headless CI often has not-yet-decoded imgs (naturalWidth=0). Accept by
-  // creative-token URL too, so carousel cards are not lost to size checks.
-  const qualifies = (img) =>
-    isHttp(img.src) && !isProfile(img.src) &&
-    (isLargeImg(img) || isCreativeTok(img.src));
+  const isProfile = (u) => /t51\.2885-19/.test(u) || /t39\.30808-1/.test(u);
+  const isStatic  = (u) => /\/(images|rsrc)\//.test(u) || /empty-state/.test(u) || /static\.[^/]*fbcdn/.test(u);
+  const sizeOf = (u) => { const m = u.match(/_s(\d+)x(\d+)/) || u.match(/_p(\d+)x(\d+)/); return m ? parseInt(m[1], 10) : null; };
+  const isCreative = (u) => isHttp(u) && !isProfile(u) && !isStatic(u);
+  const goodImg = (u) => { const s = sizeOf(u); return isCreative(u) && (s === null || s >= 200); };
 
-  // Permalink renders exactly one ad. Scope to the card holding the single
-  // "Library ID:" so we skip page chrome and any "suggested" ads.
   const xpath = "//*[contains(text(),'Library ID:') or contains(text(),'Bibliotheks-ID:')]";
-  const node = document.evaluate(
-    xpath, document.body, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null
-  ).singleNodeValue;
-  let root = document.body;
-  if (node) {
-    let cur = node, hops = 0;
-    while (cur && cur !== document.body && hops < 14) {
-      const r = cur.getBoundingClientRect();
-      if (r.width >= 320 && r.height >= 300) { root = cur; break; }
-      cur = cur.parentElement; hops++;
+  const sn = document.evaluate(xpath, document.body, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+  const idRe = /(?:Library ID|Bibliotheks-ID):\s*(\d+)/;
+  const nodes = [];
+  let target = null;
+  for (let i = 0; i < sn.snapshotLength; i++) {
+    const n = sn.snapshotItem(i);
+    const m = (n.textContent || "").match(idRe);
+    if (m) { nodes.push({ node: n, id: m[1] }); if (want && m[1] === want) target = n; }
+  }
+
+  // The permalink may render a multi-ad gallery (the requested ad + "more from
+  // this advertiser"). Scope to the card of the REQUESTED ad, not the first one
+  // on the page, or every ad collapses to the gallery-lead's creative.
+  let scope = null;
+  if (target) {
+    let cur = target, best = target, h = 0;
+    while (cur && cur !== document.body && h < 24) {
+      const ids = new Set();
+      for (const it of nodes) if (cur.contains(it.node)) ids.add(it.id);
+      if (ids.size <= 1) { best = cur; } else { break; }
+      cur = cur.parentElement; h += 1;
     }
+    scope = best;
+  } else if (nodes.length === 0) {
+    // No Library-ID text at all -> page shows just this one ad; use whole doc.
+    scope = document.body;
+  } else {
+    // Gallery present but the requested ad is not in it -> ambiguous; bail so we
+    // never bind a sibling ad's creative.
+    return { format: "text", creative_urls: [], thumbnail_url: null, video_url: null };
   }
 
-  const collect = (scope) => ({
-    vids: Array.from(scope.querySelectorAll('video')),
-    imgs: Array.from(scope.querySelectorAll('img[src]')).filter(qualifies),
-  });
+  const videos = Array.from(scope.querySelectorAll('video'));
+  let imgs = Array.from(scope.querySelectorAll('img[src]')).map((i) => i.src).filter(goodImg);
 
-  let { vids, imgs } = collect(root);
-  // Fallback: scoped root yielded nothing (lazy/virtualized carousel) -> scan
-  // whole doc, still token/size filtered + profile-pic excluded. Permalink
-  // shows a single ad, so doc-wide creative-token imgs belong to that ad.
-  if (vids.length === 0 && imgs.length === 0) {
-    ({ vids, imgs } = collect(document));
+  const byPath = new Map();
+  for (const u of imgs) {
+    let p; try { p = new URL(u).pathname; } catch (e) { p = u; }
+    const s = sizeOf(u) || 99999;
+    const cur = byPath.get(p);
+    if (!cur || s > cur.s) byPath.set(p, { u, s });
   }
-
-  // Dedupe img srcs, preserve order.
-  const seen = new Set();
-  const uniqImgs = [];
-  for (const img of imgs) {
-    if (seen.has(img.src)) continue;
-    seen.add(img.src); uniqImgs.push(img.src);
-  }
+  const uniq = Array.from(byPath.values()).sort((a, b) => b.s - a.s).map((x) => x.u);
 
   let format = "text";
   const creativeUrls = [];
   let thumbnailUrl = null;
   let videoUrl = null;
 
-  if (vids.length > 0) {
+  if (videos.length > 0) {
     format = "video";
-    for (const v of vids) {
+    for (const v of videos) {
       if (isHttp(v.src) && !videoUrl) videoUrl = v.src;
-      if (isHttp(v.poster) && !isProfile(v.poster) && !thumbnailUrl) thumbnailUrl = v.poster;
+      if (isHttp(v.poster) && isCreative(v.poster) && !thumbnailUrl) thumbnailUrl = v.poster;
     }
-    if (!thumbnailUrl && uniqImgs.length) thumbnailUrl = uniqImgs[0];
+    if (!thumbnailUrl && uniq.length) thumbnailUrl = uniq[0];
     if (thumbnailUrl) creativeUrls.push(thumbnailUrl);
-    for (const u of uniqImgs) if (!creativeUrls.includes(u)) creativeUrls.push(u);
-  } else if (uniqImgs.length > 1) {
+    for (const u of uniq) if (!creativeUrls.includes(u)) creativeUrls.push(u);
+  } else if (uniq.length > 1) {
     format = "carousel";
-    for (const u of uniqImgs) creativeUrls.push(u);
-    thumbnailUrl = creativeUrls[0] || null;
-  } else if (uniqImgs.length === 1) {
+    for (const u of uniq) creativeUrls.push(u);
+    thumbnailUrl = uniq[0];
+  } else if (uniq.length === 1) {
     format = "image";
-    creativeUrls.push(uniqImgs[0]);
-    thumbnailUrl = uniqImgs[0];
+    creativeUrls.push(uniq[0]);
+    thumbnailUrl = uniq[0];
   }
 
   return { format, creative_urls: creativeUrls, thumbnail_url: thumbnailUrl, video_url: videoUrl };
@@ -507,7 +510,7 @@ def creative_for_single_ad(enrich_page, ad_id):
             enrich_page.wait_for_timeout(500)
         except Exception:
             pass
-        data = enrich_page.evaluate(_EXTRACT_SINGLE_AD_JS)
+        data = enrich_page.evaluate(_EXTRACT_SINGLE_AD_JS, ad_id)
         if data and (data.get("creative_urls") or data.get("thumbnail_url")):
             return data
         print(f"  [per-ad {ad_id}] no media (fmt={data.get('format') if data else '?'})")
@@ -788,12 +791,29 @@ def scrape_competitor(page, competitor, debug_dir=None):
         print(f"  raw_blocks={len(raw_blocks)} parsed={parsed_count} "
               f"status_badges={len(status_by_id)} creatives={creative_hits} "
               f"kept={len(kept)} active={active_kept}")
-        # Bind data_source. Creatives come from the results-page extraction
-        # above, scoped per card by distinct Library ID. No per-ad permalink:
-        # those render Meta's empty-state from datacenter (CI) IPs and overwrite
-        # good creatives with placeholder images.
-        for a in kept:
-            a["data_source"] = "playwright"
+        # Per-ad creative enrichment: each ad's own permalink renders the FULL
+        # creative (video + full-res poster, or large images) that the results
+        # grid only exposes as a 60x60 logo chip. Works from a residential IP;
+        # from datacenter (CI) IPs Meta serves an empty-state, so we override
+        # ONLY when the permalink returns a real creative (never a placeholder).
+        if kept:
+            enrich_page = page.context.new_page()
+            try:
+                for a in kept:
+                    ad_id = a.get("ad_id")
+                    a["data_source"] = "playwright"
+                    if not ad_id:
+                        continue
+                    extra = creative_for_single_ad(enrich_page, ad_id)
+                    if extra and extra.get("creative_urls"):
+                        a["format"] = extra.get("format") or a.get("format")
+                        a["creative_urls"] = extra["creative_urls"]
+                        a["thumbnail_url"] = extra.get("thumbnail_url")
+                        if extra.get("video_url"):
+                            a["video_url"] = extra["video_url"]
+                    enrich_page.wait_for_timeout(PER_AD_NAV_DELAY_MS)
+            finally:
+                enrich_page.close()
 
 
         if kept:
