@@ -1,20 +1,11 @@
 {
-  "findings": [
-    {
-      "category": "contradiction",
-      "details": "Post 01 is titled 'What to Ask Your Dad Before Father's Day: 50 Questions Worth Recording in His Own Voice' but its primary_keyword is 'fathers day gift ideas'. The title contains no gift framing \u2014 it's pure 'questions to ask dad' content. It will not rank for the head term 'fathers day gift ideas' because the title, H1, and on-page intent are about conversation prompts, not gift shopping. Meanwhile Post 06 already targets the questions long-tail ('questions to ask dad before its too late'), so Post 01 ends up competing with Post 06 on intent while being mis-mapped to a keyword it cannot win.",
-      "location": "ACTIVE roadmap \u2192 Post 01",
-      "severity": "medium",
-      "suggested_fix": "Either (a) retitle Post 01 to actually lead with a gift angle (e.g. 'The Father's Day Gift He'll Actually Keep: 50 Questions That Capture Dad's Voice') so it has a shot at 'fathers day gift ideas', or (b) reassign Post 01's primary_keyword to something that matches its current title (e.g. 'meaningful fathers day gift' or 'preserve dads voice') and let another post own the head term.",
-      "title": "Post 01 primary keyword does not match its title/intent"
-    }
-  ],
+  "findings": [],
   "model": "claude-opus-4-7",
-  "reviewed_at": "2026-06-08T11:31:55",
+  "reviewed_at": "2026-06-08T16:47:57",
   "today": "2026-06-08",
   "usage": {
     "cache_read_input_tokens": 0,
     "input_tokens": 3295,
-    "output_tokens": 3015
+    "output_tokens": 2454
   }
 }

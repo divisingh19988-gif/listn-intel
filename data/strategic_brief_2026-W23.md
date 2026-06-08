@@ -7,7 +7,7 @@
 ---
 
 # Listn Competitive Intelligence Report
-### Meta Ad Library Analysis — Scraped 2026-06-08
+### Meta Ad Library Analysis | Scraped 2026-06-08
 
 ---
 
@@ -15,285 +15,280 @@
 
 ### Remento
 
-Remento's ads cluster tightly around three core messages, running with remarkable copy consistency across 20+ active ads:
+Remento runs the most voluminous ad program in the dataset (~22 ads) and has consolidated around two distinct creative tracks:
 
-**Core Message 1: Frictionless preservation**
-> "With Remento, preserving precious stories is as easy as having a conversation. They will simply speak, and Remento will do the rest."
+**Track A: "Easy Conversation → Written Book"** *(dominant, ~60% of spend)*
+> *"With Remento, preserving precious stories is as easy as having a conversation. They will simply speak, and Remento will do the rest. Turning their spoken words into professionally written stories."*
 
-This is their workhorse message — appearing nearly verbatim across at least 10 active ads. The value proposition is zero effort for the storyteller and a tangible output (a printed book with QR codes).
+This is Remento's workhorse message. The core value prop is **frictionlessness for the storyteller** (no writing required) combined with a **tangible physical artifact** (hardcover book + QR codes). The buyer is addressed as the gift-giver; the parent/grandparent is the passive beneficiary who just speaks.
 
-**Core Message 2: Fear of loss / regret prevention**
-> "The book stayed blank." (headline for Suzan's story ad)
-> "80% of life stories are never recorded — don't let that be yours!"
+**Track B: Father's Day Gift Urgency** *(seasonal, ~30% of spend)*
+> *"The most meaningful Father's Day gift: his voice, forever at your fingertips."*
+> *"Get $20 OFF the most meaningful Father's Day gift."*
+> *"As seen on Shark Tank: the ONLY book dad writes without writing a word, AND it has his voice inside."*
 
-This is their sharpest emotional weapon. The Suzan narrative ad is their most human piece of creative: a real customer lost her father's stories because he wouldn't write, and now races to capture her 95-year-old mother's before it's too late.
+Leans on occasion-based scarcity, a discount incentive, and the Shark Tank authority signal. "Speech-to-Story" is their product-feature brand term.
 
-**Core Message 3: Gift positioning + social proof**
-> "Tim Ferriss chose it for his mom, calling it an 'A+ investment!'"
-> "As seen on Shark Tank: the ONLY book dad writes without writing a word"
-> "The most meaningful Father's Day gift: his voice, forever at your fingertips"
+**Track C: Loss-Anchored Narrative** *(emotional, ~10%)*
+> *"When Suzan's father passed away at 97, she didn't just lose him — she lost the stories he used to tell."*
+> *"The book stayed blank."*
 
-Father's Day is their current seasonal tent pole. Multiple ads launched June 2–7 layer Shark Tank credibility and Tim Ferriss endorsement onto gift-occasion urgency.
+This is Remento's most emotionally powerful creative. It uses a real customer story to dramatize the core fear: a parent who never wrote down their stories. It's distinct from the other tracks because it leads with grief, not ease.
 
-**Secondary message: Voice preservation technology**
-> "✍️ Speech-to-Story writes for them (without changing their voice)"
-
-This headline runs across all their "Speech-to-Story" creative cluster — it promises authenticity (not just transcription) which is a meaningful product differentiator.
+**Influencer/UGC Layer:** Remento is actively running creator-tagged ads ("mariavpaul with Remento," "Everyday Chiffon with Remento," "legacyofagrandpa with Remento," "Adadnamedrory with Remento") that voice the product through proxy buyers — adult children and grandchildren.
 
 ---
 
 ### Enna
 
-Enna is a German-market product (all copy in German). Their messaging is radically different from the memory/preservation category — they're selling an **ongoing senior connectivity platform**, not a one-time story capture tool.
+Enna is a German-market product and **not a direct Listn competitor** (different geography, different product category — ongoing tech companionship vs. story preservation). However, its ad strategy is instructive.
 
-**Core Message 1: Generational connection without friction**
-> "Mit enna bleiben Generationen verbunden" *(With enna, generations stay connected)*
-> "Kein Kauf, keine Einrichtung." *(No purchase, no setup.)*
+**Single dominant message, relentlessly repeated:**
+> *"Mit enna bleiben Generationen verbunden: ✅ Erinnerungen schicken ✅ Große Auswahl an Unterhaltung"*
+*(Translation: "With enna, generations stay connected: send memories, large entertainment selection")*
 
-This is their single dominant message. It appears across the majority of their 25+ ads with nearly zero variation. They are optimizing one message relentlessly.
+> *"Kein Kauf, keine Einrichtung."*
+*(Translation: "No purchase, no setup.")*
 
-**Core Message 2: Grandparent happiness + family closeness**
-> "Mach auch deine Oma glücklich & bring die ganze Familie näher zusammen!" *(Make your grandma happy too & bring the whole family closer together!)*
-
-This variant targets grandchildren specifically, framing the product as a family bonding tool with grandmother wellbeing as the emotional hook.
-
-**Core Message 3: Social proof at scale**
-> "❤️ 30.000+ Nutzer 💬 4000+ Bewertungen ⭐ 4,7 Sterne Bewertung" *(30,000+ users, 4,000+ reviews, 4.7 stars)*
-
-Used in their longer-running ads as credibility stacking.
-
-**Core Message 4: Trial offer**
-> "Jetzt enna 30 Tage kostenlos testen!" *(Try enna free for 30 days!)*
-
-Reduces purchase anxiety with a risk-reversal offer.
+The entire strategy hinges on **zero-friction setup** as a barrier removal and **intergenerational connection** as the emotional core. Enna's longevity data (213 days on some creatives) suggests this simple message is working sustainably without creative fatigue.
 
 ---
 
 ### StoryKeeper
 
-StoryKeeper is the most scattered in their messaging — clearly a newer/testing advertiser with 16+ active ads all launched within the last 4 days of the scrape. They're running a broad creative test.
+StoryKeeper entered the market recently — every ad in the dataset was launched June 4–8, 2026 — and is in an aggressive Father's Day push with a wide creative spread (~20 ads). Key messages:
 
-**Message variant 1: Urgency + impermanence**
-> "This Father's Day, capture the stories that matter before they fade."
-> "Because memories fade, but stories shouldn't."
+**Memory preservation + physical keepsake:**
+> *"Because memories fade, but stories shouldn't."*
+> *"StoryKeeper turns memories into love you can hold and hear."*
+> *"Your loved one's stories deserve to be remembered — in their own words and in their own voice."*
 
-**Message variant 2: Physicality + sentiment**
-> "StoryKeeper turns memories into love you can hold and hear."
-> "Your loved one's stories deserve to be remembered – in their own words and in their own voice."
+**Gift framing:**
+> *"Give more than a gift. Give your family a keepsake that grows more meaningful with time."*
+> *"This Book Made My Dad Cry (In a Good Way)."*
+> *"Give him a lifetime of memories instead of another throwaway present."*
 
-**Message variant 3: Anti-generic-gift positioning**
-> "Give him a lifetime of memories instead of another throwaway present."
-> "Give more than a gift. Give your family a keepsake that grows more meaningful with time."
+**Differentiation on voice preservation:**
+> *"The Only Book That Let's You Listen to Their Story."*
+> *"Interview by voice, add photos, and we turn it into a keepsake: two hardcovers + e-book."*
 
-**Message variant 4: Emotional proof**
-> "This Book Made My Dad Cry (In a Good Way)."
-
-**Message variant 5: Product simplicity**
-> "Skip the typing, editing, and overwhelm. Storykeeper records voices naturally and turns them into a handcrafted book."
-> "StoryKeeper makes it easy to capture memories. No setup, no stress, no tech overwhelm."
+StoryKeeper is functionally positioning identically to Remento — voice-to-book, gift occasion, no-tech-stress — but with slightly rawer, more emotional headline writing ("This Book Made My Dad Cry").
 
 ---
 
 ### ElliQ
 
-ElliQ is categorically different — they sell an AI companion robot for seniors. They're not directly competing with Listn on memory preservation, but they compete for the same buyer's attention (adult children concerned about aging parents).
+ElliQ is an AI companion device for older adults. It is **not a story preservation product** and its messaging targets a different emotional driver entirely.
 
-**Core Message 1: Combating loneliness / cognitive health**
-> "Because no one should feel alone. ElliQ is more than technology — she's a companion who's there every day to talk, laugh, and brighten your little moments."
-> "Conversation, interaction, and mental stimulation are essential for cognitive health 💡"
+**Core messages:**
 
-**Core Message 2: Ease of setup**
-> "With ElliQ, getting started takes minutes — not hours."
-> "✨ Plug in and go"
+> *"Because no one should feel alone. ElliQ is more than technology — she's a companion who's there every day to talk, laugh, and brighten your little moments."*
 
-**Core Message 3: Positive aging philosophy**
-> "What if the way we think about aging actually impacts how we age? The research suggests it does."
-> "It's helping them continue to thrive there ✨"
+> *"Conversation, interaction, and mental stimulation are essential for cognitive health."*
 
-ElliQ is the only competitor operating in a genuinely philosophical register — they're selling a worldview about aging, not just a product feature.
+> *"What if the way we think about aging actually impacts how we age? The research suggests it does."*
+
+ElliQ owns the **loneliness/cognitive health** lane. It frames itself as a health intervention, not a gift or a memory-capture product. Its buyer is ambiguously positioned — some ads address the older adult directly ("she makes your life feel simpler"), others speak to a concerned family member.
 
 ---
 
 ## 2. Longevity Analysis
 
-| Competitor | Longest-Running Ad | Days Running | Key Creative | Why It's Working |
-|---|---|---|---|---|
-| **Enna** | Multiple ads (IDs: 841302105060560, 1852060685669387, etc.) | **213 days** | "Kein Kauf, keine Einrichtung" image ads | Frictionless value prop + zero-commitment CTA. Proven convertor. |
-| **Enna** | Multiple ads | **206 days** | Same core message, varied imagery | A/B testing images on a single winning message |
-| **Enna** | Ad 1177236264536592 | **168 days** | "Mach auch deine Oma glücklich" | Grandma-happiness framing hits different emotional nerve |
-| **ElliQ** | Ad 838679825886616 | **107 days** | "A friendly voice" companion messaging | Anti-loneliness angle is seasonally evergreen |
-| **ElliQ** | Ad 2082672142583809 | **98 days** | Reminders/appointments | Practical utility angle holds up outside holidays |
-| **Remento** | Ads starting 2026-05-26 | **13 days** | Core "book of stories" + varied images | Their evergreen product ad; holiday sprint launched on top |
-| **StoryKeeper** | All ads | **3–4 days** | Multiple message variants | Newly launched — pure testing phase |
+| Ad / Creative | Brand | Days Running | Why It's Surviving |
+|---|---|---|---|
+| "Kein Kauf, keine Einrichtung" (multiple variants) | Enna | **213 days** | Radically simple objection-removal. No purchase + no setup eliminates the two biggest hesitations for family buyers of eldertech. Doesn't need to be refreshed because it isn't clever — it's utilitarian. |
+| "Mach auch deine Oma glücklich" variants | Enna | **137–168 days** | Adds a warmth hook ("make grandma happy") to the utilitarian message. Broad enough to run indefinitely without creative fatigue. |
+| "Kein Kauf, keine Einrichtung" carousel | Enna | **117 days** | Same message in carousel format — format variation extends life without copy refresh. |
+| "Because no one should feel alone" / "A friendly voice" | ElliQ | **107 days** | Emotionally timeless. Loneliness in older adults is a perennial, non-seasonal fear. No expiry date on this message. |
+| "There's a lot to keep track of" (reminders) | ElliQ | **98 days** | Functional benefit + companionship. Solves a concrete daily problem, which has evergreen appeal. |
+| "Kein Kauf" Feb cohort | Enna | **117 days** | Same creative surviving a new flight |
+| Remento "easy as a conversation" core variants | Remento | **12–13 days** | Short flight but same copy across ~10 ad IDs — indicates A/B image testing on a single strong copy block |
+| "legacyofagrandpa with Remento" | Remento | **13 days** | Creator content with emotional resonance ("stories quietly disappear over time") — most durable Remento creative in this snapshot |
 
-**What the longevity data tells us:**
+**Key insight:** The longest-running ads in the entire dataset belong to **Enna**, running since November 2025 — over seven months. Their staying power comes from functional barrier removal ("no purchase, no setup"), not emotional storytelling. This is counterintuitive: in a category saturated with warmth and nostalgia, the most durable creative is a friction-killer.
 
-Enna's 213-day run of essentially the same copy is the most important signal in this dataset. **One message, many images, relentless scale.** They found a winner and are farming it. The message — no purchase, no setup required — removes the highest-friction objections to elder-care technology purchases. It's working because it addresses the adult child's two core fears: cost and tech setup burden.
+Remento's oldest surviving creative is only 13 days old at the time of scraping, suggesting they rotate imagery frequently while keeping copy stable. The "Suzan's father" loss narrative (6 days) is their most emotionally distinct creative — if it survives the next 30 days, it will be their most important asset.
 
-ElliQ's 107-day "A friendly voice" ad works because **anti-loneliness is an evergreen emotional trigger** with no seasonal ceiling. It doesn't need Father's Day to be relevant.
-
-Remento's longest-running ads (13 days) appear to be relatively new; their full history isn't visible in this snapshot. But their "book of stories" message is clearly their workhorse — it's running across 10+ creatives simultaneously, all with different images. This is Remento's version of Enna's strategy: one core message, many visual tests.
+StoryKeeper's entire portfolio is 3–4 days old. No longevity data available; they appear to be in pure launch/test mode.
 
 ---
 
 ## 3. CTA Landscape
 
-### CTAs by competitor
+### By Frequency
 
-| Competitor | CTAs Observed | Dominant CTA | Distinctive CTAs |
+| CTA | Brand(s) | Frequency | Context |
 |---|---|---|---|
-| **Remento** | "Learn more" (explicit) | Learn more | "Give Remento as a gift"; "$20 OFF" discount trigger |
-| **Enna** | "Learn More" (explicit) | Learn More | "30 Tage kostenlos testen" (30-day free trial) — embedded in copy |
-| **StoryKeeper** | "Learn more", "Shop Now" | Learn more | "Shop Now" (only competitor using commerce CTA); "Record. Print. Keep Forever" |
-| **ElliQ** | "Learn more" | Learn more | Philosophical/editorial copy acts as soft CTA |
+| "Learn more" | Remento, StoryKeeper, ElliQ | **Most common** | Default lower-commitment ask; used for video/awareness creative |
+| "Shop Now" | StoryKeeper | Moderate | Direct purchase push; only brand using transactional CTA explicitly |
+| No explicit CTA (copy-only) | Remento, Enna | Frequent | Relies on headline/copy to drive click; common in image-heavy formats |
+| "Learn More" (capitalized) | Enna | Occasional | Same as above |
 
-### Analysis
+### Observations
 
-**"Learn more" dominates the entire category.** Every player defaults to it. This is a considered-purchase market where nobody expects a direct impulse buy — they're all trying to get the click into a funnel, not close at the ad level.
-
-**The only exception: StoryKeeper's "Shop Now."** This is notable. StoryKeeper is framing their product as an immediate, low-consideration purchase — more like a gift product than a software subscription. Their "Record. Print. Keep Forever" headline is also the most transactionally clear CTA in the dataset.
-
-**Remento's "$20 OFF"** embedded in copy is the only price-lever being pulled. It adds conversion urgency that pure "learn more" doesn't provide.
-
-**The biggest CTA gap in the entire market:** Nobody is using a **try-before-you-commit** or **preview experience** CTA. Enna gestures toward this with "30 days free" in copy, but none of these ads are using CTAs like "Hear a sample story," "Try a free conversation," or "Listen to a real recording." For an audio-first product like Listn, this is a wide open lane.
+- **"Learn more" dominates.** Every brand with an explicit CTA defaults to it. This is the path of least resistance and likely reflects category-level buyer behavior: these are considered purchases that require education before conversion.
+- **StoryKeeper is the only brand explicitly using "Shop Now"** — an aggressive, transactional CTA that signals either confidence in purchase-ready traffic or a willingness to optimize for direct conversion over consideration.
+- **Remento's influencer ads have no CTA field** — they rely on organic engagement mechanics (comment "BOOK" to get a link) which is a comment-automation play that bypasses Meta's CTA button entirely.
+- **Enna uses "Learn More" for discount-urgency ads** — which is a mismatch. An ad saying "Jetzt 120€ sparen!" (Save 120€ now!) should have a "Shop Now" or "Claim Offer" CTA. This is a gap they're leaving open.
+- **No brand is using "Start Free Trial," "Get Started," or "Give as a Gift"** — CTAs that would fit the category's gift-purchase use case more precisely.
 
 ---
 
 ## 4. Emotional Tone
 
-| Competitor | Primary Register | Secondary Register | What's Absent |
+| Brand | Primary Emotional Register | Secondary | Notably Absent |
 |---|---|---|---|
-| **Remento** | **Nostalgia + fear of loss** | Celebration / gift occasion | Urgency beyond holiday; anger/guilt; joy of discovery |
-| **Enna** | **Warmth + relief** | Family togetherness | Loss, grief, urgency, depth |
-| **StoryKeeper** | **Sentimental urgency** | Anti-generic-gift irreverence | Personal story; authenticity; real customer voice |
-| **ElliQ** | **Compassion + quiet dignity** | Intellectual/philosophical | Fear, loss, grief |
+| **Remento** | Warmth + ease | Fear of loss (Track C), celebration (Father's Day) | Urgency outside seasonal windows; humor |
+| **StoryKeeper** | Sentimental urgency | Celebration ("Dad Cry in a Good Way") | Grief/loss depth; evergreen non-occasion tone |
+| **Enna** | Practical reassurance | Familial warmth ("make grandma happy") | Any narrative depth; emotional storytelling |
+| **ElliQ** | Quiet compassion | Clinical/research authority | Gift framing; nostalgia |
 
-**Deeper read by brand:**
+### Deeper read by brand:
 
-**Remento** operates in the territory of *anticipated grief* — the fear of what you'll lose if you don't act. Their best ad ("The book stayed blank") is devastating in a quiet way: a daughter watches her father die without ever capturing a word, and now races to prevent the same with her mother. This is the emotional engine of their whole brand. However, they soften it heavily with "meaningful gift" and "conversation is easy" framing, which prevents it from landing too dark. The result is a slightly muted version of what could be more powerful.
+**Remento** oscillates between two tones that don't always cohere: the breezy "as easy as a conversation" track is warm but somewhat product-feature-y, while the "Suzan" narrative is genuinely affecting. The emotional peak of their library is:
 
-**Enna** operates in pure **warmth and relief** — no grief, no urgency, no loss. The message is: *your grandmother will be happier and you can stop worrying.* This is a lighter lift emotionally, which likely explains their extraordinary ad longevity — it's non-threatening to scroll past repeatedly.
+> *"The book stayed blank."*
 
-**StoryKeeper** is attempting sentimental urgency but without a consistent emotional anchor. "This Book Made My Dad Cry (In a Good Way)" is their sharpest line — it's specific, earned, and human. But most of their ads are generic "memories matter" territory with no differentiated emotional charge.
+Four words. That's the best creative in this entire dataset. It earns its place because it names the exact failure mode that every adult child buying this product is trying to prevent.
 
-**ElliQ** is the most sophisticated emotionally. They're the only brand operating in the register of **dignity and agency** — framing aging as something to be embraced, not managed. Their "positive aging" philosophy ads are genuinely counter-cultural in a category drowning in soft paternalism.
+**StoryKeeper** goes heavier on sentiment per word count but lighter on specificity. 
+
+> *"Give more than a gift. Give your family a keepsake that grows more meaningful with time."*
+
+This is nice but generic — it could be a Hallmark card. Compare to Remento's "blank book" image: one is evocative, one is aspirational.
+
+**ElliQ** operates in a completely different emotional lane: it's addressing *ongoing present-tense loneliness* rather than *future loss or past preservation*. Its tone is warm but carries an undercurrent of health urgency — "cognitive health," "positive aging outcomes," "no one should feel alone." This is the only brand that frames its product as a health intervention.
+
+**Enna** has essentially zero emotional depth in its ad copy. It's pure utility selling. Given that its ads are the longest-running in the dataset, this is either a testament to the power of pragmatic messaging or a sign of unmet emotional opportunity.
 
 ---
 
 ## 5. Three Things Listn Should Do Differently
 
-### 1. Lead with the Voice, Not the Artifact
+### 1. Lead with the Voice, Not the Output
 
-Every competitor — Remento, StoryKeeper — leads with **the book**. The physical product is the hero. Remento's core headline is literally:
+Every competitor in the memory/story preservation space (Remento, StoryKeeper) frames their product around the **artifact** — the book, the hardcover, the QR code. This is understandable: a physical object is tangible and gift-able. But it's also a strategic mistake for Listn, because **the voice is the thing that cannot be replaced.**
 
-> "📖 Remento turns recordings into a book of written stories"
+A book can be reprinted. A voice cannot be recreated.
 
-The *voice recording* is positioned as raw material for a printed artifact. Listn's fundamental product advantage — **voice-first, voice-native, the actual voice of your parent preserved** — is being undersold across the entire category. Remento even reduces voice to a QR code novelty attached to a physical book.
+Listn's differentiator is not the story in text — it's the actual audio of your parent speaking. No competitor is owning the "you will never hear their voice again after they're gone" emotional territory in a direct, unhedged way.
 
-**Listn's recommendation:** Make the voice itself the irreplaceable thing. Run ads that make the adult child *feel* what it will be like to hear their parent's voice after they're gone. Not a book. Not a QR code. The actual voice, telling the actual story, in their actual words. Your headline shouldn't mention a product at all — it should put the buyer in the moment:
+**Concrete ad direction:**
+> *"There will be a last conversation. You just won't know it was the last one. Start recording now."*
 
-> *"Press play. Hear your dad explain how he met your mom."*
-> *"Ten years from now, you'll want to hear their laugh again."*
+Or, softer:
+> *"When was the last time you just sat and listened to your dad talk? Listn gives you a reason to call."*
 
-The voice is the asset. Own it.
-
----
-
-### 2. Use Real Story Fragments as Creative, Not Generic "Memories Matter" Copy
-
-Every competitor writes *about* memories in the abstract. Nobody shows a specific, concrete, surprising story fragment that makes you feel it.
-
-Compare:
-- StoryKeeper: *"memories fade, but stories shouldn't"* — generic
-- Remento: *"The book stayed blank"* — specific, devastating
-
-Remento occasionally breaks through with specificity (the Suzan story), but it's the exception. The entire category is awash in abstraction: "meaningful," "precious," "treasure," "keepsake."
-
-**Listn's recommendation:** Run ads where the **creative is a fragment of a real story** told in the parent's own voice, structured as a scroll-stopper. The ad *is* the story. Example formats:
-
-- Quote card: *"My father grew up without shoes until he was 12. I never knew that until we used Listn."* — [Sarah, 43, Portland]
-- Voice snippet: A 15-second clip of a grandparent telling something that makes the adult child viewer think: *I need to do this with my mom.*
-
-Make the buyer feel the specific loss of not having captured this — not the general concept of "memories fading."
+The adult child (35–55) is the audience. The parent's voice is the creative asset. The ad is addressed to the buyer; the parent appears as the emotional hook.
 
 ---
 
-### 3. Reframe the Buyer's Role: From Gift-Giver to Story Rescuer
+### 2. Run an Always-On Non-Seasonal Creative, Not Just Holiday Sprints
 
-Remento and StoryKeeper have both landed on **gift occasion** as their primary conversion mechanism. Every ad launching right now is Father's Day-pegged:
+Remento's entire visible ad library was launched May 26 – June 8. StoryKeeper's entire library launched June 4–8. Both are clearly in a **Father's Day seasonal push.** When June 21 passes, they will either pause or pivot to the next occasion (birthdays, Christmas, etc.).
 
-> "The most meaningful Father's Day gift: his voice, forever at your fingertips."
-> "Give him a lifetime of memories instead of another throwaway present."
+Enna's longest-running ads have been live since **November 2025**. They don't need a holiday to justify why someone should buy. Their "no purchase, no setup" message works every day of the year.
 
-This is smart seasonal strategy, but it creates a structural problem: **it makes the purchase feel optional and celebratory rather than urgent and necessary.** Gift-occasion framing lets the buyer off the hook — "I'll get this for Father's Day" becomes an easy deferral, and when Father's Day passes, the purchase impulse dies.
+Listn should build an always-on creative infrastructure around evergreen triggers:
+- A health scare or diagnosis ("After Mom's stroke, we realized...")
+- A move to assisted living ("Now that Dad lives far away...")
+- A recent loss in a friend's family ("My friend just lost her father and she said...")
+- The mundane fear: "I don't know anything about where my dad grew up"
 
-Listn's recommendation: Run a **non-occasion-based creative track** that positions the adult child not as a gift-giver, but as a **story rescuer** — someone who is the *only* person who can preserve their parent's stories before it's too late, and who will either do it or won't. This reframe:
+**None of these require a holiday.** The adult child thinking "I should really do something to capture Mom's stories" has that thought on a Tuesday in March, not just on Mother's Day weekend.
 
-- Creates urgency that doesn't expire on June 16th
-- Elevates the buyer's identity (rescuer > gift-buyer)
-- Speaks to the specific guilt/grief that adult children feel about not asking enough questions
+**Concrete recommendation:** Build one evergreen "regret prevention" creative and run it for 90+ days with image variation but stable copy. Test for fatigue but assume it won't fatigue — the underlying fear doesn't have an expiration date.
 
-Concrete ad angle:
-> *"Your parents' stories are being lost right now. Not because they won't share them. Because nobody has thought to ask — in the right way."*
+---
 
-This is addressed squarely to the adult child, features the parent's stories as the thing at stake, and creates action urgency that doesn't require a holiday.
+### 3. Use Specific Narrative Proof, Not Category Claims
+
+The most credible ad in the entire dataset is Remento's:
+
+> *"When Suzan's father passed away at 97, she didn't just lose him — she lost the stories he used to tell... 'So he didn't write a single story. Not one.'"*
+
+It converts a real person's specific grief into a universal fear. It's effective because it's particular — Suzan, age 97, blank book — not because it makes a category claim.
+
+By contrast, StoryKeeper's
+
+> *"Your loved one's stories deserve to be remembered — in their own words and in their own voice."*
+
+is a claim that exactly zero buyers would disagree with and therefore moves exactly zero buyers. It's a value category statement, not a reason to act.
+
+Listn should build its ad library around **specific, named, real customer narratives** addressed to adult children. Not "preserve your loved one's stories" but something like:
+
+> *"My dad was a Marine in Vietnam. I knew that. I didn't know anything else. Three months after my daughter was born, I started recording him with Listn. Last Tuesday he told me a story I've never heard in 43 years of knowing him."*
+
+The adult child reads this and thinks: *That could be me. That could be my story I'm missing.* The parent appears in the narrative but the adult child is the one being persuaded.
 
 ---
 
 ## 6. Gaps Listn Can Own
 
-### Gap 1: The "Actual Voice" Emotional Territory
+### Gap 1: The "Not Yet Lost" Urgency Angle
 
-No competitor has claimed *the sound of your parent's voice* as a standalone, irreplaceable asset. Remento reduces it to a QR code. StoryKeeper says "in their own voice" as a feature bullet. Nobody has built a campaign around the visceral, emotional reality that **the voice is the one thing you cannot recreate after someone is gone.**
+Every competitor's fear-of-loss messaging activates after something has already gone wrong — Suzan's father died, the book was blank. The implicit message is: "Don't make the same mistake she made."
 
-The adult child who has lost a parent and would do anything to hear their voice one more time — that emotional truth is completely unoccupied. Listn can own it without being morbid by focusing on the *gain* (hearing it whenever you want, forever) rather than only the *loss* (when they're gone).
+What no competitor is doing: **the pre-loss urgency ad.** The "your parent is still here and you are running out of time and you know it" message — not as a morbid poke but as a loving rallying call.
 
-**Claim it with:** "The only thing irreplaceable isn't their stories. It's their voice telling them."
+The adult child buyer is 35–55. Their parent is likely 65–80. This is the window. Everyone in this demographic carries a low-grade awareness that they should be doing something. Nobody is giving them a specific reason to act *today.*
 
----
+**Ownable territory for Listn:**
+> *"Dad is 74. He's healthy. There's time. Or so I keep telling myself."*
 
-### Gap 2: The "Questions You Never Asked" Angle
-
-Every competitor frames the *product* as the solution. None of them frame the *adult child's inaction* as the real problem.
-
-There is a specific, named emotional experience millions of adult children share: standing at a parent's grave thinking *I never asked them about their childhood. I never asked how they met. I never asked what they were afraid of.* This regret is profound, common, and completely ignored in every ad in this dataset.
-
-Listn can run ads that name this experience explicitly — addressing the adult child who still has time — and position the product as the tool that turns "I should do this" into "I'm actually doing this."
-
-**Claim it with:** *"You keep meaning to ask. Listn makes it easy to finally do it."*
-
-This is addressed to the adult child buyer ✓, features the parent as the story source ✓, and creates urgency from a real emotional truth rather than a manufactured holiday ✓.
+This ad is addressed to the adult child. The parent is present as context. The buyer sees themselves in the mirror. No competitor is running this ad.
 
 ---
 
-### Gap 3: Ongoing / Continuous Relationship Positioning (vs. One-Time Gift)
+### Gap 2: The Ongoing Relationship Benefit (Not Just Preservation)
 
-Remento and StoryKeeper both sell a **finite artifact** — a book, a keepsake. The purchase is transactional and terminal. Once the book is done, the relationship with the product is over.
+Remento, StoryKeeper, and the rest frame the product as **preservation** — capturing something before it's gone. The implicit experience is: record once, produce artifact, done.
 
-Enna has cracked a different model: **ongoing connection**, priced as a subscription, solving a recurring need. Their 213-day ad longevity is partly because their product doesn't expire after Father's Day — it's needed every day.
+Listn is a **voice-first guided conversation app.** The ongoing, recurring nature of the conversations is itself a relationship benefit that no competitor is claiming.
 
-Listn's voice-conversation model is inherently **ongoing** — more sessions, more stories, a relationship that deepens over time. No competitor is advertising this "keeps giving" positioning.
+The adult child who buys Listn doesn't just get a captured story. They get a **reason to call.** A structure for engagement. Something to look forward to with their aging parent. The product is as much about the living relationship as it is about the archive.
 
-**Claim it with:** The angle that Listn isn't a gift you give once — it's a ritual you start. Every Sunday afternoon call. Every holiday visit. Every time your parent remembers something new. Position it as a living archive, not a finished book.
+**Ownable territory:**
+> *"Every Sunday I call my mom. For the first time in years, I don't have to figure out what to say. Listn gives us a question and we just... talk."*
 
-**Concrete ad direction:** *"Six months ago, she told us how she survived the winter of '68. Last week, she remembered something she'd never told anyone. Listn keeps asking."*
-
-This is non-seasonal, builds subscriber retention logic into the ad itself, and occupies territory completely unclaimed by any competitor.
-
----
-
-### Gap 4: The Grandchild Angle (Adult Child Buying for Their Kids' Future)
-
-Every competitor in this dataset addresses the adult child as someone buying for their *parent*. Nobody addresses the adult child as someone buying for their *children* — creating a gift that grandchildren will have for the rest of their lives.
-
-The emotional reframe: *You're not preserving your parent's stories for yourself. You're preserving your children's inheritance — the stories of who came before them.*
-
-This is a legitimately different buying motivation than "I want to hear Dad's voice" — it's *I want my kids to know their grandparent as a full human being, not just as grandma who makes cookies.* It's a longer time horizon and a more selfless purchase motivation that may convert a different segment of the adult-child audience.
-
-**Claim it with:** *"Your kids will ask you someday: 'What was great-grandma like?' Right now, she can tell them herself."*
-
-Audience: adult children 35–50 with school-age children ✓. Storyteller featured: the grandparent ✓. Buyer persuaded: the adult child ✓.
+This repositions Listn from "legacy artifact creator" (where Remento wins on physical output) to **"relationship infrastructure for adult children with aging parents."** It's a genuinely different frame that Remento's book-centric positioning cannot occupy.
 
 ---
 
-*Report generated from Meta Ad Library data scraped 2026-06-08. All competitor ad copy quoted directly from source data.*
+### Gap 3: The Voice-Specific Emotional Territory
+
+Every competitor either ignores voice entirely (Enna, ElliQ) or treats it as a feature footnote on the way to the book (Remento's "Speech-to-Story" branding). StoryKeeper gets closest with:
+
+> *"The Only Book That Let's You Listen to Their Story."*
+
+But this is still **voice as a feature of the book** — audio inside an artifact.
+
+Listn can own: **voice as the irreplaceable thing itself.**
+
+There is a profound, underserved emotional truth in this category that no competitor is naming directly: **you will miss their voice more than you can possibly anticipate.** Not their words. Not their stories. Their actual voice — the rhythm, the accent, the laugh, the way they say your name.
+
+This is what Listn preserves. Not a book. Not a transcript. A voice.
+
+**Ownable territory:**
+> *"I can still hear my dad's voice in my head. I just can't remember exactly what it sounds like anymore."*
+
+This ad makes an adult child feel something immediate and real. It is addressed directly to the buyer. The parent is present as absence. The emotional territory — the specific grief of forgetting a loved one's voice — is completely unclaimed by any competitor in this dataset.
+
+**Caution on execution:** This tone must be handled with care. The goal is not to traumatize scrollers but to name something true that they already feel. The relief CTA matters: "Start recording today. It's just a conversation."
+
+---
+
+### Gap 4: The Grandchildren Frame
+
+*Note: This gap is partially occupied by Remento's influencer ad ("mariavpaul with Remento") which references grandchildren, but no brand is making this the centerpiece of a dedicated creative track.*
+
+The adult child buyer is often purchasing not just for themselves but for their **children** — the grandchildren who may never have a real chance to know a great-grandparent. This adds a generational multiplier to the emotional stakes.
+
+**Ownable territory for Listn:**
+> *"My kids are 4 and 7. My dad is 78. I am racing time I can't see. Listn is how I'm making sure they know who he was."*
+
+This is still addressed to the adult child buyer. The parent appears as a character. The children are the emotional future beneficiaries. This specific three-generation frame — grandchild who won't remember, grandparent who won't be there, adult child in the middle doing something about it — is emotionally maximum and zero competitors are running it.
+
+---
+
+*Report generated from 2026-06-08 Meta Ad Library scrape. All days_running figures relative to fetch date.*
