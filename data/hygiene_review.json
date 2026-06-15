@@ -1,11 +1,28 @@
 {
-  "findings": [],
+  "findings": [
+    {
+      "category": "contradiction",
+      "details": "Post 01 is titled 'What to Ask Your Dad Before Father's Day: 50 Questions Worth Recording in His Own Voice' but its primary_keyword is 'fathers day gift ideas'. The title contains no gift framing \u2014 it's a questions/prompts post. Google will read the title/H1/body as questions intent, not gift-shopping intent, so this post is very unlikely to rank for 'fathers day gift ideas'. Meanwhile Post 06 ('50 Questions to Ask Your Dad Before It's Too Late') already targets the questions intent with primary_keyword 'questions to ask dad before its too late'. Either Post 01's primary keyword is wrong, or its title needs to be rewritten around gifts.",
+      "location": "ACTIVE roadmap, Post 01",
+      "severity": "medium",
+      "suggested_fix": "Either (a) change Post 01's primary_keyword to a questions-intent term like 'questions to ask dad on fathers day' and pick a different post to chase 'fathers day gift ideas', or (b) rewrite Post 01's title to lead with the gift angle (e.g. 'The Father's Day Gift He'll Actually Use: 50 Questions That Capture Dad's Voice Forever') so the page matches the head term.",
+      "title": "Post 01 title is about questions, but primary keyword targets gift-buyer intent"
+    },
+    {
+      "category": "stale",
+      "details": "Post 01 has publish_by=2026-04-30 and event_date=2026-06-21. Today is 2026-06-15, so the post is 46 days past its publish target and the event is in 6 days. The original 52-day lead time was healthy, but at this point publishing today gives essentially no indexing/ranking runway before Father's Day. The overdue red border is doing its job, but this item should be triaged: ship-now-or-defer-to-2027 decision is needed in the next 24 hours, not 'continue to nag'.",
+      "location": "ACTIVE roadmap, Post 01",
+      "severity": "low",
+      "suggested_fix": "Make a kill/ship call on Post 01 today. If shipping, also note that ranking in time is unlikely \u2014 purpose becomes capturing residual late-week 'last minute' searches. If deferring, move to a 2027 Father's Day backlog so it stops occupying the active SOON window.",
+      "title": "Post 01 publish_by is 46 days overdue with only 6 days until Father's Day"
+    }
+  ],
   "model": "claude-opus-4-7",
-  "reviewed_at": "2026-06-08T16:47:57",
-  "today": "2026-06-08",
+  "reviewed_at": "2026-06-15T18:07:51",
+  "today": "2026-06-15",
   "usage": {
     "cache_read_input_tokens": 0,
     "input_tokens": 3295,
-    "output_tokens": 2454
+    "output_tokens": 3980
   }
 }
