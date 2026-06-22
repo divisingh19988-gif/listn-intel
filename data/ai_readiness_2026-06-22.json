@@ -12,7 +12,7 @@
       "canonical_pct": 100,
       "metadesc_pct": 100,
       "score": 40,
-      "elapsed_seconds": 4.6
+      "elapsed_seconds": 6.6
     },
     {
       "name": "StoryWorth",
@@ -24,7 +24,7 @@
       "canonical_pct": 100,
       "metadesc_pct": 100,
       "score": 40,
-      "elapsed_seconds": 3.9
+      "elapsed_seconds": 1.9
     },
     {
       "name": "Meminto",
@@ -36,7 +36,7 @@
       "canonical_pct": 100,
       "metadesc_pct": 100,
       "score": 40,
-      "elapsed_seconds": 19.9
+      "elapsed_seconds": 16.7
     },
     {
       "name": "Storykeeper",
@@ -48,7 +48,7 @@
       "canonical_pct": 0,
       "metadesc_pct": 0,
       "score": 0,
-      "elapsed_seconds": 1.2
+      "elapsed_seconds": 1.0
     },
     {
       "name": "Heritage Whisper",
@@ -60,7 +60,7 @@
       "canonical_pct": 0,
       "metadesc_pct": 0,
       "score": 45,
-      "elapsed_seconds": 7.1
+      "elapsed_seconds": 6.1
     },
     {
       "name": "StoriedLife AI",
@@ -72,19 +72,19 @@
       "canonical_pct": 100,
       "metadesc_pct": 100,
       "score": 55,
-      "elapsed_seconds": 15.3
+      "elapsed_seconds": 18.0
     },
     {
       "name": "LifeEcho",
       "url": "https://lifeecho.org",
-      "llms_txt": "Yes",
-      "ai_bots": 4,
-      "faq_schema": "Yes",
-      "article_schema": "No",
-      "canonical_pct": 100,
-      "metadesc_pct": 100,
-      "score": 85,
-      "elapsed_seconds": 5.7
+      "llms_txt": "Timeout",
+      "ai_bots": "Timeout",
+      "faq_schema": "Timeout",
+      "article_schema": "Timeout",
+      "canonical_pct": "Unknown",
+      "metadesc_pct": "Unknown",
+      "score": 0,
+      "elapsed_seconds": 81.3
     },
     {
       "name": "Storii",
@@ -96,7 +96,7 @@
       "canonical_pct": 100,
       "metadesc_pct": 100,
       "score": 70,
-      "elapsed_seconds": 2.5
+      "elapsed_seconds": 1.8
     },
     {
       "name": "Tellmel",
@@ -108,7 +108,7 @@
       "canonical_pct": 100,
       "metadesc_pct": 100,
       "score": 40,
-      "elapsed_seconds": 2.8
+      "elapsed_seconds": 4.2
     },
     {
       "name": "Listn",
@@ -120,7 +120,7 @@
       "canonical_pct": 100,
       "metadesc_pct": 100,
       "score": 85,
-      "elapsed_seconds": 2.4
+      "elapsed_seconds": 3.5
     },
     {
       "name": "ElliQ",
@@ -132,7 +132,7 @@
       "canonical_pct": 0,
       "metadesc_pct": 0,
       "score": 15,
-      "elapsed_seconds": 2.6
+      "elapsed_seconds": 2.4
     },
     {
       "name": "Papa",
@@ -144,7 +144,7 @@
       "canonical_pct": 100,
       "metadesc_pct": 100,
       "score": 40,
-      "elapsed_seconds": 2.1
+      "elapsed_seconds": 1.6
     },
     {
       "name": "friend.com",
@@ -156,7 +156,7 @@
       "canonical_pct": 100,
       "metadesc_pct": 100,
       "score": 40,
-      "elapsed_seconds": 1.5
+      "elapsed_seconds": 1.6
     }
   ]
 }
