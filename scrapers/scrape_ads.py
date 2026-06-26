@@ -12,6 +12,72 @@ import time
 from datetime import date, datetime
 from playwright.sync_api import sync_playwright, TimeoutError as PWTimeout
 
+import sys as _sys
+
+# Make `lib` importable when run as `python scrapers/scrape_ads.py` (sys.path[0]
+# is the script dir, not the repo root).
+_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _REPO_ROOT not in _sys.path:
+    _sys.path.insert(0, _REPO_ROOT)
+
+from lib.ad_graphql import harvest_video_urls  # noqa: E402
+
+# Ad video URLs harvested from Meta's GraphQL/async responses, keyed by
+# ad_archive_id. Populated by _on_response while pages load; consumed by
+# _apply_video_urls() in main(). The DOM <video> scrape misses these from CI
+# (datacenter IPs get a playback-error placeholder), so the network payload is
+# the authoritative video source.
+VIDEO_SRC_BY_ID = {}
+
+
+def _on_response(response):
+    """Best-effort scan of Ad Library API responses for ad video URLs.
+
+    Reading bodies in a response handler can race a navigating page, so every
+    failure is swallowed - a missed body just falls back to the DOM scrape.
+    """
+    try:
+        url = response.url
+        if "/api/graphql" not in url and "/ads/library/async" not in url:
+            return
+        ctype = ""
+        try:
+            ctype = (response.headers or {}).get("content-type", "")
+        except Exception:
+            pass
+        if ctype and not any(t in ctype for t in ("json", "javascript", "text")):
+            return
+        body = response.text()
+        if not body or ("video_hd_url" not in body and "video_sd_url" not in body):
+            return
+        for ad_id, src in harvest_video_urls(body).items():
+            VIDEO_SRC_BY_ID.setdefault(ad_id, src)
+    except Exception:
+        pass
+
+
+def _apply_video_urls(all_results):
+    """Write the captured fbcdn video URL onto each ad and mark it a video.
+
+    The dashboard re-hosts these into durable Supabase Storage during ingest
+    (the same path images already take), so the scraper only needs to surface
+    the raw URL here; it never needs Supabase creds itself.
+    """
+    applied = 0
+    for ads in all_results.values():
+        for a in ads:
+            ad_id = a.get("ad_id")
+            src = VIDEO_SRC_BY_ID.get(ad_id) or a.get("video_url")
+            if not src:
+                continue
+            a["video_url"] = src
+            # A real video src means this is a video ad regardless of how the
+            # DOM heuristic labelled it (CI often mislabels videos as "image").
+            if a.get("format") in (None, "image", "text"):
+                a["format"] = "video"
+            applied += 1
+    print(f"[video] applied video_url to {applied} ads (api-captured {len(VIDEO_SRC_BY_ID)})")
+
 COMPETITORS = [
     "Remento",
     "Enna",
@@ -559,6 +625,7 @@ def parse_ad_block(block_text, competitor):
         "format": None,
         "creative_urls": [],
         "thumbnail_url": None,
+        "video_url": None,
         "data_source": None,
     }
 
@@ -798,6 +865,7 @@ def scrape_competitor(page, competitor, debug_dir=None):
         # ONLY when the permalink returns a real creative (never a placeholder).
         if kept:
             enrich_page = page.context.new_page()
+            enrich_page.on("response", _on_response)
             try:
                 for a in kept:
                     ad_id = a.get("ad_id")
@@ -885,6 +953,7 @@ def main():
             extra_http_headers={"Accept-Language": "en-US,en;q=0.9"},
         )
         page = ctx.new_page()
+        page.on("response", _on_response)
 
         # Prime cookies on the landing page
         print("Loading Ad Library landing page...")
@@ -902,6 +971,10 @@ def main():
             time.sleep(2)
 
         browser.close()
+
+    # Surface captured video URLs on each ad; the dashboard mirrors them to
+    # durable storage during ingest (same path images already take).
+    _apply_video_urls(all_results)
 
     output = {
         "fetched_date": today,
